@@ -1,32 +1,33 @@
 <template>
   <div class="question">
     <div >
+      <div>
+        网页标题
+      </div>
+      <div>
+        <el-input v-model="info.pageTitle" placeholder="网页标题" />
+      </div>
+      <div>
+        标题
+      </div>
+      <div>
+        <el-input v-model="info.title" placeholder="标题" />
+      </div>
       <div style="display: flex; justify-content: flex-end;">
         <el-button type="success" @click="showAddPanel">添加题目</el-button>
       </div>
       <el-drawer
           v-model="isShowAddPanel"
-          title="添加问题"
+          :title="addOrEdit"
           direction="ltr"
           :before-close="closeAddPanel"
       >
-        <Add :question="question" @addQuestion="addQuestion"/>
+        <Add :question="question"  @addOrEditQuestion="addOrEditQuestion"/>
       </el-drawer>
-      <div v-for="question in questions">
-        <div>题目类型</div>
-        <div>{{ question.type }}</div>
-        <div>问题描述</div>
-        <div>{{ question.questionDesc }}</div>
-        <div v-if="question.type === 2 || question.type === 3">
-          <div>选项</div>
-          <div v-for="o in question.options">
-            <el-input disabled >{{o}}</el-input>
-          </div>
-        </div>
-      </div>
+      <Show :questions="info.questions" @editQuestion="editQuestion" @delQuestion="delQuestion"/>
     </div>
     <div>
-      <Iphone />
+      <Iphone :info="info"/>
     </div>
   </div>
 </template>
@@ -34,31 +35,60 @@
 <script>
 import Add from '@/components/question/Add.vue'
 import Iphone from '@/components/question/Iphone.vue'
+import Show from '@/components/question/Show.vue'
 
 export default {
   name: 'Home',
   components: {
-    Add, Iphone
+    Add, Iphone, Show
   },
   data(){
     return {
+      addOrEdit:"",
       isShowAddPanel: false,
       question: {},
-      questions:[]
+      info: {
+        questions:[]
+      }
     }
   },
   methods:{
     showAddPanel(){
+      this.addOrEdit = "添加"
       this.isShowAddPanel = !this.isShowAddPanel
     },
     closeAddPanel(){
       this.isShowAddPanel = false
     },
-    addQuestion(question){
-      this.questions.push(question)
-      this.isShowAddPanel = false
+    addOrEditQuestion(question){
+      if(question.idx == null){
+        question.idx = this.info.questions.length + 1
+        this.info.questions.push(question)
+      }
       this.question = {}
-    }
+      this.isShowAddPanel = false
+    },
+    editQuestion(idx){
+      this.addOrEdit = "编辑"
+      this.question = idx - 1 >= 0 ? this.info.questions[idx - 1] : {}
+      this.isShowAddPanel = true
+    },
+
+    delQuestion(idx){
+      let questions = this.info.questions
+      let _questions = []
+      let n = 1;
+      for(let i = 0; i < questions.length; i++){
+        console.log(questions[i].idx)
+        if(questions[i].idx !== idx){
+          questions[i].idx = n
+          _questions.push(questions[i])
+          n++
+        }
+      }
+      this.info.questions = _questions
+    },
+
   }
 }
 </script>
@@ -66,16 +96,6 @@ export default {
 
 <style scoped>
 .question{
-  display: flex;
-  justify-content: space-between;
-}
-.left-panel{
-  width: 50%;
-}
-.row{
-  margin: 5px;
-}
-.option-panel{
   display: flex;
   justify-content: space-between;
 }

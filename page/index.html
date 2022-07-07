@@ -43,7 +43,7 @@
                 init(data)
             });
 
-        function init(info){
+        function init(info) {
             console.log(info)
             let linkElement = document.createElement("link")
             linkElement.type = "text/css"
@@ -52,14 +52,14 @@
             document.getElementsByTagName("head")[0].append(linkElement)
 
             const pageTitleElement = document.getElementById("page-title")
-            pageTitleElement.innerText  = info.pageTitle
+            pageTitleElement.innerText = info.pageTitle
 
             const titleElement = document.getElementById("title")
             titleElement.innerText = info.title
 
             const mainFrame = document.getElementById("content-wrapper")
             let questions = info.questions;
-            for(let i = 0; i < questions.length; i++){
+            for (let i = 0; i < questions.length; i++) {
                 let question = questions[i]
                 console.log(question)
                 let q = QuestionFactory.getByType(question)
@@ -67,12 +67,10 @@
             }
 
             const submitElement = document.getElementById("submit")
-            submitElement.addEventListener("click", ()=>{
+            submitElement.addEventListener("click", () => {
                 console.log("submit")
             })
         }
-
-
     </script>
   </body>
 </html>

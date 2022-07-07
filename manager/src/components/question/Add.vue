@@ -16,13 +16,13 @@
               type="textarea"
               placeholder="Please input" />
 
-    <div v-if="type === 2 || type === 3">
+    <div v-if="question.type === 2 || question.type === 3">
         <div class="option-panel row">
           <el-input v-model="option" placeholder="选项"></el-input>
           <el-button type="success" @click="addNewOptions">添加选项</el-button>
         </div>
         <div v-for="o in options">
-          <el-input disabled >{{o}}</el-input>
+          <div >{{o}}</div>
         </div>
       </div>
     </div>
@@ -45,12 +45,12 @@ export default {
       }
     }
   },
-  emits: ["addQuestion"], // <--- add this line
+  emits: ["addOrEditQuestion"],
   setup(_,{ emit }) {
-    const addQuestion = (question) => {
-      emit("addQuestion", question)
+    const addOrEditQuestion = (question) => {
+      emit("addOrEditQuestion", question)
     }
-    return {addQuestion}
+    return {addOrEditQuestion}
   },
   model: {
     prop: 'question',
@@ -72,11 +72,14 @@ export default {
   },
   methods:{
     addNewOptions(){
+      if(this.question.options == null){
+        this.question.options = []
+      }
       this.question.options.push(this.option)
       this.option = ""
     },
     confirm(){
-      this.addQuestion(this.question)
+      this.addOrEditQuestion(this.question)
     }
   }
 }

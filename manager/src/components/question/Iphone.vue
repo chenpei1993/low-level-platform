@@ -3,12 +3,12 @@
     <div class="iphone">
       <div class="screen-wrapper">
         <div style="  display: flex;justify-content: space-around; align-items: center;">
-          <div class="indicator time">16:22</div>
+          <div class="indicator time">{{time}}</div>
           <div class="notch"></div>
           <div class="indicator time none-color">16:22</div>
         </div>
         <div class="screen">
-          1234
+          <Content :info="info"/>
         </div>
       </div>
     </div>
@@ -16,9 +16,50 @@
 </template>
 
 <script>
-
+import Content from '@/components/question/Content.vue'
+export default {
+  name: 'Iphone',
+  components: {
+    Content
+  },
+  props: {
+    info: {
+      require: true,
+      type: Object,
+      default () {
+        return {}
+      }
+    }
+  },
+  data(){
+    return {
+      time: "",
+      timer: null
+    }
+  },
+  methods: {
+    getTime(){
+      let now = new Date()
+      let hours = now.getHours()
+      if( hours < 10){
+        hours = '0' + hours
+      }
+      let minutes = now.getMinutes()
+      if( minutes < 10){
+        minutes = '0' + minutes
+      }
+      return hours + ":" + minutes
+    }
+  },
+  mounted() {
+    this.time = this.getTime();
+    this.timer = setInterval(()=>{
+      this.time = this.getTime()
+    }, 6000)
+  }
+}
 </script>
-<style>
+<style scoped>
 *, *:before, *:after {
   box-sizing: border-box;
   margin: 0;
