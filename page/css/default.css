@@ -1,0 +1,9 @@
+.question-wrapper{
+    margin: 20px;
+}
+
+#bottom-wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
