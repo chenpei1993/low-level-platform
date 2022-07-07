@@ -1,20 +1,17 @@
 <template>
   <div class="question">
     <div >
-      <div>
-        网页标题
-      </div>
+      <div>网页标题</div>
       <div>
         <el-input v-model="info.pageTitle" placeholder="网页标题" />
       </div>
-      <div>
-        标题
-      </div>
+      <div>标题</div>
       <div>
         <el-input v-model="info.title" placeholder="标题" />
       </div>
       <div style="display: flex; justify-content: flex-end;">
         <el-button type="success" @click="showAddPanel">添加题目</el-button>
+        <el-button type="info" @click="saveInfo">保存问卷</el-button>
       </div>
       <el-drawer
           v-model="isShowAddPanel"
@@ -88,6 +85,9 @@ export default {
       }
       this.info.questions = _questions
     },
+    saveInfo(){
+      //todo
+    }
 
   }
 }
