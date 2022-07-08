@@ -1,20 +1,25 @@
 <template>
   <div class="wrapper">
     <div v-for="question in questions" class="a-question">
-      <div class="label-1">{{question.idx}}. 题目类型:</div>
-      <div class="content">{{ toType(question.type) }}</div>
-      <div class="label-1">问题描述:</div>
-      <div class="content">{{ question.questionDesc }}</div>
-      <div v-if="question.type === 2 || question.type === 3">
-        <div class="label-1">选项: </div>
-        <div v-for="o in question.options" class="content">
-          <div >{{o}}</div>
+      <el-card >
+        <div class="number">{{question.idx}}.</div>
+        <div class="show-content">
+          <div class="label-1"> 题目类型:</div>
+          <div class="content">{{ toType(question.type) }}</div>
+          <div class="label-1">问题描述:</div>
+          <div class="content">{{ question.questionDesc }}</div>
+          <div v-if="question.type === 2 || question.type === 3">
+            <div class="label-1">选项: </div>
+            <div v-for="o in question.options" class="content">
+              <div >{{o}}</div>
+            </div>
+          </div>
+          <div>
+            <el-button size="small" type="danger" @click="delQuestion(question.idx)">删除</el-button>
+            <el-button size="small" type="primary" @click="editQuestion(question.idx)">编辑</el-button>
+          </div>
         </div>
-      </div>
-      <div>
-        <el-button size="small" type="danger" @click="delQuestion(question.idx)">删除</el-button>
-        <el-button size="small" type="primary" @click="editQuestion(question.idx)">编辑</el-button>
-      </div>
+      </el-card>
     </div>
   </div>
 </template>
@@ -71,5 +76,20 @@ export default {
 
 .content{
   margin-left: 10px;
+}
+
+.wrapper{
+  min-width: 500px;
+  overflow-y: scroll;
+}
+
+.number{
+  margin-right: 10px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.show-content{
+  display: inline-block;
 }
 </style>
