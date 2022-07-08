@@ -1,2 +1,4 @@
 server:
+  servlet:
+    context-path: "/manage"
   port: 8090

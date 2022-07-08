@@ -48,7 +48,7 @@ public class CustomerController {
      * 标记用户
      * @return 结果
      */
-    @PostMapping
+    @PostMapping("tag")
     public Response<Object> tagCustomer(){
         return ResultUtil.success();
     }

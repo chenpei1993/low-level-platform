@@ -1,6 +1,7 @@
 package com.jenschen.controller;
 
 import com.jenschen.base.Response;
+import com.jenschen.dto.TagDTO;
 import com.jenschen.util.ResultUtil;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,10 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("tag")
+@CrossOrigin("*")
 public class TagController {
 
-    @PostMapping
-    public Response<Object> add(TagDTO tagDTO){
+    @PutMapping
+    public Response<Object> add(@RequestBody TagDTO tagDTO){
         return ResultUtil.success();
     }
 

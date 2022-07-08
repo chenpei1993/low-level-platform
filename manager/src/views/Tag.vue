@@ -39,6 +39,7 @@
 import Add from '@/components/tag/Add.vue'
 //TODO 全局变量
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { inject } from "vue";
 
 export default {
   name: 'Tag',
@@ -59,8 +60,14 @@ export default {
     },
     addOrEditTag(tag){
       if(tag.id == null){
-        //TODO fetch
-        this.tags.push(tag)
+        this.http.put("tag", tag)
+            .then(()=>{
+              ElMessage({
+                type: "success",
+                message: "ok",
+              })
+              this.tags.push(tag)
+            })
       }
       this.tag = {}
       this.isShowAddOrEditPanel = false
@@ -97,6 +104,7 @@ export default {
     }
   },
   created(){
+    this.http = inject("$http")
     this.tags = [
       {
         name: "组1",
