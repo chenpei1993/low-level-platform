@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jenschen.dao.CustomerMapper">
+  <resultMap id="BaseResultMap" type="com.jenschen.entity.Customer">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
+    <result column="deleted_at" jdbcType="TIMESTAMP" property="deletedAt" />
+    <result column="deleted_by" jdbcType="INTEGER" property="deletedBy" />
+    <result column="created_by" jdbcType="INTEGER" property="createdBy" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="updated_by" jdbcType="INTEGER" property="updatedBy" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from customer
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jenschen.entity.Customer">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into customer (`name`, email, phone, 
+      is_deleted, deleted_at, deleted_by, 
+      created_by, created_at, updated_at, 
+      updated_by)
+    values (#{name,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{isDeleted,jdbcType=TINYINT}, #{deletedAt,jdbcType=TIMESTAMP}, #{deletedBy,jdbcType=INTEGER}, 
+      #{createdBy,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, 
+      #{updatedBy,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.jenschen.entity.Customer">
+    update customer
+    set `name` = #{name,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      is_deleted = #{isDeleted,jdbcType=TINYINT},
+      deleted_at = #{deletedAt,jdbcType=TIMESTAMP},
+      deleted_by = #{deletedBy,jdbcType=INTEGER},
+      created_by = #{createdBy,jdbcType=INTEGER},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      updated_by = #{updatedBy,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, `name`, email, phone, is_deleted, deleted_at, deleted_by, created_by, 
+    created_at, updated_at, updated_by
+    from customer
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, `name`, email, phone, is_deleted, deleted_at, deleted_by, created_by, 
+    created_at, updated_at, updated_by
+    from customer
+  </select>
+</mapper>

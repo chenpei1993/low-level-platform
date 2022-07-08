@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jenschen.dao.TaskMapper">
+  <resultMap id="BaseResultMap" type="com.jenschen.entity.Task">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="info_id" jdbcType="INTEGER" property="infoId" />
+    <result column="execution_datetime" jdbcType="TIMESTAMP" property="executionDatetime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
+    <result column="deleted_at" jdbcType="TIMESTAMP" property="deletedAt" />
+    <result column="deleted_by" jdbcType="INTEGER" property="deletedBy" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="created_by" jdbcType="INTEGER" property="createdBy" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="updated_by" jdbcType="INTEGER" property="updatedBy" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from task
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jenschen.entity.Task">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into task (`type`, info_id, execution_datetime, 
+      `status`, is_deleted, deleted_at, 
+      deleted_by, created_at, created_by, 
+      updated_at, updated_by)
+    values (#{type,jdbcType=INTEGER}, #{infoId,jdbcType=INTEGER}, #{executionDatetime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER}, #{isDeleted,jdbcType=TINYINT}, #{deletedAt,jdbcType=TIMESTAMP}, 
+      #{deletedBy,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=INTEGER}, 
+      #{updatedAt,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.jenschen.entity.Task">
+    update task
+    set `type` = #{type,jdbcType=INTEGER},
+      info_id = #{infoId,jdbcType=INTEGER},
+      execution_datetime = #{executionDatetime,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=INTEGER},
+      is_deleted = #{isDeleted,jdbcType=TINYINT},
+      deleted_at = #{deletedAt,jdbcType=TIMESTAMP},
+      deleted_by = #{deletedBy,jdbcType=INTEGER},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=INTEGER},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      updated_by = #{updatedBy,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, `type`, info_id, execution_datetime, `status`, is_deleted, deleted_at, 
+    deleted_by, created_at, created_by, updated_at, updated_by
+    from task
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, `type`, info_id, execution_datetime, `status`, is_deleted, deleted_at, 
+    deleted_by, created_at, created_by, updated_at, updated_by
+    from task
+  </select>
+</mapper>
