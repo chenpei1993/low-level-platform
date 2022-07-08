@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class TagController {
 
     @PostMapping
-    public Response<Object> add(){
+    public Response<Object> add(TagDTO tagDTO){
         return ResultUtil.success();
     }
 

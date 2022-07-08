@@ -93,8 +93,6 @@ export default {
   border-radius: 0 0 15px 15px;
 }
 
-
-
 .screen {
   height: calc(600px - 45px);
 }

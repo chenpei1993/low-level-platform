@@ -17,8 +17,8 @@
               type="textarea"
               placeholder="Please input" />
 
-    <div class="row">选项：</div>
     <div v-if="question.type === 2 || question.type === 3">
+        <div class="row">选项：</div>
         <div class="option-panel">
           <el-input v-model="option" placeholder="选项" class="option-item"></el-input>
           <el-button type="success" @click="addNewOptions">添加选项</el-button>
