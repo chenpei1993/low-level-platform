@@ -1,18 +1,23 @@
 <template>
   <div class="question">
     <div >
-      <div>网页标题</div>
-      <div>
-        <el-input v-model="info.pageTitle" placeholder="网页标题" />
+      <div class="item">
+        <div class="item">网页标题</div>
+        <div class="item">
+          <el-input v-model="info.pageTitle" placeholder="网页标题" />
+        </div>
       </div>
-      <div>标题</div>
-      <div>
-        <el-input v-model="info.title" placeholder="标题" />
-      </div>
-      <div style="display: flex; justify-content: flex-end;">
+      <div class="item">  
+        <div class="item">标题</div>
+        <div class="item">
+          <el-input v-model="info.title" placeholder="标题" />
+        </div>
+      </div>  
+      <div class="item item-bottom">
         <el-button type="success" @click="showAddPanel">添加题目</el-button>
         <el-button type="info" @click="saveInfo">保存问卷</el-button>
       </div>
+
       <el-drawer
           v-model="isShowAddPanel"
           :title="addOrEdit"
@@ -52,6 +57,7 @@ export default {
   methods:{
     showAddPanel(){
       this.addOrEdit = "添加"
+      this.question = {}
       this.isShowAddPanel = !this.isShowAddPanel
     },
     closeAddPanel(){
@@ -76,7 +82,6 @@ export default {
       let _questions = []
       let n = 1;
       for(let i = 0; i < questions.length; i++){
-        console.log(questions[i].idx)
         if(questions[i].idx !== idx){
           questions[i].idx = n
           _questions.push(questions[i])
@@ -98,6 +103,15 @@ export default {
 .question{
   display: flex;
   justify-content: space-between;
+}
+
+.item{
+  margin-top: 5px; margin-bottom: 5px
+}
+
+.item-bottom{
+  display: flex; 
+  justify-content: flex-end;
 }
 </style>
 

@@ -82,7 +82,8 @@ export default {
   overflow: hidden;
   border-radius: 25px;
   border-color: black;
-  background: linear-gradient(#4a3972, #5e4a9d);
+  /* background: linear-gradient(#4a3972, #5e4a9d); */
+  background: white;
   width: 100%;
 }
 
@@ -99,7 +100,7 @@ export default {
 
 .indicator {
   font-size: 10px;
-  color: white;
+  color: black;
 }
 
 .time{

@@ -11,6 +11,17 @@
       />
     </el-select>
 
+    <div class="row">是否为必选</div>
+    <el-select v-model="question.isRequired" class="m-2" placeholder="Select">
+      <el-option
+          v-for="item in isRequiredOptions"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+          onchange="changeType"
+      />
+    </el-select>
+
     <div class="row">问题描述：</div>
     <el-input v-model="question.questionDesc"
               :rows="3"
@@ -71,6 +82,10 @@ export default {
         { value: 2, label: "单选题"},
         { value: 3, label: "多选题"}
       ],
+      isRequiredOptions:[
+        { value: 0, label: "否"},
+        { value: 1, label: "是"},
+      ],
       questionDesc: "",
       option: "",
       options: []
@@ -85,15 +100,20 @@ export default {
         this.question.options = []
       }
       this.question.options.push(this.option)
-      console.log(this.question.options)
       this.option = ""
-      console.log(this.question.options)
     },
     confirm(){
       this.addOrEditQuestion(this.question)
     },
-    delOption(){
-
+    delOption(idx){
+      let options = this.question.options
+      let _options = []
+      for(let i = 0; i < options.length; i++){
+        if(i !== idx){
+          _options.push(options[i])
+        }
+      }
+      this.question.options = _options
     }
   }
 }

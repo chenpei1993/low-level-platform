@@ -1,0 +1,35 @@
+.question-wrapper{
+    margin: 20px;
+}
+
+#bottom-wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.question-title{
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+.question-required{
+    color: red;
+}
+
+.question-input{
+    width: 100%;
+}
+
+.question-submit-wrapper{
+    display: flex;
+    justify-content: center;
+}
+
+.question-submit-button{
+
+}
