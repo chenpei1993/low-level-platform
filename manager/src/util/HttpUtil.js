@@ -29,7 +29,7 @@ http.interceptors.response.use((res) => {
 }, (error) => {
     ElMessage({
         type: 'error',
-        message: '请联系管理员！',
+        message: 'Oooops，发生错误，请联系管理员！',
         showClose: true
     });
     return Promise.reject(error);

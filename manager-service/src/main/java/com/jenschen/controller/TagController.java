@@ -2,7 +2,9 @@ package com.jenschen.controller;
 
 import com.jenschen.base.Response;
 import com.jenschen.dto.TagDTO;
+import com.jenschen.service.TagService;
 import com.jenschen.util.ResultUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -14,9 +16,12 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 public class TagController {
 
+    @Autowired
+    private TagService tagService;
+
     @PutMapping
     public Response<Object> add(@RequestBody TagDTO tagDTO){
-        return ResultUtil.success();
+        return tagService.insert(tagDTO);
     }
 
     /**
