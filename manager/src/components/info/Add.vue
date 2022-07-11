@@ -59,10 +59,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="标签" v-if="info.isFixedTimeSend && info.sendCustomerType == 1">
-            <el-input v-model="info.sendCustomerType" />
+            <el-input v-model="info.sendCustomers" />
         </el-form-item>
         <el-form-item label="自定义" v-if="info.isFixedTimeSend && info.sendCustomerType == 2">
-            <el-input v-model="info.sendCustomerType" />
+            <el-input v-model="info.sendCustomers" />
         </el-form-item>
         <el-form-item
           v-for="(delayTipTimer, index) in info.delayTipTimers"
@@ -120,10 +120,11 @@ export default {
   data(){
     return {
       timeUnitOptions: [
-        {label: "小时", value: 1},
-        {label: "天", value: 2},
-        {label: "周", value: 3},
-        {label: "月", value: 4}
+        {label: "分", value: 1},
+        {label: "小时", value: 2},
+        {label: "天", value: 3},
+        {label: "周", value: 4},
+        {label: "月", value: 5}
       ],
       isFixedTimeSendOptions:[
         {label: "是", value: true},
@@ -131,7 +132,8 @@ export default {
       ],
       sendTypeOptions:[
         {label: "企业微信", value: 1},
-        {label: "邮箱", value: 2},
+        {label: "手机号", value: 2},
+        {label: "邮箱", value: 3},
       ],
       sendCustomerTypeOptions:[
         {label: "标签", value: 1},

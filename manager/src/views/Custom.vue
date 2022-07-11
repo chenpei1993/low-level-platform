@@ -1,6 +1,10 @@
 <template>
   <div class="custom">
-    <h1>This is an custom page</h1>
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
+      <el-breadcrumb-item>客户</el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-divider />
     <div>
         <el-button link type="primary" size="small" @click="add">添加</el-button>
     </div>

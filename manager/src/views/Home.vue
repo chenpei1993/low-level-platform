@@ -1,5 +1,9 @@
 <template>
   <div class="home">
-    <h1>This is an home page</h1>
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item>主页</el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-divider />
   </div>
 </template>
+

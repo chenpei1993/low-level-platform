@@ -1,6 +1,10 @@
 <template>
   <div class="info">
-    <h1>This is an info page</h1>
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
+      <el-breadcrumb-item>问卷</el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-divider />
     <div>
         <el-button link type="primary" size="small" @click="add">添加</el-button>
     </div>
@@ -116,7 +120,14 @@ export default {
         
     },
     editQuestions(){
-
+      this.$router.push(
+        {
+          name: 'Question',
+          params: {
+            id: "123"
+          }
+        }
+      )
     }
   }
 }

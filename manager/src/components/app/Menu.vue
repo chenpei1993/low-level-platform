@@ -1,18 +1,19 @@
 <template>
   <div class="menu">
     <el-scrollbar>
-      <el-menu>
-        <router-link to="/Question">问题添加</router-link>
-      </el-menu>
-      <el-menu>
-        <router-link to="/Info">问卷</router-link>
-      </el-menu>
-      <el-menu>
-        <router-link to="/Custom">客户</router-link>
-      </el-menu>
-      <el-menu>
-        <router-link to="/Tag">标签</router-link>
-      </el-menu>
+      <el-menu router>
+        <el-menu-item index="/" >主页</el-menu-item>
+        <el-menu-item index="/Info" >问卷</el-menu-item>
+        <el-menu-item index="/Custom">客户</el-menu-item>
+        <el-menu-item index="/Tag">标签</el-menu-item>
+      </el-menu>  
     </el-scrollbar>
   </div>
 </template>
+
+
+
+
+
+
+

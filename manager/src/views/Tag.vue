@@ -1,6 +1,10 @@
 <template>
   <div class="tag">
-    <h1>This is an tag page</h1>
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
+      <el-breadcrumb-item>标签</el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-divider />
     <div>
         <el-button link type="primary" size="small" @click="add">添加</el-button>
     </div>
