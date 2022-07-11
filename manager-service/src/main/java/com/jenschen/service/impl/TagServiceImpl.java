@@ -1,5 +1,6 @@
 package com.jenschen.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
 import com.jenschen.dao.TagMapper;
@@ -31,9 +32,8 @@ public class TagServiceImpl extends AbstractService<TagEntity> implements TagSer
     public Response<Object> page(Page page) {
        QueryWrapper<TagEntity> queryWrapper = this.getPageQueryWrapper(page);
         List<TagEntity> tagEntityList = tagMapper.selectList(queryWrapper);
-        List<TagResp> resp = new ArrayList<>();
-        //TODO
-        return ResultUtil.success(tagEntityList);
+        List<TagResp> resp = BeanUtil.copyToList(tagEntityList, TagResp.class);
+        return ResultUtil.success(resp);
     }
 
     @Override

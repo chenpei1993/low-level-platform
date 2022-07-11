@@ -10,7 +10,7 @@ public abstract class AbstractService<T> {
         queryWrapper.orderByDesc(page.getDescOderBy().toArray(new String[0]));
         queryWrapper.orderByAsc(page.getAscOderBy().toArray(new String[0]));
         queryWrapper.eq("is_deleted", 0);
-        queryWrapper.last("limit " + page.getCurrentPage() * page.getSize() + "," + page.getSize());
+        queryWrapper.last("limit " + (page.getCurrentPage() - 1) * page.getPageSize() + "," + page.getPageSize());
         return queryWrapper;
     }
 }
