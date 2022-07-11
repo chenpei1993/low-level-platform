@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
 import com.jenschen.dao.TagMapper;
 import com.jenschen.request.Page;
-import com.jenschen.request.TagDTO;
+import com.jenschen.request.TagReq;
 import com.jenschen.entity.TagEntity;
 import com.jenschen.response.TagResp;
 import com.jenschen.service.AbstractService;
@@ -13,12 +13,8 @@ import com.jenschen.util.ResultUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import javax.swing.text.html.HTML;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -41,7 +37,7 @@ public class TagServiceImpl extends AbstractService<TagEntity> implements TagSer
     }
 
     @Override
-    public Response<Object> insert(TagDTO tagDTO) {
+    public Response<Object> insert(TagReq tagDTO) {
         TagEntity tag = new TagEntity();
         BeanUtils.copyProperties(tagDTO, tag);
         tagMapper.insert(tag);
@@ -57,7 +53,7 @@ public class TagServiceImpl extends AbstractService<TagEntity> implements TagSer
     }
 
     @Override
-    public Response<Object> updated(TagDTO tagDTO) {
+    public Response<Object> updated(TagReq tagDTO) {
         return null;
     }
 

@@ -1,6 +1,6 @@
 package com.jenschen.enumeration;
 
-public enum RepeatCollectTypeEnum {
+public enum RepeatCollectTypeEnum implements BaseEnum{
     ONCE(1, "一次"),
     EVERY_DAY(10, "每日"),
     EVERY_WEEK(100, "每周"),
@@ -15,6 +15,7 @@ public enum RepeatCollectTypeEnum {
         this.remark = remark;
     }
 
+    @Override
     public int getValue() {
         return value;
     }

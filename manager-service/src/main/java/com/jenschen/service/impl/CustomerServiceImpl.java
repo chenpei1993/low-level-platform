@@ -2,7 +2,7 @@ package com.jenschen.service.impl;
 
 import com.jenschen.base.Response;
 import com.jenschen.dao.CustomerMapper;
-import com.jenschen.request.CustomDTO;
+import com.jenschen.request.CustomReq;
 import com.jenschen.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Response<Object> insert(CustomDTO customDTO) {
+    public Response<Object> insert(CustomReq customDTO) {
         return null;
     }
 
     @Override
-    public Response<Object> updated(CustomDTO customDTO) {
+    public Response<Object> updated(CustomReq customReq) {
         return null;
     }
 

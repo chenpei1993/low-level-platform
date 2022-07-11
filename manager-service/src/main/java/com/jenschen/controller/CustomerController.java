@@ -1,7 +1,7 @@
 package com.jenschen.controller;
 
 import com.jenschen.base.Response;
-import com.jenschen.request.CustomDTO;
+import com.jenschen.request.CustomReq;
 import com.jenschen.entity.CustomerEntity;
 import com.jenschen.util.ResultUtil;
 import org.springframework.beans.BeanUtils;
@@ -17,7 +17,7 @@ import java.util.Date;
 public class CustomerController {
 
     @PutMapping
-    public Response<Object> add(CustomDTO customDTO) {
+    public Response<Object> add(CustomReq customDTO) {
         CustomerEntity customEntity = new CustomerEntity();
         BeanUtils.copyProperties(customDTO, customEntity);
         Date now = new Date();
@@ -26,7 +26,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public Response<Object> edit(CustomDTO customDTO) {
+    public Response<Object> edit(CustomReq customDTO) {
         CustomerEntity customEntity = new CustomerEntity();
         BeanUtils.copyProperties(customDTO, customEntity);
         Date now = new Date();

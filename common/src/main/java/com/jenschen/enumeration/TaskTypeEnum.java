@@ -1,6 +1,6 @@
 package com.jenschen.enumeration;
 
-public enum TaskTypeEnum {
+public enum TaskTypeEnum implements BaseEnum{
     SEND(1, "推送任务"),
     DELAY(2, "延时任务");
 
@@ -12,6 +12,7 @@ public enum TaskTypeEnum {
         this.remark = remark;
     }
 
+    @Override
     public int getValue() {
         return value;
     }

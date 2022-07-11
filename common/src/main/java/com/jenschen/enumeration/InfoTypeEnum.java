@@ -1,18 +1,19 @@
 package com.jenschen.enumeration;
 
-public enum InfoTypeEnum {
+public enum InfoTypeEnum implements BaseEnum{
     QUESTION(1, "问卷");
 
-    private final int type;
+    private final int value;
     private final String remark;
 
     InfoTypeEnum(int type, String remark){
-        this.type = type;
+        this.value = type;
         this.remark = remark;
     }
 
-    public int getType() {
-        return type;
+    @Override
+    public int getValue() {
+        return value;
     }
 
     public String getRemark() {

@@ -2,7 +2,7 @@ package com.jenschen.service;
 
 import com.jenschen.base.Response;
 import com.jenschen.request.Page;
-import com.jenschen.request.TagDTO;
+import com.jenschen.request.TagReq;
 
 public interface TagService {
     /**
@@ -17,7 +17,7 @@ public interface TagService {
      * @param tagDTO 标签
      * @return 结果
      */
-    Response<Object> insert(TagDTO tagDTO);
+    Response<Object> insert(TagReq tagDTO);
 
     /**
      * 获取标签
@@ -31,7 +31,7 @@ public interface TagService {
      * @param tagDTO 标签
      * @return 结果
      */
-    Response<Object> updated(TagDTO tagDTO);
+    Response<Object> updated(TagReq tagDTO);
 
     /**
      * 逻辑删除标签

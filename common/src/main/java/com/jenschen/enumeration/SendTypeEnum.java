@@ -1,6 +1,6 @@
 package com.jenschen.enumeration;
 
-public enum SendTypeEnum {
+public enum SendTypeEnum implements BaseEnum{
 
     WECHAT(1, "微信"),
     EMAIL(2, "邮箱"),
@@ -14,6 +14,7 @@ public enum SendTypeEnum {
         this.remark = remark;
     }
 
+    @Override
     public int getValue() {
         return value;
     }

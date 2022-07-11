@@ -1,6 +1,6 @@
 package com.jenschen.enumeration;
 
-public enum TaskEnum {
+public enum TaskEnum implements BaseEnum{
     INIT(1, "初始化"),
     DOING(2, "进行中"),
     FINISH(3, "已完成"),
@@ -14,6 +14,7 @@ public enum TaskEnum {
         this.remark = remark;
     }
 
+    @Override
     public int getValue() {
         return value;
     }

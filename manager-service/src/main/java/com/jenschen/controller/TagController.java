@@ -1,11 +1,12 @@
 package com.jenschen.controller;
 
 import com.jenschen.base.Response;
-import com.jenschen.request.TagDTO;
+import com.jenschen.request.TagReq;
 import com.jenschen.request.TagPageReq;
 import com.jenschen.service.TagService;
 import com.jenschen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -21,8 +22,8 @@ public class TagController {
     private TagService tagService;
 
     @PutMapping
-    public Response<Object> add(@RequestBody TagDTO tagDTO){
-        return tagService.insert(tagDTO);
+    public Response<Object> add(@RequestBody @Validated TagReq tagReq){
+        return tagService.insert(tagReq);
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.jenschen.service;
 
 import com.jenschen.base.Response;
-import com.jenschen.request.CustomDTO;
+import com.jenschen.request.CustomReq;
 
 public interface CustomerService {
     /**
@@ -9,14 +9,14 @@ public interface CustomerService {
      * @param customDTO 客户
      * @return 结果
      */
-    Response<Object> insert(CustomDTO customDTO);
+    Response<Object> insert(CustomReq customDTO);
 
     /**
      * 更新客户
      * @param customDTO 客户
      * @return 结果
      */
-    Response<Object> updated(CustomDTO customDTO);
+    Response<Object> updated(CustomReq customDTO);
 
     /**
      * 逻辑删除客户
