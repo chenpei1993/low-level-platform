@@ -3,6 +3,7 @@ import Question from '../views/Question.vue'
 import Home from '../views/Home.vue'
 import Custom from '../views/Custom.vue'
 import Info from '../views/Info.vue'
+import InfoResult from '../views/InfoResult.vue'
 import Tag from '../views/Tag.vue'
 
 const routes = [
@@ -15,6 +16,11 @@ const routes = [
     path: '/info',
     name: 'Info',
     component: Info
+  },
+  {
+    path: '/info/InfoResult',
+    name: 'InfoResult',
+    component: InfoResult
   },
   { 
     path: '/question',

@@ -13,7 +13,7 @@
             <el-table-column prop="name" label="名称"/>
             <el-table-column prop="startDateTime" label="开始时间" width="150" />
             <el-table-column prop="endDateTime" label="结束时间" width="150"/>
-            <el-table-column prop="timer" label="定时任务"/>
+            <el-table-column prop="sendDateTime" label="推送时间"/>
             <el-table-column prop="delayTipTimer" label="延时提醒任务"/>
             <el-table-column prop="status" label="状态"/>
             <el-table-column prop="createdAt" label="创建时间" />
@@ -65,6 +65,9 @@ const tableData = [
  * 3 停用
  */
 import Add from '@/components/info/Add.vue'
+import { ElMessage } from 'element-plus'
+import { inject } from "vue";
+
 export default {
   name: 'Info',
   components: {
@@ -92,8 +95,28 @@ export default {
     },
     addOrEditInfo(info){
         console.log(info)
+        if(info.startDateTime >= info.endDateTime){
+          ElMessage.error("问卷开始日期应该小于问卷结束日期")
+          return
+        }
+
+        if(info.sendDateTime > info.endDateTime && info.sendDateTime < info.endDateTime){
+          ElMessage.error("问卷推送时间应该大于问卷开始时间，并且小于问卷结束时间")
+        } 
+
+        this.http.put("info", info)
+            .then(()=>{
+              ElMessage({
+                type: "success",
+                message: "ok",
+              })
+              this.refresh()
+            })
     },
     preview(){
+
+    },
+    refresh(){
 
     },
     edit(info){
@@ -117,18 +140,14 @@ export default {
         this.isShowAddOrEditPanel = true
     },
     showResult(){
-        
+      this.$router.push({ name: 'InfoResult', params: {id: this.info.id}})   
     },
     editQuestions(){
-      this.$router.push(
-        {
-          name: 'Question',
-          params: {
-            id: "123"
-          }
-        }
-      )
+      this.$router.push({ name: 'Question', params: {id: this.info.id}})
     }
+  },
+  created(){
+    this.http = inject("$http")
   }
 }
 </script>

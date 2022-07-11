@@ -12,6 +12,7 @@
         <module>question-service</module>
         <module>common</module>
         <module>manager-service</module>
+        <module>db</module>
     </modules>
 
 
@@ -56,6 +57,13 @@
                 <version>8.0.29</version>
                 <scope>runtime</scope>
             </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>3.3.2</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>

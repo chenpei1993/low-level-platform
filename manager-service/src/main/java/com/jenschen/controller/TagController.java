@@ -1,7 +1,8 @@
 package com.jenschen.controller;
 
 import com.jenschen.base.Response;
-import com.jenschen.dto.TagDTO;
+import com.jenschen.request.TagDTO;
+import com.jenschen.request.TagPageReq;
 import com.jenschen.service.TagService;
 import com.jenschen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +36,23 @@ public class TagController {
     }
 
     /**
-     * 添加标签
-     * @param tag 标签
+     * 获取标签
+     * @param id 标签
      * @return 结果
      */
-    @GetMapping("/{tag}")
-    public Response<Object> get(@PathVariable String tag){
-        return ResultUtil.success();
+    @GetMapping("/{id}")
+    public Response<Object> get(@PathVariable int id){
+        return tagService.get(id);
+    }
+
+    /**
+     * 分页
+     * @param tagPageReq 分页以及需要过滤的数据
+     * @return 结果
+     */
+    @PostMapping("/page/")
+    public Response<Object> get(@RequestBody TagPageReq tagPageReq){
+        return tagService.page(tagPageReq);
     }
 
 

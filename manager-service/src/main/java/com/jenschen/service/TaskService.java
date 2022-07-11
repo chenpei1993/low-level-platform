@@ -1,16 +1,12 @@
 package com.jenschen.service;
 
 import com.jenschen.base.Response;
-import com.jenschen.dto.CustomDTO;
-import com.jenschen.dto.TaskDTO;
+import com.jenschen.request.InfoDTO;
+import com.jenschen.request.TaskDTO;
 
 public interface TaskService {
-    /**
-     * 插入任务
-     * @param taskDTO 任务
-     * @return 结果
-     */
-    Response<Object> insert(TaskDTO taskDTO);
+
+    void insertByInfo(InfoDTO infoDTO);
 
     /**
      * 更新任务

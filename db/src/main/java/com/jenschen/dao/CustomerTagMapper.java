@@ -1,10 +1,9 @@
 package com.jenschen.dao;
 
-import com.jenschen.entity.CustomerTag;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
 import java.util.List;
 
 public interface CustomerTagMapper {
-    int insert(CustomerTag record);
 
-    List<CustomerTag> selectAll();
 }

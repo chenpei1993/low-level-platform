@@ -1,7 +1,7 @@
 package com.jenschen.service;
 
 import com.jenschen.base.Response;
-import com.jenschen.dto.InfoDTO;
+import com.jenschen.request.InfoDTO;
 
 public interface InfoService {
     /**

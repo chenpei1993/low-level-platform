@@ -6,22 +6,25 @@
         :model="info"
         style="width: 100%"
     >
+        <el-form-item label="网页标题">
+            <el-input v-model="info.title" sytle="width:200px" />
+        </el-form-item>
         <el-form-item label="开始时间">
           <el-date-picker
             v-model="info.startDateTime"
             type="datetime"
-            placeholder="Select date and time"
+            placeholder="选择开始时间"
           />
         </el-form-item>
         <el-form-item label="结束时间">
           <el-date-picker
             v-model="info.endDateTime"
             type="datetime"
-            placeholder="Select date and time"
+            placeholder="选择开始时间"
           />
         </el-form-item>
         <el-form-item label="是否定时推送">
-            <el-select v-model="info.isFixedTimeSend">
+            <el-select v-model="info.isAutoSend">
               <el-option
                 v-for="item in isFixedTimeSendOptions"
                 :key="item.value"
@@ -30,15 +33,30 @@
               />
             </el-select>
         </el-form-item>
-        
-        <el-form-item label="定时推送时间" v-if="info.isFixedTimeSend">
+        <el-form-item label="重复收集类型">
+            <el-select v-model="info.repeatCollectType">
+              <el-option
+                v-for="item in repeatCollectTypeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+        </el-form-item>
+        <el-form-item label="每周几" v-if="info.repeatCollectType == 100">
+            <el-input v-model="info.repeatValue" sytle="width:200px" />
+        </el-form-item>
+        <el-form-item label="每月几号" v-if="info.repeatCollectType == 1000">
+            <el-input v-model="info.repeatValue" sytle="width:200px" />
+        </el-form-item>
+        <el-form-item label="定时推送时间" v-if="info.isAutoSend">
             <el-date-picker
               v-model="info.fixedSendDateTime"
               type="datetime"
-              placeholder="推送时间"
+              placeholder="选择推送时间"
             />
         </el-form-item>
-        <el-form-item label="推送方式" v-if="info.isFixedTimeSend">
+        <el-form-item label="推送方式" v-if="info.isAutoSend">
           <el-select v-model="info.sendType">
             <el-option
               v-for="item in sendTypeOptions"
@@ -48,7 +66,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="发送人群类型" v-if="info.isFixedTimeSend">
+        <el-form-item label="发送人群类型" v-if="info.isAutoSend">
           <el-select v-model="info.sendCustomerType">
             <el-option
               v-for="item in sendCustomerTypeOptions"
@@ -58,10 +76,10 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="标签" v-if="info.isFixedTimeSend && info.sendCustomerType == 1">
+        <el-form-item label="标签" v-if="info.isAutoSend && info.sendCustomerType == 1">
             <el-input v-model="info.sendCustomers" />
         </el-form-item>
-        <el-form-item label="自定义" v-if="info.isFixedTimeSend && info.sendCustomerType == 2">
+        <el-form-item label="自定义" v-if="info.isAutoSend && info.sendCustomerType == 2">
             <el-input v-model="info.sendCustomers" />
         </el-form-item>
         <el-form-item
@@ -99,7 +117,7 @@
           </div>        
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="addDelayTipTimer" v-if="info.isFixedTimeSend">添加定时提醒</el-button>
+            <el-button type="primary" @click="addDelayTipTimer">添加延时提醒</el-button>
             <el-button type="primary" @click="confirm">确认</el-button>
         </el-form-item>
     </el-form>
@@ -110,10 +128,10 @@
 
 export default {
   name: "info-add-edit",
-  emits: ["addOrEditinfo"],
+  emits: ["addOrEditInfo"],
   setup(_,{ emit }) {
     const addOrEditInfo = (info) => {
-      emit("addOrEditinfo", info)
+      emit("addOrEditInfo", info)
     }
     return {addOrEditInfo}
   },
@@ -138,6 +156,12 @@ export default {
       sendCustomerTypeOptions:[
         {label: "标签", value: 1},
         {label: "自定义", value: 2},
+      ],
+      repeatCollectTypeOptions:[
+        {label: "一次", value: 1},
+        {label: "每天", value: 10},
+        {label: "每周", value: 100},
+        {label: "每月", value: 1000},
       ]
     }
   },
@@ -157,7 +181,7 @@ export default {
   },
   methods:{
     confirm(){
-        this.addOrEditInfo(this.info)
+      this.addOrEditInfo(this.info)
     },
     delDelayTipTimer(idx){
 

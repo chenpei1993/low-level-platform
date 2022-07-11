@@ -1,8 +1,7 @@
 package com.jenschen.controller;
 
 import com.jenschen.base.Response;
-import com.jenschen.dto.InfoDTO;
-import com.jenschen.dto.TagDTO;
+import com.jenschen.request.InfoDTO;
 import com.jenschen.service.InfoService;
 import com.jenschen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("info")
+@CrossOrigin("*")
 public class InfoController {
 
     @Autowired

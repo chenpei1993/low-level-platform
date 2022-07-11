@@ -1,16 +1,8 @@
 package com.jenschen.dao;
 
-import com.jenschen.entity.Info;
-import java.util.List;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.jenschen.entity.InfoEntity;
 
-public interface InfoMapper {
-    int deleteByPrimaryKey(Integer id);
+public interface InfoMapper extends BaseMapper<InfoEntity> {
 
-    int insert(Info record);
-
-    Info selectByPrimaryKey(Integer id);
-
-    List<Info> selectAll();
-
-    int updateByPrimaryKey(Info record);
 }

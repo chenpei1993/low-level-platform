@@ -1,19 +1,10 @@
 package com.jenschen.dao;
 
-import com.jenschen.entity.Customer;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.jenschen.entity.CustomerEntity;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
-
 @Mapper
-public interface CustomerMapper {
-    int deleteByPrimaryKey(Integer id);
+public interface CustomerMapper extends BaseMapper<CustomerEntity> {
 
-    int insert(Customer record);
-
-    Customer selectByPrimaryKey(Integer id);
-
-    List<Customer> selectAll();
-
-    int updateByPrimaryKey(Customer record);
 }

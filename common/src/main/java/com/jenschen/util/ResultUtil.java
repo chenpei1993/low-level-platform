@@ -1,6 +1,7 @@
 package com.jenschen.util;
 
 import com.jenschen.base.Response;
+import com.jenschen.enumeration.ErrorEnum;
 
 import java.util.List;
 
@@ -14,7 +15,11 @@ public class ResultUtil {
         return successObj;
     }
 
-    public static <T> Response<T> success(List<T> data){
+    public static <T> Response<T> success(T data){
         return new Response<T>(data);
+    }
+
+    public static <T> Response<T> error(ErrorEnum errorEnum){
+        return new Response<T>(errorEnum);
     }
 }

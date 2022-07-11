@@ -25,6 +25,7 @@ http.interceptors.response.use((res) => {
             message: data.msg,
             showClose: true
         });
+        return Promise.reject(data);
     }
 }, (error) => {
     ElMessage({

@@ -9,7 +9,7 @@
         <el-button link type="primary" size="small" @click="add">添加</el-button>
     </div>
     <div>
-        <el-table :data="tags" stripe style="width: 100%">
+        <el-table :data="tags" stripe style="width: 100%" v-loading="loading">
             <el-table-column prop="name" label="标签名"/>
             <el-table-column prop="group" label="标签组" width="150" />
             <el-table-column prop="color" label="颜色" width="150"/>
@@ -22,6 +22,18 @@
                 </template>
             </el-table-column>
         </el-table>
+        <div class="pagination">
+          <el-pagination
+            v-model:currentPage="currentPage"
+            v-model:page-size="pageSize"
+            :page-sizes="[20, 50, 100, 200, 300, 400]"
+            :small="small"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
+        </div>  
     </div>
     <el-drawer
           v-model="isShowAddOrEditPanel"
@@ -52,6 +64,10 @@ export default {
   },
   data(){
     return {
+      loading: false,
+      currentPage: 1,
+      pageSize: 50,
+      total: 0,
       addOrEdit: "未知",
       isShowAddOrEditPanel: false,
       tag: {},
@@ -105,10 +121,29 @@ export default {
     add(){
       this.addOrEdit = "添加"
       this.isShowAddOrEditPanel = true
+    },
+    handleSizeChange(size){
+      this.pageSize = size
+      this.refresh()
+    },
+    handleCurrentChange(page){
+      this.currentPage = page
+    },
+    refresh(){
+      this.loading = true
+      this.http.get("/tag/page", {currentPage: this.currentPage, pageSize: this.pageSize})
+        .then((data) => {
+          this.loading = false
+          this.tags = data.tags
+          this.total = data.total
+        }).catch(()=>{
+          this.loading = false
+        })
     }
   },
   created(){
     this.http = inject("$http")
+    this.refresh()
     this.tags = [
       {
         name: "组1",

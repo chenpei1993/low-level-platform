@@ -6,8 +6,14 @@ import lombok.Data;
 @Data
 public class TagEntity extends BaseEntity {
 
+    /**
+     * 标签名
+     */
     private String name;
-    private String group;
+
+    /**
+     * 颜色
+     */
     private String color;
 
 }

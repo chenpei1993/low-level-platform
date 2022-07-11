@@ -1,16 +1,8 @@
 package com.jenschen.dao;
 
-import com.jenschen.entity.Task;
-import java.util.List;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.jenschen.entity.TaskEntity;
 
-public interface TaskMapper {
-    int deleteByPrimaryKey(Integer id);
+public interface TaskMapper extends BaseMapper<TaskEntity> {
 
-    int insert(Task record);
-
-    Task selectByPrimaryKey(Integer id);
-
-    List<Task> selectAll();
-
-    int updateByPrimaryKey(Task record);
 }

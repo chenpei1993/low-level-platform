@@ -1,19 +1,24 @@
 create table info
 (
+private String name;
+
     id            int auto_increment,
+    type           int               null,
     name          varchar(50)       not null,
-    associationId int               not null,
     title         varchar(50)       null,
-    pageTitle     varchar(50)       null,
-    beginDateTime datetime          null,
-    endDateTime   datetime          null,
-    isDeleted     tinyint default 0 not null,
-    deletedAt     datetime          null,
-    deletedBy     int               null,
-    createdAt     datetime          not null,
-    createdBy     int               null,
-    updatedAt     datetime          null,
-    updatedBy     int               null,
+    begin_dateTime datetime          null,
+    end_dateTime   datetime          null,
+    is_auto_send    tinyint   default 0       not null,
+    repeat_collect_type int default 1 not null
+    other     varchar(2000)       null,
+    is_deleted     tinyint default 0 not null,
+    deleted_at     datetime          null,
+    deleted_by     int               null,
+    created_at     datetime          not null,
+    created_by     int               null,
+    updated_at     datetime          null,
+    updated_by     int               null,
     constraint info_pk
         primary key (id)
 );
+

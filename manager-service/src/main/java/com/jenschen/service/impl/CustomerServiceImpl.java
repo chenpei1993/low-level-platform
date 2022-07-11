@@ -2,7 +2,7 @@ package com.jenschen.service.impl;
 
 import com.jenschen.base.Response;
 import com.jenschen.dao.CustomerMapper;
-import com.jenschen.dto.CustomDTO;
+import com.jenschen.request.CustomDTO;
 import com.jenschen.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

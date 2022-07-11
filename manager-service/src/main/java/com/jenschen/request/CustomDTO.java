@@ -1,4 +1,4 @@
-package com.jenschen.dto;
+package com.jenschen.request;
 
 import lombok.Data;
 

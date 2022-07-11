@@ -1,8 +1,8 @@
 package com.jenschen.controller;
 
 import com.jenschen.base.Response;
-import com.jenschen.dto.CustomDTO;
-import com.jenschen.entity.CustomEntity;
+import com.jenschen.request.CustomDTO;
+import com.jenschen.entity.CustomerEntity;
 import com.jenschen.util.ResultUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -18,19 +18,19 @@ public class CustomerController {
 
     @PutMapping
     public Response<Object> add(CustomDTO customDTO) {
-        CustomEntity customEntity = new CustomEntity();
+        CustomerEntity customEntity = new CustomerEntity();
         BeanUtils.copyProperties(customDTO, customEntity);
         Date now = new Date();
-        customEntity.created(now, 1L);
+        customEntity.created(now, 1);
         return ResultUtil.success();
     }
 
     @PostMapping
     public Response<Object> edit(CustomDTO customDTO) {
-        CustomEntity customEntity = new CustomEntity();
+        CustomerEntity customEntity = new CustomerEntity();
         BeanUtils.copyProperties(customDTO, customEntity);
         Date now = new Date();
-        customEntity.created(now, 1L);
+        customEntity.created(now, 1);
         return ResultUtil.success();
     }
 
