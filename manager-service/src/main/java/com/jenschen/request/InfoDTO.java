@@ -4,6 +4,7 @@ import com.jenschen.enumeration.RepeatCollectTypeEnum;
 import com.jenschen.enumeration.SendTypeEnum;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -14,9 +15,9 @@ public class InfoDTO {
     private RepeatCollectTypeEnum repeatCollectType;
     private boolean isAutoSend;
     private String title;
-    private Date startDateTime;
-    private Date endDateTime;
-    private Date sendDate;
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
+    private LocalDateTime sendDate;
     private SendTypeEnum sendType;
     private String sendMessage;
     private List<TaskDTO> delayTipTimers;

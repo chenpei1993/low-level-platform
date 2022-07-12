@@ -5,6 +5,7 @@ import com.jenschen.enumeration.TaskTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -27,7 +28,7 @@ public class TaskEntity extends BaseEntity{
     /**
      * 执行时间
      */
-    private Date executionDatetime;
+    private LocalDateTime executionDatetime;
 
     /**
      * 执行状态
