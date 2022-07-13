@@ -1,7 +1,7 @@
 package com.jenschen.controller;
 
 import com.jenschen.base.Response;
-import com.jenschen.request.InfoDTO;
+import com.jenschen.request.InfoReq;
 import com.jenschen.service.InfoService;
 import com.jenschen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +20,12 @@ public class InfoController {
 
     /**
      * 添加消息
-     * @param infoDTO 消息
+     * @param infoReq 消息
      * @return 结果
      */
     @PutMapping
-    public Response<Object> add(@RequestBody InfoDTO infoDTO){
-        return infoService.insert(infoDTO);
+    public Response<Object> add(@RequestBody InfoReq infoReq){
+        return infoService.insert(infoReq);
     }
 
     /**

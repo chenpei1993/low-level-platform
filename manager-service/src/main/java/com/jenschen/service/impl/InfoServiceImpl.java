@@ -1,17 +1,22 @@
 package com.jenschen.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import com.jenschen.base.Response;
 import com.jenschen.dao.InfoMapper;
-import com.jenschen.request.InfoDTO;
+import com.jenschen.enumeration.InfoTypeEnum;
+import com.jenschen.request.InfoReq;
 import com.jenschen.entity.InfoEntity;
 import com.jenschen.service.InfoService;
 import com.jenschen.service.TaskService;
+import com.jenschen.util.ResultUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.Collections;
 
 @Service
 public class InfoServiceImpl implements InfoService {
@@ -23,23 +28,31 @@ public class InfoServiceImpl implements InfoService {
     private TaskService taskService;
 
     @Override
-    public Response<Object> insert(InfoDTO infoDTO) {
-        InfoEntity infoEntity = new InfoEntity();
-        BeanUtils.copyProperties(infoDTO, infoEntity);
-        infoEntity.created(LocalDateTime.now(), 1);
-
+    @Transactional(rollbackFor = Exception.class)
+    public Response<Object> insert(InfoReq infoReq) {
+        // 信息本体
+        InfoEntity infoEntity = BeanUtil.copyProperties(infoReq, InfoEntity.class);
+        //先默认问卷
+        infoEntity.setType(InfoTypeEnum.QUESTION.getValue());
         //生成URL
 
+        infoEntity.created(LocalDateTime.now(), 1);
         infoMapper.insert(infoEntity);
+
         //如果设置定时发送
-        if(infoDTO.isAutoSend()){
-            taskService.insertByInfo(infoDTO);
+        if(infoReq.isAutoSend()){
+            taskService.insertSendTask(infoReq);
         }
-        return null;
+        //如果延时器不为空
+        if(CollUtil.isNotEmpty(infoReq.getDelayTipTimers())){
+            taskService.insertTipTask(infoReq);
+        }
+
+        return ResultUtil.success();
     }
 
     @Override
-    public Response<Object> updated(InfoDTO infoDTO) {
+    public Response<Object> updated(InfoReq infoDTO) {
         InfoEntity infoEntity = new InfoEntity();
         BeanUtils.copyProperties(infoDTO, infoEntity);
         infoEntity.updated(LocalDateTime.now(), 1);

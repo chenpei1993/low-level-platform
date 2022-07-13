@@ -1,5 +1,8 @@
 package com.jenschen.enumeration;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.jenschen.util.EnumUtil;
+
 public enum SendTypeEnum implements BaseEnum{
 
     WECHAT(1, "微信"),
@@ -21,5 +24,10 @@ public enum SendTypeEnum implements BaseEnum{
 
     public String getRemark() {
         return remark;
+    }
+
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public static SendTypeEnum getByValue(int value){
+        return EnumUtil.valueOf(SendTypeEnum.class, value);
     }
 }

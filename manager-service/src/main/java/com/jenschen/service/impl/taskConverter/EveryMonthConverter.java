@@ -28,9 +28,6 @@ public class EveryMonthConverter implements TaskConverter{
         }
 
         return tasks;
-
-
-
     }
 
     private TaskEntity build(LocalDateTime date, TaskTypeEnum taskTypeEnum, SendTypeEnum sendType){

@@ -2,10 +2,13 @@
   <div>
     <el-form
         label-position="right"
-        label-width="100px"
+        label-width="150px"
         :model="info"
         style="width: 100%"
     >
+        <el-form-item label="问卷名">
+          <el-input v-model="info.name" sytle="width:200px" />
+        </el-form-item>
         <el-form-item label="网页标题">
             <el-input v-model="info.title" sytle="width:200px" />
         </el-form-item>
@@ -33,27 +36,31 @@
               />
             </el-select>
         </el-form-item>
+      <el-form-item label="推送的文本模板" v-if="info.isAutoSend">
+        <el-input v-model="info.sendMessage" sytle="width:200px" />
+      </el-form-item>
         <el-form-item label="重复收集类型">
             <el-select v-model="info.repeatCollectType">
               <el-option
-                v-for="item in repeatCollectTypeOptions"
+                v-for="item in repeatCollectionTypeOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
               />
             </el-select>
         </el-form-item>
-        <el-form-item label="每周几" v-if="info.repeatCollectType == 100">
+        <el-form-item label="每周几" v-if="info.repeatCollectType === 100">
             <el-input v-model="info.repeatValue" sytle="width:200px" />
         </el-form-item>
-        <el-form-item label="每月几号" v-if="info.repeatCollectType == 1000">
+        <el-form-item label="每月几号" v-if="info.repeatCollectType === 1000">
             <el-input v-model="info.repeatValue" sytle="width:200px" />
         </el-form-item>
-        <el-form-item label="定时推送时间" v-if="info.isAutoSend">
+
+        <el-form-item label="定时推送时间" v-if="info.isAutoSend" >
             <el-date-picker
               v-model="info.fixedSendDateTime"
               type="datetime"
-              placeholder="选择推送时间"
+              placeholder="选择推送日期时间"
             />
         </el-form-item>
         <el-form-item label="推送方式" v-if="info.isAutoSend">
@@ -109,7 +116,8 @@
                     :value="item.value"
                   />
                 </el-select>
-                
+                <span>提醒文本模板</span>
+                <el-input v-model="delayTipTimer.message" />
             </div>
             <div>
               <el-button class="mt-2" @click="delDelayTipTimer(index)" type="danger" size="small" style="margin-left:3px;">删除</el-button>
@@ -125,6 +133,7 @@
 </template> 
 
 <script>
+import ArrayUtil from '@/util/ArrayUtil'
 
 export default {
   name: "info-add-edit",
@@ -154,10 +163,10 @@ export default {
         {label: "邮箱", value: 3},
       ],
       sendCustomerTypeOptions:[
-        {label: "标签", value: 1},
-        {label: "自定义", value: 2},
+        {label: "自定义", value: 1},
+        {label: "标签", value: 2},
       ],
-      repeatCollectTypeOptions:[
+      repeatCollectionTypeOptions:[
         {label: "一次", value: 1},
         {label: "每天", value: 10},
         {label: "每周", value: 100},
@@ -171,10 +180,11 @@ export default {
       type: Object,
       default () {
         return {
-            name: "",
-            phone: "",
-            email: "",
-            isFixedTimeSend: true
+            isAutoSend: false,
+            repeatCollectType: -1,
+            repeatValue: "",
+            isFixedTimeSend: true,
+            fixedSendDateTime: ""
         }
       }
     }
@@ -184,7 +194,7 @@ export default {
       this.addOrEditInfo(this.info)
     },
     delDelayTipTimer(idx){
-
+      this.info.delayTipTimers = ArrayUtil.delItem(this.info.delayTipTimers, idx)
     },
     addDelayTipTimer(){
       if(this.info.delayTipTimers == null){

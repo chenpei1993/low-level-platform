@@ -1,36 +1,28 @@
-package com.jenschen.entity;
+package com.jenschen.request;
 
-import com.jenschen.enumeration.InfoTypeEnum;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.jenschen.enumeration.RepeatCollectTypeEnum;
 import com.jenschen.enumeration.SendCustomerTypeEnum;
 import com.jenschen.enumeration.SendTypeEnum;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * 活动信息
- */
-
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class InfoEntity extends BaseEntity{
+public class InfoReq {
     /**
-     * 名称
+     * 活动名
      */
     private String name;
 
     /**
-     * 类型
-     * 参考 InfoTypeEnum
+     * 活动类型
      */
     private int type;
 
     /**
-     * 活动重复类型
-     * RepeatCollectTypeEnum
+     * 重复收集类型
      */
     private RepeatCollectTypeEnum repeatCollectType;
 
@@ -40,40 +32,35 @@ public class InfoEntity extends BaseEntity{
     private String repeatValue;
 
     /**
-     * 是否开启定时发送功能
+     * 定时发送
      */
     private boolean isAutoSend;
-
     /**
-     * 页面标题
+     * 网页标题
      */
     private String title;
-
     /**
      * 活动开始时间
      */
-    private Date startDateTime;
-
+    private LocalDateTime startDateTime;
     /**
      * 活动结束时间
      */
-    private Date endDateTime;
-
+    private LocalDateTime endDateTime;
     /**
-     * 定时发送时间，如果repeatCollectType 是每天，每周，每月，则只取时间
-     */
-    private Date sendDateTime;
-
-    /**
-     * 定时任务发送方式
+     * 发送的方式
      */
     private SendTypeEnum sendType;
 
     /**
-     * 发送的文本模板
+     * 发送的时间
+     */
+    private LocalDateTime sendDateTime;
+
+    /**
+     * 发送的消息模板
      */
     private String sendMessage;
-
     /**
      * 发送的客户类型
      */
@@ -85,12 +72,12 @@ public class InfoEntity extends BaseEntity{
     private String sendCustomers;
 
     /**
-     * 生成的url后缀
+     * 延时提醒任务
      */
-    private String url;
+    private List<TaskReq> delayTipTimers;
 
     /**
-     * 其他
+     * 其他，备用
      */
     private String other;
 }

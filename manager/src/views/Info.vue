@@ -85,14 +85,6 @@ export default {
     closeAddOrEditPanel(){
       this.isShowAddOrEditPanel = false
     },
-    addOrEditCustom(custom){
-      if(custom.id == null){
-        //TODO fetch
-        this.customs.push(custom)
-      }
-      this.custom = {}
-      this.isShowAddOrEditPanel = false
-    },
     addOrEditInfo(info){
         console.log(info)
         if(info.startDateTime >= info.endDateTime){
