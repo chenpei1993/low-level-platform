@@ -3,6 +3,7 @@ package com.jenschen.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
+import com.jenschen.dao.CustomerTagMapper;
 import com.jenschen.dao.TagMapper;
 import com.jenschen.request.Page;
 import com.jenschen.request.TagReq;
@@ -10,11 +11,13 @@ import com.jenschen.entity.TagEntity;
 import com.jenschen.response.PageResp;
 import com.jenschen.response.TagResp;
 import com.jenschen.service.AbstractService;
+import com.jenschen.service.CustomerTagService;
 import com.jenschen.service.TagService;
 import com.jenschen.util.ResultUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,12 +27,12 @@ import java.util.List;
 @Service
 public class TagServiceImpl extends AbstractService<TagEntity> implements TagService {
 
-    private final TagMapper tagMapper;
+    @Autowired
+    private TagMapper tagMapper;
 
     @Autowired
-    public TagServiceImpl(TagMapper tagMapper){
-        this.tagMapper = tagMapper;
-    }
+    private CustomerTagService customerTagService;
+
 
     @Override
     public Response<Object> page(Page page) {
@@ -41,8 +44,8 @@ public class TagServiceImpl extends AbstractService<TagEntity> implements TagSer
     }
 
     @Override
-    public Response<Object> insert(TagReq tagDTO) {
-        TagEntity tag = BeanUtil.copyProperties(tagDTO, TagEntity.class);
+    public Response<Object> insert(TagReq tagReq) {
+        TagEntity tag = BeanUtil.copyProperties(tagReq, TagEntity.class);
         tag.created(LocalDateTime.now(),1);
         tagMapper.insert(tag);
         return ResultUtil.success();
@@ -56,19 +59,21 @@ public class TagServiceImpl extends AbstractService<TagEntity> implements TagSer
     }
 
     @Override
-    public Response<Object> updated(TagReq tagDTO) {
-        TagEntity tag = BeanUtil.copyProperties(tagDTO, TagEntity.class);
+    public Response<Object> updated(TagReq tagReq) {
+        TagEntity tag = BeanUtil.copyProperties(tagReq, TagEntity.class);
         tag.updated(LocalDateTime.now(), 1);
         tagMapper.updateById(tag);
         return ResultUtil.success();
     }
 
     @Override
-    public Response<Object> deleted(TagReq tagDTO) {
-        TagEntity tag = BeanUtil.copyProperties(tagDTO, TagEntity.class);
+    @Transactional(rollbackFor = Exception.class)
+    public Response<Object> deleted(TagReq tagReq) {
+        TagEntity tag = BeanUtil.copyProperties(tagReq, TagEntity.class);
         tag.deleted(LocalDateTime.now(), 1);
         tagMapper.updateById(tag);
-        //TODO 删除客户的标签
+        //删除客户的标签
+        customerTagService.deletedByTagId(tagReq.getId());
         return ResultUtil.success();
     }
 }
