@@ -1,20 +1,12 @@
 package com.jenschen.controller;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.jenschen.base.Response;
-import com.jenschen.dao.CustomerMapper;
-import com.jenschen.request.CustomReq;
-import com.jenschen.entity.CustomerEntity;
+import com.jenschen.request.CustomerReq;
 import com.jenschen.request.CustomerPageReq;
-import com.jenschen.request.TagPageReq;
 import com.jenschen.service.CustomerService;
 import com.jenschen.util.ResultUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * 用户控制器
@@ -27,13 +19,13 @@ public class CustomerController {
     private CustomerService customerService;
 
     @PutMapping
-    public Response<Object> add(CustomReq customDTO) {
+    public Response<Object> add(CustomerReq customDTO) {
         return customerService.insert(customDTO);
     }
 
     @PostMapping
-    public Response<Object> edit(CustomReq customReq) {
-        return customerService.updated(customReq);
+    public Response<Object> edit(CustomerReq customerReq) {
+        return customerService.updated(customerReq);
     }
 
     /**

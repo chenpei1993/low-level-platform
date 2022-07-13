@@ -1,23 +1,23 @@
 package com.jenschen.service;
 
 import com.jenschen.base.Response;
-import com.jenschen.request.CustomReq;
+import com.jenschen.request.CustomerReq;
 import com.jenschen.request.Page;
 
 public interface CustomerService {
     /**
      * 插入客户
-     * @param customReq 客户
+     * @param customerReq 客户
      * @return 结果
      */
-    Response<Object> insert(CustomReq customReq);
+    Response<Object> insert(CustomerReq customerReq);
 
     /**
      * 更新客户
-     * @param customReq 客户
+     * @param customerReq 客户
      * @return 结果
      */
-    Response<Object> updated(CustomReq customReq);
+    Response<Object> updated(CustomerReq customerReq);
 
     /**
      * 逻辑删除客户

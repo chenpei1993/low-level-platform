@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
 import com.jenschen.dao.CustomerMapper;
 import com.jenschen.entity.CustomerEntity;
-import com.jenschen.request.CustomReq;
+import com.jenschen.request.CustomerReq;
 import com.jenschen.request.Page;
 import com.jenschen.response.CustomerResp;
 import com.jenschen.response.PageResp;
@@ -25,16 +25,16 @@ public class CustomerServiceImpl extends AbstractService<CustomerEntity> impleme
     private CustomerMapper customerMapper;
 
     @Override
-    public Response<Object> insert(CustomReq customReq) {
-        CustomerEntity customerEntity = BeanUtil.copyProperties(customReq, CustomerEntity.class);
+    public Response<Object> insert(CustomerReq customerReq) {
+        CustomerEntity customerEntity = BeanUtil.copyProperties(customerReq, CustomerEntity.class);
         customerEntity.created(LocalDateTime.now(), 1);
         customerMapper.insert(customerEntity);
         return ResultUtil.success();
     }
 
     @Override
-    public Response<Object> updated(CustomReq customReq) {
-        CustomerEntity customerEntity = BeanUtil.copyProperties(customReq, CustomerEntity.class);
+    public Response<Object> updated(CustomerReq customerReq) {
+        CustomerEntity customerEntity = BeanUtil.copyProperties(customerReq, CustomerEntity.class);
         customerEntity.updated(LocalDateTime.now(), 1);
         customerMapper.updateById(customerEntity);
         return ResultUtil.success();
