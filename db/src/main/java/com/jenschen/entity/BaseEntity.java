@@ -3,6 +3,7 @@ package com.jenschen.entity;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -24,7 +25,7 @@ public class BaseEntity {
     /**
      * 删除时间
      */
-    private Date deletedAt;
+    private LocalDateTime deletedAt;
 
     /**
      * 删除人
@@ -34,7 +35,7 @@ public class BaseEntity {
     /**
      * 创建时间
      */
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     /**
      * 创建人
@@ -44,7 +45,7 @@ public class BaseEntity {
     /**
      * 更新时间
      */
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
     /**
      * 更信任
@@ -52,22 +53,22 @@ public class BaseEntity {
     private int updatedBy;
 
 
-    public void deleted(Date now, int user){
+    public void deleted(LocalDateTime now, int user){
         setIsDeleted(true);
         setDeletedAt(now);
         setDeletedBy(user);
         updated(now, createdBy);
     }
 
-    public void created(Date now, int user){
+    public void created(LocalDateTime now, int user){
         setCreatedAt(now);
         setCreatedBy(user);
         updated(now, createdBy);
     }
 
-    public void updated(Date now, int user){
-        setCreatedAt(now);
-        setCreatedBy(user);
+    public void updated(LocalDateTime now, int user){
+        setUpdatedAt(now);
+        setUpdatedBy(user);
     }
 
 }

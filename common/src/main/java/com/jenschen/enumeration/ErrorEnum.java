@@ -1,7 +1,9 @@
 package com.jenschen.enumeration;
 
 public enum ErrorEnum {
-    INFO_ERROR_REPEATCOLLECTTYPE(10001, "错误的重复类型");
+    INFO_ERROR_REPEATCOLLECTTYPE(10001, "错误的重复类型"),
+    INVALID_PARAMS(20001, "错误的重复类型");
+
 
     private int code;
     private String message;

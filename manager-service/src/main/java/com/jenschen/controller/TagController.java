@@ -4,7 +4,6 @@ import com.jenschen.base.Response;
 import com.jenschen.request.TagReq;
 import com.jenschen.request.TagPageReq;
 import com.jenschen.service.TagService;
-import com.jenschen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,14 +25,19 @@ public class TagController {
         return tagService.insert(tagReq);
     }
 
+    @PostMapping
+    public Response<Object> edit(@RequestBody @Validated TagReq tagReq){
+        return tagService.updated(tagReq);
+    }
+
     /**
      * 删除标签
-     * @param id ID
+     * @param tagReq 删除请求实例
      * @return 结果
      */
-    @DeleteMapping("/{id}")
-    public Response<Object> del(@PathVariable Integer id){
-        return ResultUtil.success();
+    @DeleteMapping
+    public Response<Object> del(@RequestBody TagReq tagReq){
+        return tagService.deleted(tagReq);
     }
 
     /**
@@ -51,8 +55,9 @@ public class TagController {
      * @param tagPageReq 分页以及需要过滤的数据
      * @return 结果
      */
-    @PostMapping("/page/")
-    public Response<Object> get(@RequestBody TagPageReq tagPageReq){
+    @PostMapping(value = "/page")
+    @ResponseBody
+    public Response<Object> page(@RequestBody TagPageReq tagPageReq){
         return tagService.page(tagPageReq);
     }
 

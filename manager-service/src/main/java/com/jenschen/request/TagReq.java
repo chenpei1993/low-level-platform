@@ -8,6 +8,10 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class TagReq {
     /**
+     * 唯一ID
+     */
+    private Integer id;
+    /**
      * 标签名
      */
     @NotBlank(message = "标签名不能为空")

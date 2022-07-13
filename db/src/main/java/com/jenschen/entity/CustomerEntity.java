@@ -1,8 +1,12 @@
 package com.jenschen.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@TableName("customer")
+@EqualsAndHashCode(callSuper = true)
 public class CustomerEntity extends BaseEntity{
 
     /**

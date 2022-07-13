@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ResultUtil {
 
-    private ResultUtil(){};
+    private ResultUtil(){}
 
     private static Response<Object> successObj = new Response<>();
 
@@ -21,5 +21,9 @@ public class ResultUtil {
 
     public static <T> Response<T> error(ErrorEnum errorEnum){
         return new Response<T>(errorEnum);
+    }
+
+    public static <T> Response<T> error(ErrorEnum errorEnum, String message){
+        return new Response<T>(errorEnum, message);
     }
 }

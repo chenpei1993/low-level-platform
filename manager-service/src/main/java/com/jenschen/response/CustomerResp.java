@@ -1,14 +1,16 @@
-package com.jenschen.entity;
+package com.jenschen.response;
 
-
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@TableName("tag")
 @EqualsAndHashCode(callSuper = true)
-public class TagEntity extends BaseEntity {
+public class CustomerResp extends BaseResponse {
+
+    /**
+     * 唯一键
+     */
+    private Integer id;
 
     /**
      * 标签名

@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Service
@@ -25,7 +26,7 @@ public class InfoServiceImpl implements InfoService {
     public Response<Object> insert(InfoDTO infoDTO) {
         InfoEntity infoEntity = new InfoEntity();
         BeanUtils.copyProperties(infoDTO, infoEntity);
-        infoEntity.created(new Date(), 1);
+        infoEntity.created(LocalDateTime.now(), 1);
 
         //生成URL
 
@@ -41,7 +42,7 @@ public class InfoServiceImpl implements InfoService {
     public Response<Object> updated(InfoDTO infoDTO) {
         InfoEntity infoEntity = new InfoEntity();
         BeanUtils.copyProperties(infoDTO, infoEntity);
-        infoEntity.updated(new Date(), 1);
+        infoEntity.updated(LocalDateTime.now(), 1);
         infoMapper.updateById(infoEntity);
         return null;
     }
@@ -50,7 +51,7 @@ public class InfoServiceImpl implements InfoService {
     public Response<Object> deleted(int id) {
         InfoEntity infoEntity = new InfoEntity();
         infoEntity.setId(id);
-        infoEntity.deleted(new Date(), 1);
+        infoEntity.deleted(LocalDateTime.now(), 1);
         infoMapper.updateById(infoEntity);
         return null;
     }

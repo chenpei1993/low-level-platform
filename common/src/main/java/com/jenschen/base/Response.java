@@ -2,9 +2,10 @@ package com.jenschen.base;
 
 
 import com.jenschen.enumeration.ErrorEnum;
+import lombok.Data;
 
-import java.util.List;
 
+@Data
 public class Response<T> {
     private Integer code;
     private String msg;
@@ -20,6 +21,10 @@ public class Response<T> {
 
     public Response(ErrorEnum errorEnum) {
         this(errorEnum.getCode(), errorEnum.getMessage(), null);
+    }
+
+    public Response(ErrorEnum errorEnum, String message) {
+        this(errorEnum.getCode(), message, null);
     }
 
     public Response(Integer code, String msg, T data) {

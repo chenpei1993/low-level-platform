@@ -9,9 +9,6 @@
         <el-form-item label="名称">
             <el-input v-model="tag.name" />
         </el-form-item>
-        <el-form-item label="组">
-            <el-input v-model="tag.group" />
-        </el-form-item>
         <el-form-item label="颜色">
             <el-color-picker v-model="tag.color" />
         </el-form-item>

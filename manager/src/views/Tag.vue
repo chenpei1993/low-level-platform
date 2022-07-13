@@ -11,14 +11,13 @@
     <div>
         <el-table :data="tags" stripe style="width: 100%" v-loading="loading">
             <el-table-column prop="name" label="标签名"/>
-            <el-table-column prop="group" label="标签组" width="150" />
-            <el-table-column prop="color" label="颜色" width="150"/>
+            <el-table-column prop="color" label="颜色"/>
             <el-table-column prop="createdAt" label="创建时间" />
             <el-table-column prop="updatedAt" label="更新时间" />
             <el-table-column fixed="right" label="操作" width="120">
-                <template #default>
-                    <el-button link type="primary" size="small" @click="edit">编辑</el-button>
-                    <el-button link type="primary" size="small" @click="del">删除</el-button>
+                <template #default="scope">
+                    <el-button link type="primary" size="small" @click="edit(scope.row)">编辑</el-button>
+                    <el-button link type="primary" size="small" @click="del(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -82,23 +81,28 @@ export default {
       if(tag.id == null){
         this.http.put("tag", tag)
             .then(()=>{
-              ElMessage({
-                type: "success",
-                message: "ok",
-              })
-              this.tags.push(tag)
+              ElMessage.success("操作成功")
+              this.refresh()
+            })
+      }else{
+        this.http.post("tag", tag)
+            .then(()=>{
+              ElMessage.success("操作成功")
+              this.refresh()
             })
       }
       this.tag = {}
       this.isShowAddOrEditPanel = false
     },
-    edit(){
+    edit(row){
       this.addOrEdit = "修改"
+      this.tag = row
+      console.log(this.tag)
       this.isShowAddOrEditPanel = true
     },
-    del(){
+    del(row){
         ElMessageBox.confirm(
-            '是否删除标签',
+            '是否删除标签，会将客户的标签也一并删除',
             'Warning',
         { 
             confirmButtonText: '确定',
@@ -106,16 +110,15 @@ export default {
             type: 'warning',
         })
         .then(() => {
-            ElMessage({
-                type: 'success',
-                message: '成功删除',
-            })
+            this.http.delete("tag", row)
+              .then(()=>{
+                ElMessage.success("操作成功")
+                this.refresh()
+              })
         })
-        .catch(() => {
-            ElMessage({
-                type: 'info',
-                message: '取消删除',
-            })
+        .catch((e) => {
+            console.log(e)
+            ElMessage.info('取消删除')
         })
     },
     add(){
@@ -131,11 +134,12 @@ export default {
     },
     refresh(){
       this.loading = true
-      this.http.get("/tag/page", {currentPage: this.currentPage, pageSize: this.pageSize})
-        .then((data) => {
+      this.http.post("/tag/page", {currentPage: this.currentPage, pageSize: this.pageSize})
+        .then((res) => {
+          ElMessage.success("更新成功")
           this.loading = false
-          this.tags = data.tags
-          this.total = data.total
+          this.tags = res.data
+          this.total = res.total
         }).catch(()=>{
           this.loading = false
         })

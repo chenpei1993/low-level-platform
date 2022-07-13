@@ -14,29 +14,29 @@ public interface TagService {
 
     /**
      * 插入标签
-     * @param tagDTO 标签
+     * @param tagReq 标签
      * @return 结果
      */
-    Response<Object> insert(TagReq tagDTO);
+    Response<Object> insert(TagReq tagReq);
 
     /**
      * 获取标签
-     * @param tagDTO 标签
+     * @param id 标签
      * @return 结果
      */
-    Response<Object> get(int tagDTO);
+    Response<Object> get(int id);
 
     /**
      * 更新标签
-     * @param tagDTO 标签
+     * @param tagReq 标签
      * @return 结果
      */
-    Response<Object> updated(TagReq tagDTO);
+    Response<Object> updated(TagReq tagReq);
 
     /**
      * 逻辑删除标签
-     * @param id 标签id
+     * @param tagReq 标签
      * @return 结果
      */
-    Response<Object> deleted(int id);
+    Response<Object> deleted(TagReq tagReq);
 }
