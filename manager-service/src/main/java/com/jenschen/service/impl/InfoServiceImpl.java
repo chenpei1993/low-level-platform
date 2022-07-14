@@ -2,8 +2,10 @@ package com.jenschen.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.RandomUtil;
 import com.jenschen.base.Response;
-import com.jenschen.dao.InfoMapper;
+import com.jenschen.enumeration.InfoStatusEnum;
+import com.jenschen.mapper.InfoMapper;
 import com.jenschen.enumeration.InfoTypeEnum;
 import com.jenschen.request.InfoReq;
 import com.jenschen.entity.InfoEntity;
@@ -16,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 
 @Service
 public class InfoServiceImpl implements InfoService {
@@ -32,10 +33,10 @@ public class InfoServiceImpl implements InfoService {
     public Response<Object> insert(InfoReq infoReq) {
         // 信息本体
         InfoEntity infoEntity = BeanUtil.copyProperties(infoReq, InfoEntity.class);
-        //先默认问卷
-        infoEntity.setType(InfoTypeEnum.QUESTION.getValue());
-        //生成URL
-
+        //限制默认参数
+        infoEntity.setType(InfoTypeEnum.QUESTION);
+        infoEntity.setUrl(RandomUtil.randomString(5));
+        infoEntity.setStatus(InfoStatusEnum.EDIT);
         infoEntity.created(LocalDateTime.now(), 1);
         infoMapper.insert(infoEntity);
 
@@ -43,6 +44,7 @@ public class InfoServiceImpl implements InfoService {
         if(infoReq.isAutoSend()){
             taskService.insertSendTask(infoReq);
         }
+
         //如果延时器不为空
         if(CollUtil.isNotEmpty(infoReq.getDelayTipTimers())){
             taskService.insertTipTask(infoReq);

@@ -1,10 +1,11 @@
 package com.jenschen.entity;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * 公共实例类
@@ -15,6 +16,7 @@ public class BaseEntity {
     /**
      * 主键ID
      */
+    @TableId(type = IdType.AUTO)
     private int id;
 
     /**

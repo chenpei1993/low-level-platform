@@ -1,14 +1,14 @@
 package com.jenschen.annotation.validator;
 
 
-import com.jenschen.annotation.ValidColor;
+import com.jenschen.annotation.ValidEmail;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.regex.Pattern;
 
-public class EmailValidator implements ConstraintValidator<ValidColor, String> {
+public class EmailValidator implements ConstraintValidator<ValidEmail, String> {
 
     private static final Pattern pattern;
 

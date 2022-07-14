@@ -3,6 +3,8 @@ package com.jenschen.response;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class CustomerResp extends BaseResponse {
@@ -13,13 +15,22 @@ public class CustomerResp extends BaseResponse {
     private Integer id;
 
     /**
-     * 标签名
+     * 姓名
      */
     private String name;
 
     /**
-     * 颜色
+     * 手机号
      */
-    private String color;
+    private String phone;
 
+    /**
+     * 邮箱
+     */
+    private String email;
+
+    /**
+     * 标签
+     */
+    private List<TagResp> tags;
 }

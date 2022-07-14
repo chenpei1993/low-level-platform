@@ -27,16 +27,22 @@ public interface TagService {
     Response<Object> get(int id);
 
     /**
+     * 获取所有标签
+     * @return 结果
+     */
+    Response<Object> all();
+
+    /**
      * 更新标签
      * @param tagReq 标签
      * @return 结果
      */
-    Response<Object> updated(TagReq tagReq);
+    Response<Object> update(TagReq tagReq);
 
     /**
      * 逻辑删除标签
-     * @param tagReq 标签
+     * @param id 标签ID
      * @return 结果
      */
-    Response<Object> deleted(TagReq tagReq);
+    Response<Object> delete(int id);
 }

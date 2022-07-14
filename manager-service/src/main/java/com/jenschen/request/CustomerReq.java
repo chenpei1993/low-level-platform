@@ -35,5 +35,5 @@ public class CustomerReq {
     /**
      * 标签组
      */
-    private Long[] tags;
+    private int[] tags;
 }

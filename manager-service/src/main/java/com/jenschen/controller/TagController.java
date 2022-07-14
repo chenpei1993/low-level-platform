@@ -27,17 +27,17 @@ public class TagController {
 
     @PostMapping
     public Response<Object> edit(@RequestBody @Validated TagReq tagReq){
-        return tagService.updated(tagReq);
+        return tagService.update(tagReq);
     }
 
     /**
      * 删除标签
-     * @param tagReq 删除请求实例
+     * @param id 标签ID
      * @return 结果
      */
-    @DeleteMapping
-    public Response<Object> del(@RequestBody TagReq tagReq){
-        return tagService.deleted(tagReq);
+    @DeleteMapping("/{id}")
+    public Response<Object> del(@PathVariable int id){
+        return tagService.delete(id);
     }
 
     /**
@@ -48,6 +48,15 @@ public class TagController {
     @GetMapping("/{id}")
     public Response<Object> get(@PathVariable int id){
         return tagService.get(id);
+    }
+
+    /**
+     * 获取所有标签
+     * @return 结果
+     */
+    @GetMapping("/all")
+    public Response<Object> all(){
+        return tagService.all();
     }
 
     /**

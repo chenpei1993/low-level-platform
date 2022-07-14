@@ -1,9 +1,9 @@
 package com.jenschen.entity;
 
-import com.jenschen.enumeration.InfoTypeEnum;
-import com.jenschen.enumeration.RepeatCollectTypeEnum;
-import com.jenschen.enumeration.SendCustomerTypeEnum;
-import com.jenschen.enumeration.SendTypeEnum;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.jenschen.enumeration.*;
+import com.jenschen.typehandler.ValueEnumTypeHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,6 +15,7 @@ import java.util.List;
  */
 
 @Data
+@TableName("info")
 @EqualsAndHashCode(callSuper = true)
 public class InfoEntity extends BaseEntity{
     /**
@@ -26,12 +27,14 @@ public class InfoEntity extends BaseEntity{
      * 类型
      * 参考 InfoTypeEnum
      */
-    private int type;
+    @TableField(typeHandler = ValueEnumTypeHandler.class)
+    private InfoTypeEnum type;
 
     /**
      * 活动重复类型
      * RepeatCollectTypeEnum
      */
+    @TableField(typeHandler = ValueEnumTypeHandler.class)
     private RepeatCollectTypeEnum repeatCollectType;
 
     /**
@@ -67,6 +70,7 @@ public class InfoEntity extends BaseEntity{
     /**
      * 定时任务发送方式
      */
+    @TableField(typeHandler = ValueEnumTypeHandler.class)
     private SendTypeEnum sendType;
 
     /**
@@ -77,10 +81,11 @@ public class InfoEntity extends BaseEntity{
     /**
      * 发送的客户类型
      */
+    @TableField(typeHandler = ValueEnumTypeHandler.class)
     private SendCustomerTypeEnum sendCustomerType;
 
     /**
-     * 发送的客户
+     * 发送的客户, 标签或者手机号等等
      */
     private String sendCustomers;
 
@@ -88,6 +93,12 @@ public class InfoEntity extends BaseEntity{
      * 生成的url后缀
      */
     private String url;
+
+    /**
+     * 活动的状态
+     */
+    @TableField(typeHandler = ValueEnumTypeHandler.class)
+    private InfoStatusEnum status;
 
     /**
      * 其他

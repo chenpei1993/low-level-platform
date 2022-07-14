@@ -1,7 +1,7 @@
 package com.jenschen.service.impl;
 
 import com.jenschen.base.Response;
-import com.jenschen.dao.TaskMapper;
+import com.jenschen.mapper.TaskMapper;
 import com.jenschen.request.InfoReq;
 import com.jenschen.request.TaskReq;
 import com.jenschen.entity.TaskEntity;
