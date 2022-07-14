@@ -17,14 +17,14 @@ public interface CustomerService {
      * @param customerReq 客户
      * @return 结果
      */
-    Response<Object> updated(CustomerReq customerReq);
+    Response<Object> update(CustomerReq customerReq);
 
     /**
      * 逻辑删除客户
      * @param id 客户id
      * @return 结果
      */
-    Response<Object> deleted(int id);
+    Response<Object> delete(int id);
 
     /**
      * 插入标签

@@ -4,8 +4,6 @@
       <el-card >
         <div class="number">{{question.idx}}.</div>
         <div class="show-content">
-          <div class="label-1"> 题目类型:</div>
-          <div class="content">{{ toType(question.type) }}</div>
           <div class="label-1">问题描述:</div>
           <div class="content">{{ question.questionDesc }}</div>
           <div v-if="question.type === 2 || question.type === 3">

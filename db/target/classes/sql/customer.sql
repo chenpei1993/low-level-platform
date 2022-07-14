@@ -4,13 +4,14 @@ create table customer
     name      varchar(50)       not null,
     email     varchar(100)      null,
     phone     varchar(20)       null,
-    isDeleted tinyint default 0 not null,
-    deletedAt datetime          null,
-    deletedBy int               null,
-    createdBy int               not null,
-    createdAt datetime          not null,
-    updatedAt datetime          not null,
-    updateBy  int               not null,
+
+    is_deleted     tinyint default 0 not null,
+    deleted_at     datetime          null,
+    deleted_by     int               null,
+    created_at     datetime          not null,
+    created_by     int               null,
+    updated_at     datetime          null,
+    updated_by     int               null,
     constraint customer_pk
         primary key (id)
 )

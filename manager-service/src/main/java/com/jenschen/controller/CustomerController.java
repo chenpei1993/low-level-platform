@@ -6,6 +6,7 @@ import com.jenschen.request.CustomerPageReq;
 import com.jenschen.service.CustomerService;
 import com.jenschen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -13,19 +14,20 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("customer")
+@CrossOrigin("*")
 public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
 
     @PutMapping
-    public Response<Object> add(CustomerReq customDTO) {
-        return customerService.insert(customDTO);
+    public Response<Object> add(@RequestBody @Validated CustomerReq customerReq) {
+        return customerService.insert(customerReq);
     }
 
     @PostMapping
     public Response<Object> edit(CustomerReq customerReq) {
-        return customerService.updated(customerReq);
+        return customerService.update(customerReq);
     }
 
     /**
@@ -33,18 +35,9 @@ public class CustomerController {
      * @param id 客户id
      * @return 结果
      */
-    @DeleteMapping
-    public Response<Object> del(Integer id) {
-        return ResultUtil.success();
-    }
-
-    /**
-     * 标记用户
-     * @return 结果
-     */
-    @PostMapping("tag")
-    public Response<Object> tagCustomer(){
-        return ResultUtil.success();
+    @DeleteMapping("/{id}")
+    public Response<Object> del(@PathVariable  int id) {
+        return customerService.delete(id);
     }
 
     /**

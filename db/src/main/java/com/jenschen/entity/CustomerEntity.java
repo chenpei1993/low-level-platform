@@ -1,11 +1,14 @@
 package com.jenschen.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @TableName("customer")
+@Builder
 @EqualsAndHashCode(callSuper = true)
 public class CustomerEntity extends BaseEntity{
 
@@ -27,5 +30,6 @@ public class CustomerEntity extends BaseEntity{
     /**
      * 用户标签
      */
+    @TableField(exist = false)
     private String tags;
 }

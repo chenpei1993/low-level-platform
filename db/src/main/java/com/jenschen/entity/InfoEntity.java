@@ -1,9 +1,6 @@
 package com.jenschen.entity;
 
-import com.jenschen.enumeration.InfoTypeEnum;
-import com.jenschen.enumeration.RepeatCollectTypeEnum;
-import com.jenschen.enumeration.SendCustomerTypeEnum;
-import com.jenschen.enumeration.SendTypeEnum;
+import com.jenschen.enumeration.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -88,6 +85,11 @@ public class InfoEntity extends BaseEntity{
      * 生成的url后缀
      */
     private String url;
+
+    /**
+     * 活动的状态
+     */
+    private InfoStatusEnum status;
 
     /**
      * 其他

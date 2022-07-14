@@ -11,7 +11,11 @@
     <div>
         <el-table :data="tags" stripe style="width: 100%" v-loading="loading">
             <el-table-column prop="name" label="标签名"/>
-            <el-table-column prop="color" label="颜色"/>
+            <el-table-column prop="color" label="颜色">
+              <template #default="scope">
+                <el-tag :color="scope.row.color" effect="light" style="width:50px"></el-tag>
+              </template>
+            </el-table-column>
             <el-table-column prop="createdAt" label="创建时间" />
             <el-table-column prop="updatedAt" label="更新时间" />
             <el-table-column fixed="right" label="操作" width="120">
@@ -26,7 +30,6 @@
             v-model:currentPage="currentPage"
             v-model:page-size="pageSize"
             :page-sizes="[20, 50, 100, 200, 300, 400]"
-            :small="small"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total"
             @size-change="handleSizeChange"
@@ -54,7 +57,7 @@
 import Add from '@/components/tag/Add.vue'
 //TODO 全局变量
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { inject } from "vue";
+import { inject } from "vue"
 
 export default {
   name: 'Tag',
@@ -79,25 +82,29 @@ export default {
     },
     addOrEditTag(tag){
       if(tag.id == null){
+        //添加
         this.http.put("tag", tag)
             .then(()=>{
               ElMessage.success("操作成功")
+              this.tag = {}
+              this.isShowAddOrEditPanel = false
               this.refresh()
             })
       }else{
+        //修改
         this.http.post("tag", tag)
             .then(()=>{
               ElMessage.success("操作成功")
+              this.tag = {}
+              this.isShowAddOrEditPanel = false
               this.refresh()
             })
       }
-      this.tag = {}
-      this.isShowAddOrEditPanel = false
+      
     },
     edit(row){
       this.addOrEdit = "修改"
       this.tag = row
-      console.log(this.tag)
       this.isShowAddOrEditPanel = true
     },
     del(row){
@@ -110,7 +117,7 @@ export default {
             type: 'warning',
         })
         .then(() => {
-            this.http.delete("tag", row)
+            this.http.delete("tag/" + row.id)
               .then(()=>{
                 ElMessage.success("操作成功")
                 this.refresh()
@@ -123,6 +130,7 @@ export default {
     },
     add(){
       this.addOrEdit = "添加"
+      this.tag = {}
       this.isShowAddOrEditPanel = true
     },
     handleSizeChange(size){
@@ -148,13 +156,6 @@ export default {
   created(){
     this.http = inject("$http")
     this.refresh()
-    this.tags = [
-      {
-        name: "组1",
-        group: "",
-        color: "#333"
-      },
-    ]
   }
 }
 </script>

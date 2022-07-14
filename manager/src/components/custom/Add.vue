@@ -16,7 +16,14 @@
             <el-input v-model="custom.email" />
         </el-form-item>
         <el-form-item label="标签">
-            <el-input v-model="custom.tag" />
+            <el-select v-model="custom.tags" multiple>
+              <el-option
+                v-for="item in tagOptions"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="confirm">确认</el-button>
@@ -47,12 +54,19 @@ export default {
             email: "",
         }
       }
+    },
+    tagOptions:{
+      require: true,
+      type: Object,
+      default () {
+        return []
+      }
     }
   },
   methods:{
     confirm(){
         this.addOrEditCustom(this.custom)
-    }
-  }
+    },
+  },
 }
 </script>

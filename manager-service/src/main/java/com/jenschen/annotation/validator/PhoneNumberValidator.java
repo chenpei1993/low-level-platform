@@ -1,19 +1,19 @@
 package com.jenschen.annotation.validator;
 
 
-import com.jenschen.annotation.ValidColor;
+import com.jenschen.annotation.ValidPhoneNumber;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.regex.Pattern;
 
-public class PhoneNumberValidator implements ConstraintValidator<ValidColor, String> {
+public class PhoneNumberValidator implements ConstraintValidator<ValidPhoneNumber, String> {
 
     private static final Pattern pattern;
 
     static {
-        pattern = Pattern.compile("^1[3456789]\\d{9}$/、/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$");
+        pattern = Pattern.compile("^[0123456789]{11}$");
     }
 
     @Override

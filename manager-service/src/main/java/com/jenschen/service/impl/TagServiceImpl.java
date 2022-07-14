@@ -3,8 +3,10 @@ package com.jenschen.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
+import com.jenschen.constant.CommonConstant;
 import com.jenschen.dao.CustomerTagMapper;
 import com.jenschen.dao.TagMapper;
+import com.jenschen.entity.CustomerEntity;
 import com.jenschen.request.Page;
 import com.jenschen.request.TagReq;
 import com.jenschen.entity.TagEntity;
@@ -45,6 +47,7 @@ public class TagServiceImpl extends AbstractService<TagEntity> implements TagSer
 
     @Override
     public Response<Object> insert(TagReq tagReq) {
+        //TODO 是否需要验证标签名是否唯一
         TagEntity tag = BeanUtil.copyProperties(tagReq, TagEntity.class);
         tag.created(LocalDateTime.now(),1);
         tagMapper.insert(tag);
@@ -59,7 +62,15 @@ public class TagServiceImpl extends AbstractService<TagEntity> implements TagSer
     }
 
     @Override
-    public Response<Object> updated(TagReq tagReq) {
+    public Response<Object> all() {
+        QueryWrapper<TagEntity> queryWrapper = this.getDefaultQuery();
+        List<TagEntity> tagEntityList = tagMapper.selectList(queryWrapper);
+        List<TagResp> resp = BeanUtil.copyToList(tagEntityList, TagResp.class);
+        return ResultUtil.success(resp);
+    }
+
+    @Override
+    public Response<Object> update(TagReq tagReq) {
         TagEntity tag = BeanUtil.copyProperties(tagReq, TagEntity.class);
         tag.updated(LocalDateTime.now(), 1);
         tagMapper.updateById(tag);
@@ -68,12 +79,13 @@ public class TagServiceImpl extends AbstractService<TagEntity> implements TagSer
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Response<Object> deleted(TagReq tagReq) {
-        TagEntity tag = BeanUtil.copyProperties(tagReq, TagEntity.class);
-        tag.deleted(LocalDateTime.now(), 1);
-        tagMapper.updateById(tag);
+    public Response<Object> delete(int id) {
+        TagEntity entity = TagEntity.builder().build();
+        entity.setId(id);
+        entity.deleted(LocalDateTime.now(), 1);
+        tagMapper.updateById(entity);
         //删除客户的标签
-        customerTagService.deletedByTagId(tagReq.getId());
+        customerTagService.deletedByTagId(id);
         return ResultUtil.success();
     }
 }
