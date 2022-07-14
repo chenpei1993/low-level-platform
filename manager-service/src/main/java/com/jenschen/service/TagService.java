@@ -6,7 +6,7 @@ import com.jenschen.request.TagReq;
 
 public interface TagService {
     /**
-     * 插入标签
+     * 分页获取标签
      * @param page 分页
      * @return 结果
      */

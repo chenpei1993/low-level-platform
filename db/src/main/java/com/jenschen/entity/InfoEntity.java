@@ -7,6 +7,7 @@ import com.jenschen.typehandler.ValueEnumTypeHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -55,17 +56,17 @@ public class InfoEntity extends BaseEntity{
     /**
      * 活动开始时间
      */
-    private Date startDateTime;
+    private LocalDateTime startDateTime;
 
     /**
      * 活动结束时间
      */
-    private Date endDateTime;
+    private LocalDateTime endDateTime;
 
     /**
      * 定时发送时间，如果repeatCollectType 是每天，每周，每月，则只取时间
      */
-    private Date sendDateTime;
+    private LocalDateTime sendDateTime;
 
     /**
      * 定时任务发送方式

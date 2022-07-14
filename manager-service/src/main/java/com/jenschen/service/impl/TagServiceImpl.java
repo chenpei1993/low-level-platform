@@ -32,7 +32,7 @@ public class TagServiceImpl extends AbstractService<TagEntity> implements TagSer
 
     @Override
     public Response<Object> page(Page page) {
-       QueryWrapper<TagEntity> queryWrapper = this.getPageQueryWrapper(page);
+        QueryWrapper<TagEntity> queryWrapper = this.getPageQueryWrapper(page);
         List<TagEntity> tagEntityList = tagMapper.selectList(queryWrapper);
         List<TagResp> resp = BeanUtil.copyToList(tagEntityList, TagResp.class);
         int count = tagMapper.selectCount(queryWrapper);

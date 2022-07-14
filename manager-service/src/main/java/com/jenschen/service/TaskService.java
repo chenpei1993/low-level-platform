@@ -1,22 +1,21 @@
 package com.jenschen.service;
 
 import com.jenschen.base.Response;
+import com.jenschen.entity.InfoEntity;
+import com.jenschen.entity.TaskEntity;
 import com.jenschen.request.InfoReq;
 import com.jenschen.request.TaskReq;
 
+import javax.swing.text.html.parser.Entity;
+import java.util.List;
+
 public interface TaskService {
 
-    /**
-     * 插入定时发送任务
-     * @param infoDTO 信息
-     */
-    void insertSendTask(InfoReq infoDTO);
 
-    /**
-     * 插入延时提醒任务
-     * @param infoDTO 信息
-     */
-    void insertTipTask(InfoReq infoDTO);
+    List<TaskEntity> insertSendTask(InfoReq infoReq, List<InfoEntity> infoEntityList);
+
+
+    List<TaskEntity> insertTipTask(InfoReq infoReq, List<InfoEntity> infoEntityList);
 
     /**
      * 更新任务

@@ -1,19 +1,26 @@
 package com.jenschen.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.LocalDateTimeUtil;
 import com.jenschen.base.Response;
+import com.jenschen.entity.InfoEntity;
+import com.jenschen.enumeration.RepeatCollectTypeEnum;
+import com.jenschen.enumeration.TaskStatusEnum;
+import com.jenschen.enumeration.TaskTypeEnum;
+import com.jenschen.enumeration.TimeUnitEnum;
 import com.jenschen.mapper.TaskMapper;
 import com.jenschen.request.InfoReq;
 import com.jenschen.request.TaskReq;
 import com.jenschen.entity.TaskEntity;
-import com.jenschen.enumeration.TaskTypeEnum;
 import com.jenschen.service.TaskService;
-import com.jenschen.service.impl.taskConverter.TaskConverter;
-import com.jenschen.service.impl.taskConverter.TaskConverterFactory;
+import com.jenschen.service.impl.taskConverter.InfoSpliter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -21,44 +28,73 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private TaskMapper taskMapper;
 
-    @Autowired
-    private TaskConverterFactory taskConverterFactory;
-
     @Override
-    public void insertSendTask(InfoReq infoDTO) {
+    public List<TaskEntity> insertSendTask(InfoReq infoReq, List<InfoEntity> infoEntityList) {
+        List<TaskEntity> list = new ArrayList<>();
+        LocalDateTime sendDateTime = infoReq.getSendDateTime();
+        if(RepeatCollectTypeEnum.ONCE.equals(infoReq.getRepeatCollectType())){
+            InfoEntity infoEntity = infoEntityList.get(0);
+            TaskEntity taskEntity = TaskEntity.builder()
+                        .infoId(infoEntity.getId())
+                        .type(TaskTypeEnum.SEND)
+                        .executionDatetime(sendDateTime)
+                        .sendType(infoReq.getSendType())
+                        .sendMessage(infoReq.getSendMessage())
+                        .status(TaskStatusEnum.INIT)
+                        .build();
+            list.add(taskEntity);
+            return list;
+        }
 
-        List<TaskEntity> mergeList = new ArrayList<>();
-
-        TaskConverter taskConverter = taskConverterFactory.getTaskConverter(infoDTO.getRepeatCollectType());
-
-        //处理定时推送的
-        List<TaskEntity> sendList = taskConverter.convert(TaskTypeEnum.SEND,
-                                        infoDTO.getStartDateTime(),
-                                        infoDTO.getEndDateTime(),
-                                        infoDTO.getSendDateTime(), infoDTO.getSendType(), null);
-
-        mergeList.addAll(sendList);
-
-        //TODO 转化，添加到数据库中
+        for(InfoEntity infoEntity : infoEntityList){
+            LocalDateTime dateTime = LocalDateTimeUtil.of(infoEntity.getStartDateTime());
+            dateTime = dateTime.withHour(sendDateTime.getHour()).withMinute(sendDateTime.getMinute());
+            TaskEntity taskEntity = TaskEntity.builder()
+                    .infoId(infoEntity.getId())
+                    .type(TaskTypeEnum.SEND)
+                    .executionDatetime(dateTime)
+                    .sendType(infoReq.getSendType())
+                    .sendMessage(infoReq.getSendMessage())
+                    .status(TaskStatusEnum.INIT)
+                    .build();
+            list.add(taskEntity);
+        }
+        return list;
     }
 
     @Override
-    public void insertTipTask(InfoReq infoDTO) {
+    public List<TaskEntity> insertTipTask(InfoReq infoReq, List<InfoEntity> infoEntityList) {
+        List<TaskReq> taskReqList = infoReq.getDelayTipTimers();
+        List<TaskEntity> delayList = new ArrayList<>();
 
-        TaskConverter taskConverter = taskConverterFactory.getTaskConverter(infoDTO.getRepeatCollectType());
-        List<TaskEntity> mergeList = new ArrayList<>();
+        for(InfoEntity infoEntity : infoEntityList){
+            for(TaskReq taskReq : taskReqList){
+                LocalDateTime dateTime = LocalDateTimeUtil.of(infoEntity.getEndDateTime());
+                dateTime = dateTime.minusMinutes(beforeMinutes(taskReq.getTimeUnit(), taskReq.getValue()));
+                TaskEntity taskEntity = TaskEntity.builder()
+                        .infoId(infoEntity.getId())
+                        .type(TaskTypeEnum.DELAY)
+                        .executionDatetime(dateTime)
+                        .sendType(infoReq.getSendType())
+                        .sendMessage(infoReq.getSendMessage())
+                        .status(TaskStatusEnum.INIT)
+                        .build();
+                delayList.add(taskEntity);
+            }
+        }
+        return delayList;
+    }
 
-        List<TaskReq> taskDTOList = infoDTO.getDelayTipTimers();
-        //处理延时推送
-        for(TaskReq taskDTO : taskDTOList){
-            List<TaskEntity> delayList = taskConverter.convert(TaskTypeEnum.SEND,
-                    infoDTO.getStartDateTime(),
-                    infoDTO.getEndDateTime(),
-                    infoDTO.getSendDateTime(), infoDTO.getSendType(), null);
-            mergeList.addAll(delayList);
+    private int beforeMinutes(TimeUnitEnum timeUnit, int value){
+        if(TimeUnitEnum.MINUTES.equals(timeUnit)){
+            return value;
+        }else if(TimeUnitEnum.HOURS.equals(timeUnit)){
+            return value * 60;
+        }else if(TimeUnitEnum.DAYS.equals(timeUnit)){
+            return value * 60 * 24;
         }
 
-        //TODO 转化，添加到数据库中
+        return value;
     }
 
     @Override

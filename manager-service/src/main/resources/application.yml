@@ -7,8 +7,8 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/manager?useUnicode=true&characterEncoding=utf8
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
-#    password: cp-19930904
-    password: 1234qwer
+    password: cp-19930904
+#    password: 1234qwer
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

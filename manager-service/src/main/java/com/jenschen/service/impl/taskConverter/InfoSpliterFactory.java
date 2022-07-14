@@ -7,22 +7,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TaskConverterFactory {
+public class InfoSpliterFactory {
 
     @Autowired
-    private  OnceTaskConverter onceTaskConverter;
+    private OnceSpliter onceTaskConverter;
 
     @Autowired
-    private  EveryDayConverter everyDayConverter;
+    private EveryDaySpliter everyDayConverter;
 
     @Autowired
-    private  EveryWeekConverter everyWeekConverter;
+    private EveryWeekSpliter everyWeekConverter;
 
     @Autowired
-    private  EveryMonthConverter everyMonthConverter;
+    private EveryMonthSpliter everyMonthConverter;
 
 
-    public TaskConverter getTaskConverter(RepeatCollectTypeEnum repeatCollectTypeEnum){
+    public InfoSpliter getTaskConverter(RepeatCollectTypeEnum repeatCollectTypeEnum){
         if(RepeatCollectTypeEnum.ONCE.equals(repeatCollectTypeEnum)){
             return onceTaskConverter;
         }else if(RepeatCollectTypeEnum.EVERY_DAY.equals(repeatCollectTypeEnum)){

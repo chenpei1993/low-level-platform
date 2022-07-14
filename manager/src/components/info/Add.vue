@@ -12,20 +12,43 @@
         <el-form-item label="网页标题">
             <el-input v-model="info.title" sytle="width:220px" />
         </el-form-item>
-        <el-form-item label="开始时间">
-          <el-date-picker
-            v-model="info.startDateTime"
-            type="datetime"
-            placeholder="选择开始时间"
+      <el-form-item label="重复次数">
+        <el-select v-model="info.repeatCollectType">
+          <el-option
+              v-for="item in repeatCollectionTypeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
           />
-        </el-form-item>
-        <el-form-item label="结束时间">
-          <el-date-picker
-            v-model="info.endDateTime"
-            type="datetime"
-            placeholder="选择开始时间"
-          />
-        </el-form-item>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="每周几" v-if="info.repeatCollectType === 100">
+        <el-input v-model="info.repeatValue" sytle="width:200px" />
+      </el-form-item>
+      <el-form-item label="每月几号" v-if="info.repeatCollectType === 1000">
+        <el-input v-model="info.repeatValue" sytle="width:200px" />
+      </el-form-item>
+
+      <el-form-item label="活动开始结束时间">
+        <el-date-picker
+          v-model="dateTimeRange"
+          type="datetimerange"
+          format="YYYY-MM-DD HH:mm"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          @change="changeDatetimeRange"
+        />
+      </el-form-item>
+      <el-form-item label="开始时间" v-if="info.repeatCollectType !== 1">
+        <el-input v-model="info.beginHours"  style="width: 50px; margin-right: 3px"/><span class="gap">时</span>
+        <el-input v-model="info.beginMinutes"  style="width: 50px; margin-right: 3px" /><span class="gap">分</span>
+      </el-form-item>
+      <el-form-item label="时长" v-if="info.repeatCollectType !== 1">
+        <el-input v-model="total.days" style="width: 50px; margin-right: 3px" /><span class="gap">天</span>
+        <el-input v-model="total.hours"  style="width: 50px; margin-right: 3px"/><span class="gap">时</span>
+        <el-input v-model="total.minutes"  style="width: 50px; margin-right: 3px" /><span class="gap">分</span>
+      </el-form-item>
         <el-form-item label="是否定时推送">
             <el-select v-model="info.isAutoSend">
               <el-option
@@ -39,27 +62,12 @@
       <el-form-item label="推送的文本模板" v-if="info.isAutoSend">
         <el-input v-model="info.sendMessage" type="textarea" sytle="width:200px" />
       </el-form-item>
-        <el-form-item label="重复收集类型">
-            <el-select v-model="info.repeatCollectType">
-              <el-option
-                v-for="item in repeatCollectionTypeOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-        </el-form-item>
-        <el-form-item label="每周几" v-if="info.repeatCollectType === 100">
-            <el-input v-model="info.repeatValue" sytle="width:200px" />
-        </el-form-item>
-        <el-form-item label="每月几号" v-if="info.repeatCollectType === 1000">
-            <el-input v-model="info.repeatValue" sytle="width:200px" />
-        </el-form-item>
 
         <el-form-item label="定时推送时间" v-if="info.isAutoSend" >
             <el-date-picker
               v-model="info.sendDateTime"
               type="datetime"
+              format="YYYY-MM-DD HH:mm"
               placeholder="选择推送日期时间"
             />
         </el-form-item>
@@ -148,6 +156,12 @@ export default {
   },
   data(){
     return {
+      dateTimeRange:[],
+      total:{
+        days: 0,
+        minutes: 0,
+        hours: 0
+      },
       timeUnitOptions: [
         {label: "分", value: 1},
         {label: "小时", value: 2},
@@ -156,8 +170,8 @@ export default {
         {label: "月", value: 5}
       ],
       isFixedTimeSendOptions:[
-        {label: "是", value: true},
-        {label: "否", value: false},
+        {label: "是", value: 1},
+        {label: "否", value: 0},
       ],
       sendTypeOptions:[
         {label: "企业微信", value: 1},
@@ -186,13 +200,17 @@ export default {
             repeatCollectType: -1,
             repeatValue: "",
             isFixedTimeSend: true,
-            sendDateTime: ""
+            sendDateTime: "",
+            beginHours: 0,
+            beginMinutes: 0,
+            time: 0
         }
       }
     }
   },
   methods:{
     confirm(){
+      this.time = this.total.days * 24 * 60 + this.total.hours * 60 + this.total.minutes
       this.addOrEditInfo(this.info)
     },
     delDelayTipTimer(idx){
@@ -203,6 +221,13 @@ export default {
         this.info.delayTipTimers = []
       }
       this.info.delayTipTimers.push({timeUnit: 1})
+    },
+    changeDatetimeRange(){
+      console.log(this.dateTimeRange)
+      this.info.startDateTime = this.dateTimeRange[0];
+      this.info.endDateTime = this.dateTimeRange[1];
+      this.info.beginHours = this.info.startDateTime.getHours()
+      this.info.beginMinutes = this.info.startDateTime.getMinutes()
     }
   }
 }
@@ -218,5 +243,9 @@ export default {
   justify-content: space-between; 
   width: 100%; 
   align-items: flex-end;
+}
+
+.gap{
+  margin-right: 3px;
 }
 </style>

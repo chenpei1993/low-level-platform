@@ -30,7 +30,7 @@ public class InfoReq {
     /**
      * 针对每周，每月，后面的数值，可以，分割
      */
-    private String repeatValue;
+    private int[] repeatValue;
 
     /**
      * 定时发送
@@ -48,6 +48,21 @@ public class InfoReq {
      * 活动结束时间
      */
     private LocalDateTime endDateTime;
+
+    /**
+     * 一次活动的开始小时
+     */
+    private int beginHours;
+
+    /**
+     * 一次活动的开始分钟
+     */
+    private int beginMinutes;
+
+    /**
+     * 一次活动时长
+     */
+    private int total;
     /**
      * 发送的方式
      */
