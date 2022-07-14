@@ -1,7 +1,9 @@
 package com.jenschen.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.jenschen.enumeration.*;
+import com.jenschen.typehandler.ValueEnumTypeHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -25,12 +27,14 @@ public class InfoEntity extends BaseEntity{
      * 类型
      * 参考 InfoTypeEnum
      */
-    private int type;
+    @TableField(typeHandler = ValueEnumTypeHandler.class)
+    private InfoTypeEnum type;
 
     /**
      * 活动重复类型
      * RepeatCollectTypeEnum
      */
+    @TableField(typeHandler = ValueEnumTypeHandler.class)
     private RepeatCollectTypeEnum repeatCollectType;
 
     /**
@@ -66,6 +70,7 @@ public class InfoEntity extends BaseEntity{
     /**
      * 定时任务发送方式
      */
+    @TableField(typeHandler = ValueEnumTypeHandler.class)
     private SendTypeEnum sendType;
 
     /**
@@ -76,6 +81,7 @@ public class InfoEntity extends BaseEntity{
     /**
      * 发送的客户类型
      */
+    @TableField(typeHandler = ValueEnumTypeHandler.class)
     private SendCustomerTypeEnum sendCustomerType;
 
     /**
@@ -91,6 +97,7 @@ public class InfoEntity extends BaseEntity{
     /**
      * 活动的状态
      */
+    @TableField(typeHandler = ValueEnumTypeHandler.class)
     private InfoStatusEnum status;
 
     /**

@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.jenschen.base.Response;
+import com.jenschen.enumeration.InfoStatusEnum;
 import com.jenschen.mapper.InfoMapper;
 import com.jenschen.enumeration.InfoTypeEnum;
 import com.jenschen.request.InfoReq;
@@ -32,9 +33,10 @@ public class InfoServiceImpl implements InfoService {
     public Response<Object> insert(InfoReq infoReq) {
         // 信息本体
         InfoEntity infoEntity = BeanUtil.copyProperties(infoReq, InfoEntity.class);
-        //先默认问卷
-        infoEntity.setType(InfoTypeEnum.QUESTION.getValue());
+        //限制默认参数
+        infoEntity.setType(InfoTypeEnum.QUESTION);
         infoEntity.setUrl(RandomUtil.randomString(5));
+        infoEntity.setStatus(InfoStatusEnum.EDIT);
         infoEntity.created(LocalDateTime.now(), 1);
         infoMapper.insert(infoEntity);
 

@@ -7,10 +7,10 @@
         style="width: 100%"
     >
         <el-form-item label="问卷名">
-          <el-input v-model="info.name" sytle="width:200px" />
+          <el-input v-model="info.name" sytle="width:220px" />
         </el-form-item>
         <el-form-item label="网页标题">
-            <el-input v-model="info.title" sytle="width:200px" />
+            <el-input v-model="info.title" sytle="width:220px" />
         </el-form-item>
         <el-form-item label="开始时间">
           <el-date-picker
@@ -37,7 +37,7 @@
             </el-select>
         </el-form-item>
       <el-form-item label="推送的文本模板" v-if="info.isAutoSend">
-        <el-input v-model="info.sendMessage" sytle="width:200px" />
+        <el-input v-model="info.sendMessage" type="textarea" sytle="width:200px" />
       </el-form-item>
         <el-form-item label="重复收集类型">
             <el-select v-model="info.repeatCollectType">
@@ -58,7 +58,7 @@
 
         <el-form-item label="定时推送时间" v-if="info.isAutoSend" >
             <el-date-picker
-              v-model="info.fixedSendDateTime"
+              v-model="info.sendDateTime"
               type="datetime"
               placeholder="选择推送日期时间"
             />
@@ -95,7 +95,7 @@
           :label="'延时提醒-' + index"
           :prop="'domains.' + index + '.value'"
         >
-          <div style="display: flex; justify-content: space-between; width: 100%;">
+          <div class="delayTimer">
             <div>
               <span>距离结束时间前
               <el-input v-model="delayTipTimer.value" size="small" style="width: 40px; margin-right:3px;"/> 
@@ -107,8 +107,8 @@
                   :value="item.value"
                 />
                 </el-select>提醒,</span>
-                <span>提醒方式</span>
-                <el-select v-model="delayTipTimer.tipType" size="small" style="width: 60px; margin-right:3px;">
+                <span style="margin-right:3px;">提醒方式</span>
+                <el-select v-model="delayTipTimer.tipType" size="small" style="width: 100px; margin-right:3px;">
                   <el-option
                     v-for="item in sendTypeOptions"
                     :key="item.value"
@@ -116,8 +116,10 @@
                     :value="item.value"
                   />
                 </el-select>
-                <span>提醒文本模板</span>
-                <el-input v-model="delayTipTimer.message" />
+                <div>
+                  <span >提醒文本模板</span>
+                  <el-input size="small"  type="textarea" v-model="delayTipTimer.message" />
+                </div>  
             </div>
             <div>
               <el-button class="mt-2" @click="delDelayTipTimer(index)" type="danger" size="small" style="margin-left:3px;">删除</el-button>
@@ -184,7 +186,7 @@ export default {
             repeatCollectType: -1,
             repeatValue: "",
             isFixedTimeSend: true,
-            fixedSendDateTime: ""
+            sendDateTime: ""
         }
       }
     }
@@ -205,3 +207,16 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.el-input{
+  width: 220px;
+}
+
+.delayTimer{
+  display: flex; 
+  justify-content: space-between; 
+  width: 100%; 
+  align-items: flex-end;
+}
+</style>
