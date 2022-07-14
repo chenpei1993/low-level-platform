@@ -2,6 +2,7 @@ package com.jenschen.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.RandomUtil;
 import com.jenschen.base.Response;
 import com.jenschen.mapper.InfoMapper;
 import com.jenschen.enumeration.InfoTypeEnum;
@@ -33,8 +34,7 @@ public class InfoServiceImpl implements InfoService {
         InfoEntity infoEntity = BeanUtil.copyProperties(infoReq, InfoEntity.class);
         //先默认问卷
         infoEntity.setType(InfoTypeEnum.QUESTION.getValue());
-        //生成URL
-
+        infoEntity.setUrl(RandomUtil.randomString(5));
         infoEntity.created(LocalDateTime.now(), 1);
         infoMapper.insert(infoEntity);
 
@@ -42,6 +42,7 @@ public class InfoServiceImpl implements InfoService {
         if(infoReq.isAutoSend()){
             taskService.insertSendTask(infoReq);
         }
+
         //如果延时器不为空
         if(CollUtil.isNotEmpty(infoReq.getDelayTipTimers())){
             taskService.insertTipTask(infoReq);

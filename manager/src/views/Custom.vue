@@ -118,7 +118,12 @@ export default {
     },
     edit(row){
       this.addOrEdit = "修改"
-      this.custom = row
+      this.custom = JSON.parse(JSON.stringify(row))
+      let tags = []
+      for(let i = 0; i < row.tags.length; i++){
+        tags.push(row.tags[i].id)
+      }
+      this.custom.tags = tags
       this.isShowAddOrEditPanel = true
     },
     del(row){

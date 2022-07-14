@@ -1,5 +1,6 @@
 package com.jenschen.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.jenschen.enumeration.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,6 +13,7 @@ import java.util.List;
  */
 
 @Data
+@TableName("info")
 @EqualsAndHashCode(callSuper = true)
 public class InfoEntity extends BaseEntity{
     /**
@@ -77,7 +79,7 @@ public class InfoEntity extends BaseEntity{
     private SendCustomerTypeEnum sendCustomerType;
 
     /**
-     * 发送的客户
+     * 发送的客户, 标签或者手机号等等
      */
     private String sendCustomers;
 
