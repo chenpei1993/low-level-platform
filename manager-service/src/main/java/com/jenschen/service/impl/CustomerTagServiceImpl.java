@@ -2,7 +2,7 @@ package com.jenschen.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.jenschen.dao.CustomerTagMapper;
+import com.jenschen.mapper.CustomerTagMapper;
 import com.jenschen.entity.CustomerTagEntity;
 import com.jenschen.entity.TagEntity;
 import com.jenschen.response.TagResp;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

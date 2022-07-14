@@ -48,7 +48,7 @@
         </sqlMapGenerator>
 
         <!-- 生成mapxml对应client，也就是接口dao -->
-<!--        <javaClientGenerator targetPackage="com.jenschen.dao" targetProject="src/main/java" type="XMLMAPPER" >-->
+<!--        <javaClientGenerator targetPackage="com.jenschen.mapper" targetProject="src/main/java" type="XMLMAPPER" >-->
 <!--            <property name="enableSubPackages" value="false" />-->
 <!--        </javaClientGenerator>-->
 

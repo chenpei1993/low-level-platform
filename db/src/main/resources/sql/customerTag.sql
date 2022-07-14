@@ -1,6 +1,6 @@
 create table customerTag
 (
-    id         int not null,
+    id         int not null auto_increment,
     customer_id int not null,
     tag_id      int not null,
     is_deleted     tinyint default 0 not null,

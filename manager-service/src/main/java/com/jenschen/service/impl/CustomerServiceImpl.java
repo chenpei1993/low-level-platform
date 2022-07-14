@@ -1,12 +1,12 @@
 package com.jenschen.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
-import com.jenschen.dao.CustomerMapper;
+import com.jenschen.mapper.CustomerMapper;
 import com.jenschen.entity.CustomerEntity;
-import com.jenschen.entity.TagEntity;
 import com.jenschen.enumeration.ErrorEnum;
 import com.jenschen.request.CustomerReq;
 import com.jenschen.request.Page;
@@ -27,6 +27,11 @@ import java.util.List;
 @Service
 public class CustomerServiceImpl extends AbstractService<CustomerEntity> implements CustomerService {
 
+    private static CopyOptions customerCCopyOption;
+    static {
+        customerCCopyOption =  CopyOptions.create().setIgnoreProperties("tags");
+    }
+
     @Autowired
     private CustomerMapper customerMapper;
 
@@ -37,7 +42,8 @@ public class CustomerServiceImpl extends AbstractService<CustomerEntity> impleme
     @Transactional(rollbackFor = Exception.class)
     public Response<Object> insert(CustomerReq customerReq) {
         //验证邮箱唯一和手机号唯一
-        if(isUniqueByPhoneOrEmail(customerReq)){
+        List<CustomerEntity> entities = customerMapper.findByEmailOrPhone(customerReq.getEmail(), customerReq.getPhone());
+        if(CollUtil.isNotEmpty(entities)){
             return ResultUtil.error(ErrorEnum.CUSTOMER_DUPLICATE_PHONE_OR_EMAIL);
         }
 
@@ -52,8 +58,14 @@ public class CustomerServiceImpl extends AbstractService<CustomerEntity> impleme
     @Override
     @Transactional
     public Response<Object> update(CustomerReq customerReq) {
-        //验证邮箱唯一和手机号唯一
-        if(isUniqueByPhoneOrEmail(customerReq)){
+        List<CustomerEntity> entities = customerMapper.findByEmailOrPhone(customerReq.getEmail(), customerReq.getPhone());
+        //如果存在多条，则有重复记录
+        if(entities.size() > 1){
+            return ResultUtil.error(ErrorEnum.CUSTOMER_DUPLICATE_PHONE_OR_EMAIL);
+        }
+
+        //只存在一条，但是id号不相等，则有重复记录
+        if(entities.size() == 1 && entities.get(0).getId() != customerReq.getId()){
             return ResultUtil.error(ErrorEnum.CUSTOMER_DUPLICATE_PHONE_OR_EMAIL);
         }
 
@@ -82,7 +94,7 @@ public class CustomerServiceImpl extends AbstractService<CustomerEntity> impleme
     public Response<Object> page(Page page) {
         QueryWrapper<CustomerEntity> queryWrapper = this.getPageQueryWrapper(page);
         List<CustomerEntity> customerEntityList = customerMapper.selectList(queryWrapper);
-        List<CustomerResp> respList = BeanUtil.copyToList(customerEntityList, CustomerResp.class);
+        List<CustomerResp> respList = BeanUtil.copyToList(customerEntityList, CustomerResp.class, customerCCopyOption);
         for(CustomerResp customerResp : respList){
             List<TagResp> tagsResp = customerTagService.getTagsByCustomerId(customerResp.getId());
             customerResp.setTags(tagsResp);
@@ -91,11 +103,4 @@ public class CustomerServiceImpl extends AbstractService<CustomerEntity> impleme
         return ResultUtil.success(PageResp.build(count, respList));
     }
 
-    private boolean isUniqueByPhoneOrEmail(CustomerReq customerReq) {
-        QueryWrapper<CustomerEntity> queryWrapper = this.getDefaultQuery();
-        queryWrapper.eq("phone", customerReq.getPhone());
-        queryWrapper.or().eq("email", customerReq.getEmail());
-        List<CustomerEntity> list = customerMapper.selectList(queryWrapper);
-        return CollUtil.isNotEmpty(list);
-    }
 }

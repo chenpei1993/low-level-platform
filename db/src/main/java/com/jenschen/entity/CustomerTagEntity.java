@@ -12,10 +12,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class CustomerTagEntity extends BaseEntity {
 
-    /**
-     * 主键ID
-     */
-    private int id;
 
     /**
      * 标签ID

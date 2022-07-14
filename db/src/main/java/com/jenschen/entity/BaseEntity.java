@@ -1,6 +1,8 @@
 package com.jenschen.entity;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -16,6 +18,7 @@ public class BaseEntity {
     /**
      * 主键ID
      */
+    @TableId(type = IdType.AUTO)
     private int id;
 
     /**

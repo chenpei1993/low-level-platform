@@ -32,5 +32,5 @@ public class CustomerResp extends BaseResponse {
     /**
      * 标签
      */
-    List<TagResp> tags;
+    private List<TagResp> tags;
 }

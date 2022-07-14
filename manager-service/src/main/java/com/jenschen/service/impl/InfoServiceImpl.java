@@ -3,7 +3,7 @@ package com.jenschen.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import com.jenschen.base.Response;
-import com.jenschen.dao.InfoMapper;
+import com.jenschen.mapper.InfoMapper;
 import com.jenschen.enumeration.InfoTypeEnum;
 import com.jenschen.request.InfoReq;
 import com.jenschen.entity.InfoEntity;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 
 @Service
 public class InfoServiceImpl implements InfoService {

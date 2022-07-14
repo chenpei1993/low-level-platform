@@ -20,13 +20,23 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+    /**
+     * 新增用户
+     * @param customerReq 用户信息
+     * @return 结果
+     */
     @PutMapping
     public Response<Object> add(@RequestBody @Validated CustomerReq customerReq) {
         return customerService.insert(customerReq);
     }
 
+    /**
+     * 编辑用户信息
+     * @param customerReq 用户信息
+     * @return 结果
+     */
     @PostMapping
-    public Response<Object> edit(CustomerReq customerReq) {
+    public Response<Object> edit(@RequestBody @Validated CustomerReq customerReq) {
         return customerService.update(customerReq);
     }
 

@@ -3,10 +3,7 @@ package com.jenschen.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
-import com.jenschen.constant.CommonConstant;
-import com.jenschen.dao.CustomerTagMapper;
-import com.jenschen.dao.TagMapper;
-import com.jenschen.entity.CustomerEntity;
+import com.jenschen.mapper.TagMapper;
 import com.jenschen.request.Page;
 import com.jenschen.request.TagReq;
 import com.jenschen.entity.TagEntity;
@@ -16,14 +13,11 @@ import com.jenschen.service.AbstractService;
 import com.jenschen.service.CustomerTagService;
 import com.jenschen.service.TagService;
 import com.jenschen.util.ResultUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service

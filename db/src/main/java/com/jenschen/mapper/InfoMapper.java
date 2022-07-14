@@ -1,4 +1,4 @@
-package com.jenschen.dao;
+package com.jenschen.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jenschen.entity.InfoEntity;
