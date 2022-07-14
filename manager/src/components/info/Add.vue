@@ -6,7 +6,7 @@
         :model="info"
         style="width: 100%"
     >
-        <el-form-item label="问卷名">
+        <el-form-item label="名称">
           <el-input v-model="info.name" sytle="width:220px" />
         </el-form-item>
         <el-form-item label="网页标题">
@@ -91,10 +91,10 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="标签" v-if="info.isAutoSend && info.sendCustomerType == 1">
+        <el-form-item label="标签" v-if="info.isAutoSend && info.sendCustomerType === 1">
             <el-input v-model="info.sendCustomers" />
         </el-form-item>
-        <el-form-item label="自定义" v-if="info.isAutoSend && info.sendCustomerType == 2">
+        <el-form-item label="自定义" v-if="info.isAutoSend && info.sendCustomerType === 2">
             <el-input v-model="info.sendCustomers" />
         </el-form-item>
         <el-form-item
@@ -166,8 +166,6 @@ export default {
         {label: "分", value: 1},
         {label: "小时", value: 2},
         {label: "天", value: 3},
-        {label: "周", value: 4},
-        {label: "月", value: 5}
       ],
       isFixedTimeSendOptions:[
         {label: "是", value: 1},
@@ -234,9 +232,6 @@ export default {
 </script>
 
 <style scoped>
-.el-input{
-  width: 220px;
-}
 
 .delayTimer{
   display: flex; 

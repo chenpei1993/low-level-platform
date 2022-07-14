@@ -9,17 +9,20 @@
         <el-button link type="primary" size="small" @click="add">添加</el-button>
     </div>
     <div>
-        <el-table :data="tableData" stripe style="width: 100%">
+        <el-table :data="infos" stripe style="width: 100%" v-loading="loading">
             <el-table-column prop="name" label="名称"/>
-            <el-table-column prop="startDateTime" label="开始时间" width="150" />
-            <el-table-column prop="endDateTime" label="结束时间" width="150"/>
-            <el-table-column prop="sendDateTime" label="推送时间"/>
-            <el-table-column prop="delayTipTimer" label="延时提醒任务"/>
+            <el-table-column prop="title" label="网页标题"/>
+            <el-table-column prop="startDateTime" label="重复次数"/>
+            <el-table-column prop="startDateTime" label="活动开始时间" width="150" />
+            <el-table-column prop="endDateTime" label="活动结束时间" width="150"/>
+            <el-table-column prop="endDateTime" label="是否定时推送" width="150"/>
             <el-table-column prop="status" label="状态"/>
             <el-table-column prop="createdAt" label="创建时间" />
             <el-table-column prop="updatedAt" label="更新时间" />
             <el-table-column fixed="right" label="操作" style="width: 200px">
                 <template #default="scope">
+                    <el-button link type="primary" size="small" @click="showInfoDetail">问卷详情</el-button>
+                    <el-button link type="primary" size="small" @click="showTipDetail">提醒器详情</el-button>
                     <el-button link type="primary" size="small" @click="editQuestions">编辑问题</el-button>
                     <el-button link type="primary" size="small" @click="publish">发布</el-button>
                     <el-button link type="primary" size="small" @click="preview">预览</el-button>
@@ -30,6 +33,17 @@
                 </template>
             </el-table-column>
         </el-table>
+        <div class="pagination">
+          <el-pagination
+              v-model:currentPage="currentPage"
+              v-model:page-size="pageSize"
+              :page-sizes="[20, 50, 100, 200, 300, 400]"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+          />
+        </div>
     </div>
     <el-drawer
           v-model="isShowAddOrEditPanel"
@@ -39,46 +53,53 @@
           size="50%"
       >
         <Add :info="info" @addOrEditInfo="addOrEditInfo"/>
-    </el-drawer>    
+    </el-drawer>
+    <el-drawer
+        v-model="isShowInfoDetail"
+        direction="ltr"
+        title="问卷详情"
+        :before-close="closeInfoDetail"
+        size="50%"
+    >
+      <InfoDetail :infoDetails="infoDetails"/>
+    </el-drawer>
+    <el-drawer
+        v-model="isShowTipDetail"
+        direction="ltr"
+        title="提醒器详情"
+        :before-close="closeTipDetail"
+        size="50%"
+    >
+      <TipDetail :infos="infos"/>
+    </el-drawer>
   </div>
 </template>
 
-<script setup>
-const tableData = [
-  {
-    name: "问卷一",
-    startDateTime: "2022-08-08 10:00:00",
-    endDateTime: "2022-09-08 10:00:00",
-    timer: "",
-    delayTipTimer: "",
-    createdAt: "2022-08-08 10:00:00",
-    updatedAt: "2022-09-08 10:00:00",
-  },
-]
-</script>
-
-
 <script>
-/**
- * 1 使用中
- * 2 已发布
- * 3 停用
- */
 import Add from '@/components/info/Add.vue'
+import InfoDetail from '@/components/info/InfoDetail.vue'
+import TipDetail from '@/components/info/TipDetail.vue'
 import { ElMessage } from 'element-plus'
 import { inject } from "vue";
 
 export default {
   name: 'Info',
   components: {
-    Add
+    Add, InfoDetail, TipDetail
   },
   data(){
     return {
+      loading: false,
+      currentPage: 1,
+      pageSize: 50,
+      total: 0,
+      isShowInfoDetail: false,
+      isShowTipDetail: false,
       addOrEdit: "未知",
       isShowAddOrEditPanel: false,
       info: {},
-      infos: []
+      infos: [],
+      infoDetails:[]
     }
   }, 
   methods: {
@@ -94,8 +115,8 @@ export default {
 
         if(info.sendDateTime > info.endDateTime && info.sendDateTime < info.endDateTime){
           ElMessage.error("问卷推送时间应该大于问卷开始时间，并且小于问卷结束时间")
-        } 
-
+        }
+        this.info.repeatValue = info.repeatValue.split(",")
         this.http.put("info", info)
             .then(()=>{
               ElMessage({
@@ -108,12 +129,9 @@ export default {
     preview(){
 
     },
-    refresh(){
-
-    },
     edit(info){
       console.log(info)
-      this.addOrEdit = "编辑",
+      this.addOrEdit = "编辑"
       this.info = info
       this.isShowAddOrEditPanel = true
     },
@@ -127,7 +145,7 @@ export default {
 
     },
     add(){
-        this.addOrEdit = "添加",
+        this.addOrEdit = "添加"
         this.info = {}
         this.isShowAddOrEditPanel = true
     },
@@ -136,10 +154,42 @@ export default {
     },
     editQuestions(){
       this.$router.push({ name: 'Question', params: {id: this.info.id}})
+    },
+    showInfoDetail(){
+
+    },
+    showTipDetail(){
+
+    },
+    closeInfoDetail(){
+
+    },
+    closeTipDetail(){
+
+    },
+    handleSizeChange(size){
+      this.pageSize = size
+      this.refresh()
+    },
+    handleCurrentChange(page){
+      this.currentPage = page
+    },
+    refresh(){
+      this.loading = true
+      this.http.post("/info/page", {currentPage: this.currentPage, pageSize: this.pageSize})
+          .then((res) => {
+            ElMessage.success("更新成功")
+            this.loading = false
+            this.infos = res.data
+            this.total = res.total
+          }).catch(()=>{
+        this.loading = false
+      })
     }
   },
   created(){
     this.http = inject("$http")
+    this.refresh();
   }
 }
 </script>

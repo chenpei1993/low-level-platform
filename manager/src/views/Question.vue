@@ -7,12 +7,6 @@
   <el-divider />
   <div class="question">
     <div >
-      <div class="item">
-        <div class="item">网页标题</div>
-        <div class="item">
-          <el-input v-model="info.pageTitle" placeholder="网页标题" />
-        </div>
-      </div>
       <div class="item">  
         <div class="item">标题</div>
         <div class="item">
