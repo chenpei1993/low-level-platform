@@ -1,6 +1,7 @@
 package com.jenschen.service;
 
 import com.jenschen.base.Response;
+import com.jenschen.entity.InfoEntity;
 import com.jenschen.request.InfoReq;
 import com.jenschen.request.Page;
 
@@ -33,4 +34,11 @@ public interface InfoService {
      * @return 结果
      */
     Response<Object> deleted(int id);
+
+    /**
+     *  根据活动Id获取一条数据
+     * @param id 活动id
+     * @return 结果
+     */
+    InfoEntity get(int id);
 }

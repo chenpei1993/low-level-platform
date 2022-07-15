@@ -23,6 +23,7 @@ import com.jenschen.service.impl.taskConverter.InfoSpliterFactory;
 import com.jenschen.util.ResultUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +37,7 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
     private InfoMapper infoMapper;
 
     @Autowired
+    @Qualifier("TaskServiceImpl")
     private TaskService taskService;
 
     @Autowired
@@ -90,7 +92,7 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
         BeanUtils.copyProperties(infoDTO, infoEntity);
         infoEntity.updated(LocalDateTime.now(), 1);
         infoMapper.updateById(infoEntity);
-        return null;
+        return ResultUtil.success();
     }
 
     @Override
@@ -99,6 +101,11 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
         infoEntity.setId(id);
         infoEntity.deleted(LocalDateTime.now(), 1);
         infoMapper.updateById(infoEntity);
-        return null;
+        return ResultUtil.success();
+    }
+
+    @Override
+    public InfoEntity get(int id) {
+        return  infoMapper.selectById(id);
     }
 }

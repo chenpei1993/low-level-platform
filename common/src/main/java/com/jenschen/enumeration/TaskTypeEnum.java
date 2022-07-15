@@ -2,7 +2,7 @@ package com.jenschen.enumeration;
 
 public enum TaskTypeEnum implements BaseEnum{
     SEND(1, "推送任务"),
-    DELAY(2, "延时任务");
+    TIP(2, "延时任务");
 
     private final int value;
     private final String remark;

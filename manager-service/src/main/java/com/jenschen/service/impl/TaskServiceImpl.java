@@ -1,6 +1,5 @@
 package com.jenschen.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import com.jenschen.base.Response;
 import com.jenschen.entity.InfoEntity;
@@ -8,25 +7,27 @@ import com.jenschen.enumeration.RepeatCollectTypeEnum;
 import com.jenschen.enumeration.TaskStatusEnum;
 import com.jenschen.enumeration.TaskTypeEnum;
 import com.jenschen.enumeration.TimeUnitEnum;
+import com.jenschen.exception.BizException;
 import com.jenschen.mapper.TaskMapper;
 import com.jenschen.request.InfoReq;
+import com.jenschen.request.SendTimerPageReq;
 import com.jenschen.request.TaskReq;
 import com.jenschen.entity.TaskEntity;
+import com.jenschen.request.TipTimerPageReq;
+import com.jenschen.service.AbstractService;
 import com.jenschen.service.TaskService;
-import com.jenschen.service.impl.taskConverter.InfoSpliter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-@Service
-public class TaskServiceImpl implements TaskService {
+@Service("TaskServiceImpl")
+public class TaskServiceImpl extends AbstractService<TaskEntity> implements TaskService {
 
     @Autowired
-    private TaskMapper taskMapper;
+    protected TaskMapper taskMapper;
 
     @Override
     public List<TaskEntity> insertSendTask(InfoReq infoReq, List<InfoEntity> infoEntityList) {
@@ -73,7 +74,7 @@ public class TaskServiceImpl implements TaskService {
                 dateTime = dateTime.minusMinutes(beforeMinutes(taskReq.getTimeUnit(), taskReq.getValue()));
                 TaskEntity taskEntity = TaskEntity.builder()
                         .infoId(infoEntity.getId())
-                        .type(TaskTypeEnum.DELAY)
+                        .type(TaskTypeEnum.TIP)
                         .executionDatetime(dateTime)
                         .sendType(infoReq.getSendType())
                         .sendMessage(infoReq.getSendMessage())
@@ -105,5 +106,15 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Response<Object> deleted(int id) {
         return null;
+    }
+
+    @Override
+    public Response<Object> pageSendTimer(SendTimerPageReq sendTimerPageReq) {
+        throw new BizException("未定义行为");
+    }
+
+    @Override
+    public Response<Object> pageTipTimer(TipTimerPageReq tipTimerPageReq) {
+        throw new BizException("未定义行为");
     }
 }
