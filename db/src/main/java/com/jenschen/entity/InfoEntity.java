@@ -6,7 +6,11 @@ import com.jenschen.enumeration.*;
 import com.jenschen.typehandler.ValueEnumTypeHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.ResultType;
+import org.apache.ibatis.type.JdbcType;
 
+import java.sql.JDBCType;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -28,14 +32,12 @@ public class InfoEntity extends BaseEntity{
      * 类型
      * 参考 InfoTypeEnum
      */
-    @TableField(typeHandler = ValueEnumTypeHandler.class)
     private InfoTypeEnum type;
 
     /**
      * 活动重复类型
      * RepeatCollectTypeEnum
      */
-    @TableField(typeHandler = ValueEnumTypeHandler.class)
     private RepeatCollectTypeEnum repeatCollectType;
 
     /**
@@ -71,7 +73,6 @@ public class InfoEntity extends BaseEntity{
     /**
      * 定时任务发送方式
      */
-    @TableField(typeHandler = ValueEnumTypeHandler.class)
     private SendTypeEnum sendType;
 
     /**
@@ -82,7 +83,6 @@ public class InfoEntity extends BaseEntity{
     /**
      * 发送的客户类型
      */
-    @TableField(typeHandler = ValueEnumTypeHandler.class)
     private SendCustomerTypeEnum sendCustomerType;
 
     /**
@@ -98,7 +98,6 @@ public class InfoEntity extends BaseEntity{
     /**
      * 活动的状态
      */
-    @TableField(typeHandler = ValueEnumTypeHandler.class)
     private InfoStatusEnum status;
 
     /**

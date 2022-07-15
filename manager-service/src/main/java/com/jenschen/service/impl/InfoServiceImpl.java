@@ -12,6 +12,7 @@ import com.jenschen.enumeration.InfoTypeEnum;
 import com.jenschen.request.InfoReq;
 import com.jenschen.entity.InfoEntity;
 import com.jenschen.request.Page;
+import com.jenschen.response.InfoResp;
 import com.jenschen.response.PageResp;
 import com.jenschen.response.TagResp;
 import com.jenschen.service.AbstractService;
@@ -43,8 +44,8 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
     @Override
     public Response<Object> page(Page page) {
         QueryWrapper<InfoEntity> queryWrapper = this.getPageQueryWrapper(page);
-        List<InfoEntity> tagEntityList = infoMapper.selectList(queryWrapper);
-        List<TagResp> resp = BeanUtil.copyToList(tagEntityList, TagResp.class);
+        List<InfoEntity> infoEntityList = infoMapper.selectList(queryWrapper);
+        List<InfoResp> resp = BeanUtil.copyToList(infoEntityList, InfoResp.class);
         int count = infoMapper.selectCount(queryWrapper);
         return ResultUtil.success(PageResp.build(count, resp));
     }

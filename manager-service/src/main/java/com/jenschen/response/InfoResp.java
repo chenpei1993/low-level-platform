@@ -1,17 +1,24 @@
-package com.jenschen.request;
+package com.jenschen.response;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jenschen.enumeration.InfoTypeEnum;
 import com.jenschen.enumeration.RepeatCollectTypeEnum;
 import com.jenschen.enumeration.SendCustomerTypeEnum;
 import com.jenschen.enumeration.SendTypeEnum;
+import com.jenschen.request.TaskReq;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class InfoReq {
+@EqualsAndHashCode(callSuper = true)
+public class InfoResp extends BaseResponse {
+    /**
+     * 主键Id
+     */
+    private int id;
     /**
      * 活动名
      */
@@ -43,26 +50,14 @@ public class InfoReq {
     /**
      * 活动开始时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime startDateTime;
     /**
      * 活动结束时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime endDateTime;
 
-    /**
-     * 一次活动的开始小时
-     */
-    private int beginHours;
-
-    /**
-     * 一次活动的开始分钟
-     */
-    private int beginMinutes;
-
-    /**
-     * 一次活动时长
-     */
-    private int total;
     /**
      * 发送的方式
      */
@@ -71,26 +66,18 @@ public class InfoReq {
     /**
      * 发送的时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime sendDateTime;
 
     /**
      * 发送的消息模板
      */
     private String sendMessage;
-    /**
-     * 发送的客户类型
-     */
-    private SendCustomerTypeEnum sendCustomerType;
 
     /**
      * 发送的客户
      */
     private String sendCustomers;
-
-    /**
-     * 延时提醒任务
-     */
-    private List<TaskReq> delayTipTimers;
 
     /**
      * 状态

@@ -10,19 +10,40 @@
     </div>
     <div>
         <el-table :data="infos" stripe style="width: 100%" v-loading="loading">
-            <el-table-column prop="name" label="名称"/>
+            <el-table-column prop="name" label="名称" width="100"/>
             <el-table-column prop="title" label="网页标题"/>
-            <el-table-column prop="startDateTime" label="重复次数"/>
-            <el-table-column prop="startDateTime" label="活动开始时间" width="150" />
-            <el-table-column prop="endDateTime" label="活动结束时间" width="150"/>
-            <el-table-column prop="endDateTime" label="是否定时推送" width="150"/>
-            <el-table-column prop="status" label="状态"/>
-            <el-table-column prop="createdAt" label="创建时间" />
-            <el-table-column prop="updatedAt" label="更新时间" />
-            <el-table-column fixed="right" label="操作" style="width: 200px">
+            <el-table-column prop="" label="重复信息" width="100">
+              <template #default="scope">
+                <span> {{ getRepeatInfo(scope.row) }}</span>                  
+              </template>  
+            </el-table-column>
+            <el-table-column prop="startDateTime" label="活动开始时间" width="180" />
+            <el-table-column prop="endDateTime" label="推送定时器" width="180"/>
+            <el-table-column prop="endDateTime" label="活动结束时间" width="180"/>
+            <el-table-column prop="autoSend" label="定时推送" width="100">
+              <template #default="scope">
+                <span>{{scope.row.isAutoSend ? "否" : "是"}}</span>
+              </template>  
+            </el-table-column>
+            <el-table-column prop="" label="提醒定时器" width="100">
+              <template #default="scope">
+                  <el-button link type="primary" size="small" @click="showInfoDetail(scope.row.id)">提醒定时器详情</el-button>
+              </template>  
+            </el-table-column>
+            <el-table-column prop="" label="推送定时器" width="100">
+              <template #default="scope">
+                  <el-button link type="primary" size="small" @click="showTipDetail(scope.row.id)">推送定时器详情</el-button>
+              </template>  
+            </el-table-column>  
+            <el-table-column prop="status" label="状态">
+              <template #default="scope">
+                <span>{{getStatus(scope.row.status)}}</span>
+              </template>  
+            </el-table-column>
+            <el-table-column prop="createdAt" label="创建时间" width="180"/>
+            <el-table-column prop="updatedAt" label="更新时间" width="180"/>
+            <el-table-column fixed="right" label="操作" width="250">
                 <template #default="scope">
-                    <el-button link type="primary" size="small" @click="showInfoDetail">问卷详情</el-button>
-                    <el-button link type="primary" size="small" @click="showTipDetail">提醒器详情</el-button>
                     <el-button link type="primary" size="small" @click="editQuestions">编辑问题</el-button>
                     <el-button link type="primary" size="small" @click="publish">发布</el-button>
                     <el-button link type="primary" size="small" @click="preview">预览</el-button>
@@ -80,7 +101,7 @@ import Add from '@/components/info/Add.vue'
 import InfoDetail from '@/components/info/InfoDetail.vue'
 import TipDetail from '@/components/info/TipDetail.vue'
 import { ElMessage } from 'element-plus'
-import { inject } from "vue";
+import { inject } from "vue"
 
 export default {
   name: 'Info',
@@ -116,7 +137,10 @@ export default {
         if(info.sendDateTime > info.endDateTime && info.sendDateTime < info.endDateTime){
           ElMessage.error("问卷推送时间应该大于问卷开始时间，并且小于问卷结束时间")
         }
-        this.info.repeatValue = info.repeatValue.split(",")
+        
+        if(this.info.repeatValue !== null && typeof(this.info.repeatValue) !== "undefined"){
+          this.info.repeatValue = this.info.repeatValue.split(",")
+        }
         this.http.put("info", info)
             .then(()=>{
               ElMessage({
@@ -156,16 +180,56 @@ export default {
       this.$router.push({ name: 'Question', params: {id: this.info.id}})
     },
     showInfoDetail(){
-
-    },
-    showTipDetail(){
-
+      this.isShowInfoDetail = true
+      this.http.post("/info/subinfo", {currentPage: this.currentPage, pageSize: this.pageSize})
+          .then((res) => {
+            ElMessage.success("更新成功")
+            this.loading = false
+            this.infos = res.data
+            this.total = res.total
+          }).catch(()=>{
+        this.loading = false
+      })
     },
     closeInfoDetail(){
-
+      this.isShowInfoDetail = false
+    },
+    showTipDetail(){
+      this.isShowTipDetail = true
+      this.http.post("/info/tip", {currentPage: this.currentPage, pageSize: this.pageSize})
+          .then((res) => {
+            ElMessage.success("更新成功")
+            this.loading = false
+            this.infos = res.data
+            this.total = res.total
+          }).catch(()=>{
+        this.loading = false
+      })
     },
     closeTipDetail(){
-
+      this.isShowTipDetail = false
+    },
+    getStatus(status){
+      if(status === 1){
+        return "可编辑"
+      }else if(status === 2){
+        return "已发布"
+      }else if(status === 3){
+        return "已停用"
+      }
+      return "未知"
+    },
+    getRepeatInfo(row){
+      if(row.repeatCollectType === 1){
+        return "一次"
+      }else if(row.repeatCollectType === 10){
+        return "每日"
+      }else if(row.repeatCollectType === 100){
+        return "每周"
+      }else if(row.repeatCollectType === 1000){
+        return "每周"
+      }
+      return "每月"
     },
     handleSizeChange(size){
       this.pageSize = size
