@@ -42,7 +42,7 @@ public class InfoResp extends BaseResponse {
     /**
      * 定时发送
      */
-    private boolean isAutoSend;
+    private boolean autoSend;
     /**
      * 网页标题
      */

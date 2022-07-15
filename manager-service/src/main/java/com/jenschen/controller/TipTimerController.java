@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("tip_timer")
+@CrossOrigin("*")
 public class TipTimerController {
 
     @Autowired

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("send_timer")
+@CrossOrigin("*")
 public class SendTimerController {
 
     @Autowired

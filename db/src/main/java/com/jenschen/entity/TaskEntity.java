@@ -1,6 +1,7 @@
 package com.jenschen.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.jenschen.enumeration.SendTypeEnum;
 import com.jenschen.enumeration.TaskStatusEnum;
 import com.jenschen.enumeration.TaskTypeEnum;
@@ -10,13 +11,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * 任务
  */
 @Data
 @Builder
+@TableName("task")
 @EqualsAndHashCode(callSuper = true)
 public class TaskEntity extends BaseEntity{
 
@@ -34,7 +35,7 @@ public class TaskEntity extends BaseEntity{
     /**
      * 执行时间
      */
-    private LocalDateTime executionDatetime;
+    private LocalDateTime executionDateTime;
 
     /**
      * 发送方式

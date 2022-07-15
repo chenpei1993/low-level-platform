@@ -13,11 +13,27 @@ import java.util.List;
 
 public interface TaskService {
 
-
+    /**
+     * 插入推送定时器
+     * @param infoReq info请求
+     * @param infoEntityList info信息列表
+     * @return 分割的推送任务
+     */
     List<TaskEntity> insertSendTask(InfoReq infoReq, List<InfoEntity> infoEntityList);
 
-
+    /**
+     * 插入提醒定时器
+     * @param infoReq info请求
+     * @param infoEntityList info信息列表
+     * @return 分割的提醒任务
+     */
     List<TaskEntity> insertTipTask(InfoReq infoReq, List<InfoEntity> infoEntityList);
+
+    /**
+     * 批量保存列表
+     * @param taskEntityList 任务列表
+     */
+    void saveList(List<TaskEntity> taskEntityList);
 
     /**
      * 更新任务

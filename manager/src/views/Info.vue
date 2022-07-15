@@ -22,7 +22,7 @@
             <el-table-column prop="endDateTime" label="活动结束时间" width="180"/>
             <el-table-column prop="autoSend" label="定时推送" width="100">
               <template #default="scope">
-                <span>{{scope.row.isAutoSend ? "否" : "是"}}</span>
+                <span>{{scope.row.autoSend ? "是" : "否"}}</span>
               </template>  
             </el-table-column>
             <el-table-column prop="" label="提醒定时器" width="100">
@@ -73,16 +73,17 @@
           :before-close="closeAddOrEditPanel"
           size="50%"
       >
-        <Add :info="info" @addOrEditInfo="addOrEditInfo"/>
+        <Add :info="info" :tagOptions="tagOptions" @addOrEditInfo="addOrEditInfo"/>
     </el-drawer>
+
     <el-drawer
         v-model="isShowInfoDetail"
         direction="ltr"
-        title="问卷详情"
+        title="定时器详情"
         :before-close="closeInfoDetail"
         size="50%"
     >
-      <InfoDetail :infoDetails="infoDetails"/>
+      <SendDetail :infoDetails="infoDetails"/>
     </el-drawer>
     <el-drawer
         v-model="isShowTipDetail"
@@ -98,7 +99,7 @@
 
 <script>
 import Add from '@/components/info/Add.vue'
-import InfoDetail from '@/components/info/InfoDetail.vue'
+import SendDetail from '@/components/info/SendDetail.vue'
 import TipDetail from '@/components/info/TipDetail.vue'
 import { ElMessage } from 'element-plus'
 import { inject } from "vue"
@@ -106,7 +107,7 @@ import { inject } from "vue"
 export default {
   name: 'Info',
   components: {
-    Add, InfoDetail, TipDetail
+    Add, SendDetail, TipDetail
   },
   data(){
     return {
@@ -120,7 +121,8 @@ export default {
       isShowAddOrEditPanel: false,
       info: {},
       infos: [],
-      infoDetails:[]
+      infoDetails:[],
+      tagOptions:[]
     }
   }, 
   methods: {
@@ -169,9 +171,9 @@ export default {
 
     },
     add(){
-        this.addOrEdit = "添加"
-        this.info = {}
-        this.isShowAddOrEditPanel = true
+      this.addOrEdit = "添加"
+      this.info = {repeatCollectType: 1}
+      this.isShowAddOrEditPanel = true
     },
     showResult(){
       this.$router.push({ name: 'InfoResult', params: {id: this.info.id}})   
@@ -181,15 +183,7 @@ export default {
     },
     showInfoDetail(){
       this.isShowInfoDetail = true
-      this.http.post("/info/subinfo", {currentPage: this.currentPage, pageSize: this.pageSize})
-          .then((res) => {
-            ElMessage.success("更新成功")
-            this.loading = false
-            this.infos = res.data
-            this.total = res.total
-          }).catch(()=>{
-        this.loading = false
-      })
+
     },
     closeInfoDetail(){
       this.isShowInfoDetail = false
@@ -249,11 +243,19 @@ export default {
           }).catch(()=>{
         this.loading = false
       })
+    },
+    refreshTagOptions(){
+      this.http.get("/tag/all")
+          .then((res) => {
+            this.tagOptions = res
+          }).catch(()=>{
+      })
     }
   },
   created(){
     this.http = inject("$http")
     this.refresh();
+    this.refreshTagOptions();
   }
 }
 </script>

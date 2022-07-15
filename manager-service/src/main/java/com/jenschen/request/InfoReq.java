@@ -35,7 +35,7 @@ public class InfoReq {
     /**
      * 定时发送
      */
-    private boolean isAutoSend;
+    private boolean autoSend;
     /**
      * 网页标题
      */

@@ -48,7 +48,7 @@ public class InfoEntity extends BaseEntity{
     /**
      * 是否开启定时发送功能
      */
-    private boolean isAutoSend;
+    private boolean autoSend;
 
     /**
      * 页面标题

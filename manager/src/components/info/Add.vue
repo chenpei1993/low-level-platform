@@ -40,17 +40,17 @@
           @change="changeDatetimeRange"
         />
       </el-form-item>
-      <el-form-item label="开始时间" v-if="info.repeatCollectType !== 1">
+      <el-form-item label="开始时间" v-if="info.repeatCollectType !== 1 ">
         <el-input v-model="info.beginHours"  style="width: 50px; margin-right: 3px"/><span class="gap">时</span>
         <el-input v-model="info.beginMinutes"  style="width: 50px; margin-right: 3px" /><span class="gap">分</span>
       </el-form-item>
-      <el-form-item label="时长" v-if="info.repeatCollectType !== 1">
+      <el-form-item label="时长" v-if="info.repeatCollectType !== 1 ">
         <el-input v-model="total.days" style="width: 50px; margin-right: 3px" /><span class="gap">天</span>
         <el-input v-model="total.hours"  style="width: 50px; margin-right: 3px"/><span class="gap">时</span>
         <el-input v-model="total.minutes"  style="width: 50px; margin-right: 3px" /><span class="gap">分</span>
       </el-form-item>
         <el-form-item label="是否定时推送">
-            <el-select v-model="info.isAutoSend">
+            <el-select v-model="info.autoSend">
               <el-option
                 v-for="item in isFixedTimeSendOptions"
                 :key="item.value"
@@ -59,11 +59,11 @@
               />
             </el-select>
         </el-form-item>
-      <el-form-item label="推送的文本模板" v-if="info.isAutoSend">
+      <el-form-item label="推送的文本模板" v-if="info.autoSend">
         <el-input v-model="info.sendMessage" type="textarea" sytle="width:200px" />
       </el-form-item>
 
-        <el-form-item label="定时推送时间" v-if="info.isAutoSend" >
+        <el-form-item label="定时推送时间" v-if="info.autoSend" >
             <el-date-picker
               v-model="info.sendDateTime"
               type="datetime"
@@ -71,7 +71,7 @@
               placeholder="选择推送日期时间"
             />
         </el-form-item>
-        <el-form-item label="推送方式" v-if="info.isAutoSend">
+        <el-form-item label="推送方式" v-if="info.autoSend">
           <el-select v-model="info.sendType">
             <el-option
               v-for="item in sendTypeOptions"
@@ -81,7 +81,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="发送人群类型" v-if="info.isAutoSend">
+        <el-form-item label="发送人群类型" v-if="info.autoSend">
           <el-select v-model="info.sendCustomerType">
             <el-option
               v-for="item in sendCustomerTypeOptions"
@@ -91,11 +91,18 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="标签" v-if="info.isAutoSend && info.sendCustomerType === 1">
-            <el-input v-model="info.sendCustomers" />
+        <el-form-item label="自定义" v-if="info.autoSend && info.sendCustomerType === 1">
+          <el-input type="textarea" v-model="info.sendCustomers" />
         </el-form-item>
-        <el-form-item label="自定义" v-if="info.isAutoSend && info.sendCustomerType === 2">
-            <el-input v-model="info.sendCustomers" />
+        <el-form-item label="标签" v-if="info.autoSend && info.sendCustomerType === 2">
+          <el-select v-model="info.sendCustomers" multiple>
+            <el-option
+                v-for="item in tagOptions"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item
           v-for="(delayTipTimer, index) in info.delayTipTimers"
@@ -194,7 +201,7 @@ export default {
       type: Object,
       default () {
         return {
-            isAutoSend: false,
+            autoSend: false,
             repeatCollectType: -1,
             repeatValue: "",
             isFixedTimeSend: true,
@@ -203,6 +210,13 @@ export default {
             beginMinutes: 0,
             time: 0
         }
+      }
+    },
+    tagOptions:{
+      require: true,
+      type: Object,
+      default () {
+        return []
       }
     }
   },

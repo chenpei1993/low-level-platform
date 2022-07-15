@@ -38,11 +38,12 @@ public class TaskServiceImpl extends AbstractService<TaskEntity> implements Task
             TaskEntity taskEntity = TaskEntity.builder()
                         .infoId(infoEntity.getId())
                         .type(TaskTypeEnum.SEND)
-                        .executionDatetime(sendDateTime)
+                        .executionDateTime(sendDateTime)
                         .sendType(infoReq.getSendType())
                         .sendMessage(infoReq.getSendMessage())
                         .status(TaskStatusEnum.INIT)
                         .build();
+            taskEntity.created(LocalDateTime.now(), 1);
             list.add(taskEntity);
             return list;
         }
@@ -53,11 +54,12 @@ public class TaskServiceImpl extends AbstractService<TaskEntity> implements Task
             TaskEntity taskEntity = TaskEntity.builder()
                     .infoId(infoEntity.getId())
                     .type(TaskTypeEnum.SEND)
-                    .executionDatetime(dateTime)
+                    .executionDateTime(dateTime)
                     .sendType(infoReq.getSendType())
                     .sendMessage(infoReq.getSendMessage())
                     .status(TaskStatusEnum.INIT)
                     .build();
+            taskEntity.created(LocalDateTime.now(), 1);
             list.add(taskEntity);
         }
         return list;
@@ -75,7 +77,7 @@ public class TaskServiceImpl extends AbstractService<TaskEntity> implements Task
                 TaskEntity taskEntity = TaskEntity.builder()
                         .infoId(infoEntity.getId())
                         .type(TaskTypeEnum.TIP)
-                        .executionDatetime(dateTime)
+                        .executionDateTime(dateTime)
                         .sendType(infoReq.getSendType())
                         .sendMessage(infoReq.getSendMessage())
                         .status(TaskStatusEnum.INIT)
@@ -84,6 +86,13 @@ public class TaskServiceImpl extends AbstractService<TaskEntity> implements Task
             }
         }
         return delayList;
+    }
+
+    @Override
+    public void saveList(List<TaskEntity> taskEntityList) {
+        for(TaskEntity taskEntity : taskEntityList){
+            taskMapper.insert(taskEntity);
+        }
     }
 
     private int beforeMinutes(TimeUnitEnum timeUnit, int value){
