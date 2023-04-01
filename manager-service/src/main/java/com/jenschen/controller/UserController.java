@@ -15,13 +15,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
+    @PostMapping("login")
     public Response<Object> login(@RequestBody @Validated UserLoginReq userLoginReq){
         return userService.login(userLoginReq);
     }
 
 
-    @DeleteMapping
+    @DeleteMapping("logout")
     public Response<Object> logout(@RequestBody @Validated UserLoginReq userLoginReq){
         return userService.logout(userLoginReq);
     }

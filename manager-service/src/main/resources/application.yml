@@ -3,6 +3,8 @@ server:
     context-path: "/manage"
   port: 8090
 spring:
+  security:
+    prefix: lowcodeplatform
   datasource:
     url: jdbc:mysql://192.168.221.128:3306/manager?useUnicode=true&characterEncoding=utf8
     driverClassName: com.mysql.cj.jdbc.Driver
@@ -16,3 +18,8 @@ mybatis-plus:
 logging:
   level:
     com.jenschen.mapper: debug
+jwt:
+  key-store-path: keys/keystore.jks
+  key-store-password: 123456
+  key-alias: jwtsigning
+  private-key-password: 123456

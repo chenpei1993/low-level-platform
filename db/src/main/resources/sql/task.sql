@@ -1,5 +1,4 @@
-create table task
-(
+create table if not exists task (
     id                int auto_increment,
     type              int               not null,
     info_id            int               not null,

@@ -51,7 +51,7 @@ public class BaseEntity {
     private LocalDateTime updatedAt;
 
     /**
-     * 更信任
+     * 更新人
      */
     private int updatedBy;
 

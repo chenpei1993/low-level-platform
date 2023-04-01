@@ -1,20 +1,6 @@
 <template>
-  <div class="common-layout">
-    <el-container>
-      <el-header style="padding: 0">
-        <Header />
-      </el-header>
-      <el-container>
-        <el-aside width="200px">
-          <Menu />
-<!--          <router-link to="/">Home</router-link>-->
-<!--          <router-link to="/about">About</router-link>-->
-        </el-aside>
-        <el-main>
-          <router-view/>
-        </el-main>
-      </el-container>
-    </el-container>
+  <div>
+      <router-view/>
   </div>
 
 </template>
@@ -35,6 +21,7 @@ export default {
 html body{
   padding: 0;
   margin: 0;
+  height: 100%;
+  width: 100%;
 }
-
 </style>

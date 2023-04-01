@@ -1,4 +1,4 @@
-create table customerTag
+create table customer_tag
 (
     id         int not null auto_increment,
     customer_id int not null,
@@ -15,11 +15,11 @@ create table customerTag
 );
 
 create index customerTag_isDeleted_index
-    on customerTag (is_deleted);
+    on customer_tag (is_deleted);
 
 create index customerTag_customerId_index
-    on customerTag (customer_id);
+    on customer_tag (customer_id);
 
 create index customerTag_tagId_index
-    on customerTag (tag_id);
+    on customer_tag (tag_id);
 

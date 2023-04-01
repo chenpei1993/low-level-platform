@@ -1,4 +1,4 @@
-create table info
+create table if not exists info
 (
     id            int auto_increment,
     type           int               null,

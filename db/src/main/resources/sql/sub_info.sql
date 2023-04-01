@@ -1,4 +1,4 @@
-create table sub_info
+create table if not exists sub_info
 (
     id            int auto_increment,
     parent_id     int               not null,

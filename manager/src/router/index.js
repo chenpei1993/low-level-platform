@@ -1,16 +1,30 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Question from '../views/Question.vue'
+import Index from '../views/Index.vue'
 import Home from '../views/Home.vue'
 import Custom from '../views/Custom.vue'
 import Info from '../views/Info.vue'
 import InfoResult from '../views/InfoResult.vue'
 import Tag from '../views/Tag.vue'
+import Login from '../views/Login.vue'
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Index',
+    component: Index,
+    children: [
+      {
+        path: '/home',
+        name: 'Home',
+        component: Home
+      },
+    ]
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
   },
   {
     path: '/info',
