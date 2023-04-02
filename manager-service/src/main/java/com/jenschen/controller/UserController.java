@@ -1,8 +1,8 @@
 package com.jenschen.controller;
 
 import com.jenschen.base.Response;
-import com.jenschen.request.TagReq;
-import com.jenschen.request.UserLoginReq;
+import com.jenschen.request.user.UserLoginReq;
+import com.jenschen.request.user.UserPageReq;
 import com.jenschen.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -24,5 +24,11 @@ public class UserController {
     @DeleteMapping("logout")
     public Response<Object> logout(@RequestBody @Validated UserLoginReq userLoginReq){
         return userService.logout(userLoginReq);
+    }
+
+    @PostMapping(value = "/page")
+    @ResponseBody
+    public Response<Object> page(@RequestBody UserPageReq userPageReq){
+        return userService.page(userPageReq);
     }
 }

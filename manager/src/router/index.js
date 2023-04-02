@@ -7,6 +7,10 @@ import Info from '../views/Info.vue'
 import InfoResult from '../views/InfoResult.vue'
 import Tag from '../views/Tag.vue'
 import Login from '../views/Login.vue'
+import User from '../views/User.vue'
+import Role from '../views/Role.vue'
+import Permission from '../views/Permission.vue'
+
 
 const routes = [
   {
@@ -19,45 +23,52 @@ const routes = [
         name: 'Home',
         component: Home
       },
+      {
+        path: '/info',
+        name: 'Info',
+        component: Info
+      },
+      {
+        path: '/info/InfoResult',
+        name: 'InfoResult',
+        component: InfoResult
+      },
+      {
+        path: '/question',
+        name: 'Question',
+        component: Question
+      },
+      {
+        path: '/custom',
+        name: 'Custom',
+        component: Custom
+      },
+      {
+        path: '/tag',
+        name: 'Tag',
+        component: Tag
+      },
+      {
+        path: '/user',
+        name: 'User',
+        component: User
+      },
+      {
+        path: '/role',
+        name: 'Role',
+        component: Role
+      },
+      {
+        path: '/permission',
+        name: 'Permission',
+        component: Permission
+      },
     ]
   },
   {
     path: '/login',
     name: 'Login',
     component: Login
-  },
-  {
-    path: '/info',
-    name: 'Info',
-    component: Info
-  },
-  {
-    path: '/info/InfoResult',
-    name: 'InfoResult',
-    component: InfoResult
-  },
-  { 
-    path: '/question',
-    name: 'Question',
-    component: Question
-  },
-  {
-    path: '/custom',
-    name: 'Custom',
-    component: Custom
-  },
-  {
-    path: '/tag',
-    name: 'Tag',
-    component: Tag
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   }
 ]
 

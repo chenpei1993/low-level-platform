@@ -1,19 +1,19 @@
 <template>
-  <div class="tag">
+  <div class="user">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
-      <el-breadcrumb-item>标签</el-breadcrumb-item>
+      <el-breadcrumb-item>用户</el-breadcrumb-item>
     </el-breadcrumb>
     <el-divider />
     <div>
         <el-button link type="primary" size="small" @click="add">添加</el-button>
     </div>
     <div>
-        <el-table :data="tags" stripe style="width: 100%" v-loading="loading">
-            <el-table-column prop="name" label="标签名"/>
-            <el-table-column prop="color" label="颜色">
+        <el-table :data="users" stripe style="width: 100%" v-loading="loading">
+            <el-table-column prop="username" label="用户名"/>
+            <el-table-column prop="role" label="用户角色">
               <template #default="scope">
-                <el-tag :color="scope.row.color" effect="light" style="width:50px"></el-tag>
+                <el-user :color="scope.row.color" effect="light" style="width:50px"></el-user>
               </template>
             </el-table-column>
             <el-table-column prop="createdAt" label="创建时间" />
@@ -43,7 +43,7 @@
           direction="ltr"
           :before-close="closeAddOrEditPanel"
       >
-        <Add :tag="tag" @addOrEditTag="addOrEditTag"/>
+        <Add :user="user" @addOrEditTag="addOrEditTag"/>
     </el-drawer>
   </div>
 </template>
@@ -54,7 +54,7 @@
  * 2 已发布
  * 3 停用
  */
-import Add from '@/components/tag/Add.vue'
+import Add from '@/components/user/Add.vue'
 //TODO 全局变量
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { inject } from "vue"
@@ -72,7 +72,7 @@ export default {
       total: 0,
       addOrEdit: "未知",
       isShowAddOrEditPanel: false,
-      tag: {},
+      user: {},
       tags:[]
     }
   }, 
@@ -80,22 +80,22 @@ export default {
     closeAddOrEditPanel(){
       this.isShowAddOrEditPanel = false
     },
-    addOrEditTag(tag){
-      if(tag.id == null){
+    addOrEditUser(user){
+      if(user.id == null){
         //添加
-        this.http.put("tag", tag)
+        this.http.put("user", user)
             .then(()=>{
               ElMessage.success("操作成功")
-              this.tag = {}
+              this.user = {}
               this.isShowAddOrEditPanel = false
               this.refresh()
             })
       }else{
         //修改
-        this.http.post("tag", tag)
+        this.http.post("user", user)
             .then(()=>{
               ElMessage.success("操作成功")
-              this.tag = {}
+              this.user = {}
               this.isShowAddOrEditPanel = false
               this.refresh()
             })
@@ -104,12 +104,12 @@ export default {
     },
     edit(row){
       this.addOrEdit = "修改"
-      this.tag = this.lodash.cloneDeep(row)
+      this.user = this.lodash.cloneDeep(row)
       this.isShowAddOrEditPanel = true
     },
     del(row){
         ElMessageBox.confirm(
-            '是否删除标签，会将客户的标签也一并删除',
+            '是否删除该用户',
             'Warning',
         { 
             confirmButtonText: '确定',
@@ -117,20 +117,19 @@ export default {
             type: 'warning',
         })
         .then(() => {
-            this.http.delete("tag/" + row.id)
+            this.http.delete("user/" + row.id)
               .then(()=>{
                 ElMessage.success("操作成功")
                 this.refresh()
               })
         })
         .catch((e) => {
-            console.log(e)
             ElMessage.info('取消删除')
         })
     },
     add(){
       this.addOrEdit = "添加"
-      this.tag = {}
+      this.user = {}
       this.isShowAddOrEditPanel = true
     },
     handleSizeChange(size){
@@ -142,11 +141,11 @@ export default {
     },
     refresh(){
       this.loading = true
-      this.http.post("/tag/page", {currentPage: this.currentPage, pageSize: this.pageSize})
+      this.http.post("/user/page", {currentPage: this.currentPage, pageSize: this.pageSize})
         .then((res) => {
           ElMessage.success("更新成功")
           this.loading = false
-          this.tags = res.data
+          this.users = res.data
           this.total = res.total
         }).catch(()=>{
           this.loading = false

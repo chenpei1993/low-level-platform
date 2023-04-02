@@ -118,7 +118,7 @@ export default {
     },
     edit(row){
       this.addOrEdit = "修改"
-      this.custom = JSON.parse(JSON.stringify(row))
+      this.custom = this.lodash.cloneDeep(row)
       let tags = []
       for(let i = 0; i < row.tags.length; i++){
         tags.push(row.tags[i].id)
@@ -182,6 +182,7 @@ export default {
   },
   created(){
     this.http = inject("$http")
+    this.lodash = inject("lodash")
     this.refresh()
     this.refreshTagOptions()
   }

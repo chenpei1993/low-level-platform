@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jenschen.mapper.RolePermissionMapper">
+    <resultMap id="BaseResultMap" type="com.jenschen.entity.PermissionEntity">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="permission" jdbcType="VARCHAR" property="permission" />
+    </resultMap>
+
+    <select id="getPermissionByRoleId" resultType="com.jenschen.entity.PermissionEntity">
+        select * from permission as t
+            left join role as ct
+            on  ct.id = t.id
+            where ct.id = #{id}
+    </select>
+
+
+</mapper>

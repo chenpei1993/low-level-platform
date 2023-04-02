@@ -1,19 +1,23 @@
 package com.jenschen.service.impl;
 
-import cn.hutool.core.annotation.Alias;
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
-import com.jenschen.entity.QuestionEntity;
+import com.jenschen.entity.RoleEntity;
 import com.jenschen.entity.UserEntity;
 import com.jenschen.exception.BizException;
 import com.jenschen.helper.JwtHelper;
 import com.jenschen.mapper.UserMapper;
-import com.jenschen.request.UserLoginReq;
+import com.jenschen.request.Page;
+import com.jenschen.request.user.UserLoginReq;
+import com.jenschen.request.user.UserReq;
 import com.jenschen.response.LoginResp;
+import com.jenschen.response.PageResp;
+import com.jenschen.response.RoleResp;
+import com.jenschen.response.UserResp;
 import com.jenschen.service.AbstractService;
 import com.jenschen.service.UserService;
 import com.jenschen.util.ResultUtil;
-import org.apache.tomcat.util.http.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -76,6 +80,30 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
     @Override
     public Response<Object> logout(UserLoginReq userLoginReq) {
         UserDetails user = loadUserByUsername(userLoginReq.getUsername());
+        return null;
+    }
+
+    @Override
+    public Response<Object> page(Page page) {
+        QueryWrapper<UserEntity> queryWrapper = this.getPageQueryWrapper(page);
+        List<UserEntity> userEntityList = userMapper.selectList(queryWrapper);
+        List<UserResp> resp = BeanUtil.copyToList(userEntityList, UserResp.class);
+        int count = userMapper.selectCount(queryWrapper);
+        return ResultUtil.success(PageResp.build(count, resp));
+    }
+
+    @Override
+    public Response<Object> add(UserReq userReq) {
+        return null;
+    }
+
+    @Override
+    public Response<Object> edit(UserReq userReq) {
+        return null;
+    }
+
+    @Override
+    public Response<Object> delete(Integer id) {
         return null;
     }
 

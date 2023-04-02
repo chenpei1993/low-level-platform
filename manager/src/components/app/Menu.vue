@@ -6,7 +6,10 @@
         <el-menu-item index="/Info" >问卷</el-menu-item>
         <el-menu-item index="/Custom">客户</el-menu-item>
         <el-menu-item index="/Tag">标签</el-menu-item>
-      </el-menu>  
+        <el-menu-item index="/User">用户</el-menu-item>
+        <el-menu-item index="/Role">角色</el-menu-item>
+        <el-menu-item index="/Permission">权限</el-menu-item>
+      </el-menu>
     </el-scrollbar>
   </div>
 </template>
