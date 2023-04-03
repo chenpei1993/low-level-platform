@@ -5,23 +5,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * 系统用户
- */
 @Data
 @Builder
-@TableName("user")
+@TableName("role_user")
 @EqualsAndHashCode(callSuper = true)
-public class UserEntity extends BaseEntity{
+public class RoleUserEntity extends BaseEntity{
 
     /**
-     * 用户名
+     * 用户ID
      */
-    private String username;
+    private Integer userId;
 
     /**
-     * 用户密码
+     * 角色ID
      */
-    private String password;
-
+    private Integer roleId;
 }

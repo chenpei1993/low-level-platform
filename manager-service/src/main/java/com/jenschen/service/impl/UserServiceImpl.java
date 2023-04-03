@@ -4,9 +4,11 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
 import com.jenschen.entity.RoleEntity;
+import com.jenschen.entity.RoleUserEntity;
 import com.jenschen.entity.UserEntity;
 import com.jenschen.exception.BizException;
 import com.jenschen.helper.JwtHelper;
+import com.jenschen.mapper.RoleUserMapper;
 import com.jenschen.mapper.UserMapper;
 import com.jenschen.request.Page;
 import com.jenschen.request.user.UserLoginReq;
@@ -28,6 +30,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.parser.Entity;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +43,8 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
 
     private final UserMapper userMapper;
 
+    private final RoleUserMapper roleUserMapper;
+
     private final PasswordEncoder passwordEncoder;
 
     private final JwtHelper jwtHelper;
@@ -49,11 +55,18 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
     @Value("${spring.security.prefix}")
     private String prefix;
 
+    /**
+     * 创建用户的默认密码
+     */
+    @Value("${spring.security.defaultPassword}")
+    private String password;
+
     @Autowired
-    public UserServiceImpl(UserMapper userMapper, PasswordEncoder passwordEncoder, JwtHelper jwtHelper){
+    public UserServiceImpl(UserMapper userMapper, RoleUserMapper roleUserMapper, PasswordEncoder passwordEncoder, JwtHelper jwtHelper){
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
         this.jwtHelper = jwtHelper;
+        this.roleUserMapper = roleUserMapper;
     }
 
 
@@ -88,23 +101,67 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
         QueryWrapper<UserEntity> queryWrapper = this.getPageQueryWrapper(page);
         List<UserEntity> userEntityList = userMapper.selectList(queryWrapper);
         List<UserResp> resp = BeanUtil.copyToList(userEntityList, UserResp.class);
+
+        //获得所有角色
+        for(UserResp userResp : resp){
+            List<RoleEntity> roleEntityList = roleUserMapper.getRoleByUserId(userResp.getId());
+            List<RoleResp> roleRespList = BeanUtil.copyToList(roleEntityList, RoleResp.class);
+            userResp.setRoleIds(roleRespList);
+        }
+
         int count = userMapper.selectCount(queryWrapper);
         return ResultUtil.success(PageResp.build(count, resp));
     }
 
     @Override
     public Response<Object> add(UserReq userReq) {
-        return null;
+        UserEntity user = BeanUtil.copyProperties(userReq, UserEntity.class);
+        String password = passwordEncoder.encode(prefix + this.password);
+        user.setPassword(password);
+        user.created(LocalDateTime.now(),1);
+        userMapper.insert(user);
+
+        // 添加用户和角色的关系的表
+        updateRoleUserRelation(userReq, user);
+
+        return ResultUtil.success();
     }
 
     @Override
     public Response<Object> edit(UserReq userReq) {
-        return null;
+        UserEntity user = BeanUtil.copyProperties(userReq, UserEntity.class);
+        user.updated(LocalDateTime.now(), 1);
+        userMapper.updateById(user);
+
+        //先删除
+        roleUserMapper.deleteByUserId(user.getId(), 1);
+
+        // 添加用户和角色的关系的表
+        updateRoleUserRelation(userReq, user);
+
+        return ResultUtil.success();
+    }
+
+    private void updateRoleUserRelation(UserReq userReq, UserEntity user){
+        // 添加用户和角色的关系的表
+        for(Integer roleId : userReq.getRoleIds()){
+            roleUserMapper.insert(RoleUserEntity.builder()
+                    .userId(user.getId())
+                    .roleId(roleId)
+                    .build());
+        }
     }
 
     @Override
     public Response<Object> delete(Integer id) {
-        return null;
+        UserEntity user = userMapper.selectById(id);
+        user.deleted(LocalDateTime.now(), 1);
+        userMapper.updateById(user);
+
+        //同时删除关联表中信息
+        roleUserMapper.deleteByUserId(user.getId(), 1);
+
+        return ResultUtil.success();
     }
 
     @Override

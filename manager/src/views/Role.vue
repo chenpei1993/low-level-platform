@@ -10,7 +10,7 @@
     </div>
     <div style="display: flex; justify-content: space-between;">
         <div style="width: 50%; padding: 20px;">
-          <el-table :data="roles" stripe style="width: 100%" v-loading="loading" @row-click="rowClick">
+          <el-table :data="roles" stripe style="width: 100%" v-loading="loading" @row-click="rowClick" highlight-current-row>
               <el-table-column prop="name" label="角色名"/>
               <el-table-column prop="createdAt" label="创建时间" />
               <el-table-column prop="updatedAt" label="更新时间" />
@@ -34,13 +34,17 @@
           </div>
         </div>
         <div style="width: 50%; padding: 20px;">
-            <div v-for="[key, value] in allPermissions" :key="key">
-                <div>{{value[0].name}}</div>
-                <el-divider></el-divider>
+            <div v-for="[key, value] in allPermissions" :key="key" style="margin-bottom: 10px;">
+                <div>
+                    {{value[0].name}}
+                    <el-checkbox v-model="value[0].checked"></el-checkbox>
+                </div>
+
                 <span v-for="(v, i) in value" :key="i" style="margin-right: 10px;">
-                    <el-checkbox v-if="i !== 0" :value="mappingRolePermission(v.permission)">{{v.name}}</el-checkbox>
+                    <el-checkbox v-if="i !== 0" v-model="v.checked">{{v.name}}</el-checkbox>
                 </span>
             </div>
+            <el-button @click="savePermission">保存</el-button>
         </div>
     </div>
     <el-drawer
@@ -49,7 +53,7 @@
           direction="ltr"
           :before-close="closeAddOrEditPanel"
       >
-        <Add :role="role" @addOrEditTag="addOrEditRole"/>
+        <Add :role="role" @addOrEditRole="addOrEditRole"/>
     </el-drawer>
   </div>
 </template>
@@ -68,6 +72,7 @@ export default {
   },
   data(){
     return {
+        isCheck: true,
       loading: false,
       currentPage: 1,
       pageSize: 50,
@@ -77,7 +82,9 @@ export default {
       role: {},
       roles:[],
       allPermissions: null,
-      currentPermissions: null
+      allPermissionsMap: null,
+      currentPermissions: null,
+      currentRoleId: null
     }
   }, 
   methods: {
@@ -144,22 +151,33 @@ export default {
     handleCurrentChange(page){
       this.currentPage = page
     },
+    savePermission(){
+        console.log(this.currentRoleId)
+    },
     rowClick(row, column, event){
+        this.currentRoleId = row.id
         this.http.get("/permission/" + row.id)
             .then((res) => {
                 this.currentPermissions = new Set()
+                this.allPermissionsMap.forEach(e => {
+                    e.checked = false
+                })
                 res.forEach(e => {
                     this.currentPermissions.add(e.permission)
+                    if(this.allPermissionsMap.has(e.permission)){
+                        let p = this.allPermissionsMap.get(e.permission)
+                        p.checked = true
+                    }
                 })
+                this.$forceUpdate()
             }).catch(()=>{
         })
     },
-    mappingRolePermission(permisson){
-      return this.currentPermissions != null && this.currentPermissions.has(permisson)
-    },
     handlePermissions(permissions){
         this.allPermissions = new Map()
+        this.allPermissionsMap = new Map()
         permissions.forEach(e => {
+            this.allPermissionsMap.set(e.permission, e)
             let t = e.permission.split(":")
             let arr = this.allPermissions.get(t[0])
             if(arr === undefined){

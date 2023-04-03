@@ -7,15 +7,21 @@ import com.jenschen.request.role.RoleReq;
 public interface RoleService {
 
     /**
-     * 分页获取标签
+     * 分页获取角色
      * @param page 分页
      * @return 结果
      */
     Response<Object> page(Page page);
 
     /**
-     * 添加橘色
-     * @param roleReq info id 和问题集合
+     * 获取所有角色
+     * @return 结果
+     */
+    Response<Object> all();
+
+    /**
+     * 添加角色
+     * @param roleReq roleReq
      * @return 结果
      */
     Response<Object> add(RoleReq roleReq);
@@ -29,7 +35,7 @@ public interface RoleService {
 
     /**
      * 根据id 删除角色
-     * @param id 权限id
+     * @param id 角色id
      * @return 结果
      */
     Response<Object> delete(Integer id);

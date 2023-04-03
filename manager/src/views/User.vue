@@ -11,10 +11,15 @@
     <div>
         <el-table :data="users" stripe style="width: 100%" v-loading="loading">
             <el-table-column prop="username" label="用户名"/>
-            <el-table-column prop="role" label="用户角色">
-              <template #default="scope">
-                <el-user :color="scope.row.color" effect="light" style="width:50px"></el-user>
-              </template>
+            <el-table-column prop="roleIds" label="用户角色">
+                <template #default="scope">
+                    <el-tag style="margin-right: 5px;" v-for="role in scope.row.roleIds"
+                            :key="role.id"
+                            type="info"
+                            effect="plain">
+                        {{ role.name }}
+                    </el-tag>
+                </template>
             </el-table-column>
             <el-table-column prop="createdAt" label="创建时间" />
             <el-table-column prop="updatedAt" label="更新时间" />
@@ -43,7 +48,7 @@
           direction="ltr"
           :before-close="closeAddOrEditPanel"
       >
-        <Add :user="user" @addOrEditTag="addOrEditTag"/>
+        <Add :user="user" :roles="roles" @addOrEditUser="addOrEditUser"/>
     </el-drawer>
   </div>
 </template>
@@ -60,7 +65,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { inject } from "vue"
 
 export default {
-  name: 'Tag',
+  name: 'User',
   components: {
     Add
   },
@@ -73,7 +78,8 @@ export default {
       addOrEdit: "未知",
       isShowAddOrEditPanel: false,
       user: {},
-      tags:[]
+      users:[],
+      roles:[]
     }
   }, 
   methods: {
@@ -150,12 +156,18 @@ export default {
         }).catch(()=>{
           this.loading = false
         })
+    },
+    getRoles(){
+      this.http.get("/role/all").then((res) => {
+          this.roles = res
+      })
     }
   },
   created(){
     this.http = inject("$http")
     this.lodash = inject("$lodash")
     this.refresh()
+    this.getRoles()
   }
 }
 </script>

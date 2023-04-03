@@ -55,7 +55,7 @@ export default{
                 password: this.password
             }
             this.http.post("user/login", data).then((data)=>{
-                localStorage.setItem("jwt", data.jwt)
+                sessionStorage.setItem("jwt", data.jwt)
                 //TODO returnValue 处理
                 this.$router.push({ name: 'Home'})
             }).catch(e => {

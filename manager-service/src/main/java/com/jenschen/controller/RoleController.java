@@ -31,6 +31,16 @@ public class RoleController {
         return roleService.page(rolePageReq);
     }
 
+    /**
+     * 获取所有角色
+     * @return 结果
+     */
+    @GetMapping(value = "/all")
+    @ResponseBody
+    public Response<Object> getAllRole(){
+        return roleService.all();
+    }
+
 
     @PutMapping
     public Response<Object> add(@RequestBody @Validated RoleReq roleReq){
@@ -43,7 +53,7 @@ public class RoleController {
     }
 
     /**
-     * 根据 id 删除问卷
+     * 根据 id 删除角色
      * @param id ID
      * @return 结果
      */

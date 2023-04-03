@@ -9,7 +9,15 @@
         <el-form-item label="用户名">
             <el-input v-model="user.username" />
         </el-form-item>
-        <el-form-item label="颜色">
+        <el-form-item label="角色">
+            <el-select v-model="user.roleIds" placeholder="请选择" style="width: 100%;" multiple >
+                <el-option
+                        v-for="item in roles"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id">
+                </el-option>
+            </el-select>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="confirm">确认</el-button>
@@ -36,10 +44,16 @@ export default {
       default () {
         return {
             name: "",
-            group: "",
-            color: "",
+            role: "",
         }
       }
+    },
+    roles: {
+        require: true,
+        type: Array,
+        default() {
+            return [];
+        }
     }
   },
   methods:{

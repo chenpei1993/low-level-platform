@@ -16,7 +16,7 @@ const http = axios.create({
 
 // 数据请求拦截
 http.interceptors.request.use((config) => {
-    let jwt = localStorage.getItem("jwt")
+    let jwt = sessionStorage.getItem("jwt")
     if(StringUtil.isEmpty(jwt)){
         return config;
     }

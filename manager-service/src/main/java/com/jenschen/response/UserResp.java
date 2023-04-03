@@ -1,7 +1,10 @@
 package com.jenschen.response;
 
+import com.jenschen.entity.RoleEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -17,4 +20,8 @@ public class UserResp extends BaseResponse {
      */
     private String username;
 
+    /**
+     * 权限列表
+     */
+    private List<RoleResp> roleIds;
 }

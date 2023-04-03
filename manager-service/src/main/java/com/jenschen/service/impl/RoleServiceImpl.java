@@ -3,8 +3,10 @@ package com.jenschen.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
+import com.jenschen.entity.PermissionEntity;
 import com.jenschen.entity.RoleEntity;
 import com.jenschen.mapper.RoleMapper;
+import com.jenschen.mapper.RoleUserMapper;
 import com.jenschen.request.Page;
 import com.jenschen.request.role.RoleReq;
 import com.jenschen.response.PageResp;
@@ -21,8 +23,11 @@ import java.util.List;
 public class RoleServiceImpl extends AbstractService<RoleEntity> implements RoleService {
     private final RoleMapper roleMapper;
 
-    public RoleServiceImpl(RoleMapper roleMapper){
+    private final RoleUserMapper roleUserMapper;
+
+    public RoleServiceImpl(RoleMapper roleMapper, RoleUserMapper roleUserMapper){
         this.roleMapper = roleMapper;
+        this.roleUserMapper = roleUserMapper;
     }
 
     @Override
@@ -32,6 +37,13 @@ public class RoleServiceImpl extends AbstractService<RoleEntity> implements Role
         List<RoleResp> resp = BeanUtil.copyToList(permissionEntityList, RoleResp.class);
         int count = roleMapper.selectCount(queryWrapper);
         return ResultUtil.success(PageResp.build(count, resp));
+    }
+
+    @Override
+    public Response<Object> all() {
+        QueryWrapper<RoleEntity> queryWrapper = this.getDefaultQuery();
+        List<RoleEntity> roleEntityList = roleMapper.selectList(queryWrapper);
+        return ResultUtil.success(roleEntityList);
     }
 
     @Override
@@ -58,7 +70,10 @@ public class RoleServiceImpl extends AbstractService<RoleEntity> implements Role
         entity.setId(id);
         entity.deleted(LocalDateTime.now(), 1);
         roleMapper.updateById(entity);
-        //TODO 删除用户的标签
+
+        //同时删除角色用户关联表中数据
+        roleUserMapper.deleteByRoleId(id, 1);
+
         return ResultUtil.success();
     }
 

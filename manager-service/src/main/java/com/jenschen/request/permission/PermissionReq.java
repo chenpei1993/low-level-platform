@@ -11,7 +11,6 @@ public class PermissionReq {
     /**
      * 主键ID
      */
-    @NotNull(message = "id不能为空")
     private Integer id;
 
     /**
