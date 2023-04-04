@@ -12,11 +12,4 @@ public class RoleReq {
      * 主键ID
      */
     private Integer id;
-
-    /**
-     * 角色名
-     */
-    @NotBlank(message = "权限名不能为空")
-    private String name;
-
 }

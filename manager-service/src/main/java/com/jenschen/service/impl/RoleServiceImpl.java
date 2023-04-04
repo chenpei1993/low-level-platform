@@ -5,9 +5,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
 import com.jenschen.entity.PermissionEntity;
 import com.jenschen.entity.RoleEntity;
+import com.jenschen.entity.RolePermissionEntity;
 import com.jenschen.mapper.RoleMapper;
+import com.jenschen.mapper.RolePermissionMapper;
 import com.jenschen.mapper.RoleUserMapper;
 import com.jenschen.request.Page;
+import com.jenschen.request.role.RolePermissionReq;
 import com.jenschen.request.role.RoleReq;
 import com.jenschen.response.PageResp;
 import com.jenschen.response.RoleResp;
@@ -25,9 +28,12 @@ public class RoleServiceImpl extends AbstractService<RoleEntity> implements Role
 
     private final RoleUserMapper roleUserMapper;
 
-    public RoleServiceImpl(RoleMapper roleMapper, RoleUserMapper roleUserMapper){
+    private final RolePermissionMapper rolePermissionMapper;
+
+    public RoleServiceImpl(RoleMapper roleMapper, RoleUserMapper roleUserMapper, RolePermissionMapper rolePermissionMapper){
         this.roleMapper = roleMapper;
         this.roleUserMapper = roleUserMapper;
+        this.rolePermissionMapper = rolePermissionMapper;
     }
 
     @Override
@@ -73,6 +79,25 @@ public class RoleServiceImpl extends AbstractService<RoleEntity> implements Role
 
         //同时删除角色用户关联表中数据
         roleUserMapper.deleteByRoleId(id, 1);
+
+        return ResultUtil.success();
+    }
+
+    @Override
+    public Response<Object> updatePermissions(RolePermissionReq rolePermissionReq) {
+        //删除角色权限表中的数据
+        rolePermissionMapper.deletePermissionByRoleId(rolePermissionReq.getRoleId(), 1);
+
+        //重新插入
+        for(Integer permissionIds : rolePermissionReq.getPermissionIds()){
+            RolePermissionEntity entity = RolePermissionEntity
+                                                .builder()
+                                                .role_id(rolePermissionReq.getRoleId())
+                                                .permission_id(permissionIds)
+                                                .build();
+            entity.created(LocalDateTime.now(), 1);
+            rolePermissionMapper.insert(entity);
+        }
 
         return ResultUtil.success();
     }

@@ -6,7 +6,9 @@ public enum ErrorEnum {
     INFO_ERROR_REPEATCOLLECTTYPE(20001, "错误的重复类型"),
     INFO_ERROR_SEND_DATE_TIME(20001, "定时发送时间应该在活动开始时间之后，活动结束时间之前"),
     INVALID_PARAMS(10001, "错误的重复类型"),
-    DELETED_RECORD(10002, "数据已被删除");
+    DELETED_RECORD(10002, "数据已被删除"),
+
+    ACCESS_DENIED(20001, "无访问权限");
 
 
     private final int code;

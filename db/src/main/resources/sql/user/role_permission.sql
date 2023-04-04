@@ -1,4 +1,4 @@
-create table if not exists role_user(
+create table if not exists role_permission(
     id               int auto_increment,
     permission_id    int              not null,
     role_id          int              not null,

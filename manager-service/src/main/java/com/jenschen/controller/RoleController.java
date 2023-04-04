@@ -2,6 +2,7 @@ package com.jenschen.controller;
 
 import com.jenschen.base.Response;
 import com.jenschen.request.role.RolePageReq;
+import com.jenschen.request.role.RolePermissionReq;
 import com.jenschen.request.role.RoleReq;
 import com.jenschen.service.RoleService;
 import org.springframework.validation.annotation.Validated;
@@ -60,6 +61,12 @@ public class RoleController {
     @DeleteMapping("/{id}")
     public Response<Object> del(@PathVariable Integer id){
         return roleService.delete(id);
+    }
+
+
+    @PostMapping("permission")
+    public Response<Object> updatePermissions(@RequestBody @Validated RolePermissionReq rolePermissionReq){
+        return roleService.updatePermissions(rolePermissionReq);
     }
 
 

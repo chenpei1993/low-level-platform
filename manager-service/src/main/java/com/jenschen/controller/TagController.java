@@ -5,6 +5,7 @@ import com.jenschen.request.TagReq;
 import com.jenschen.request.TagPageReq;
 import com.jenschen.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,11 +22,13 @@ public class TagController {
     private TagService tagService;
 
     @PutMapping
+    @PreAuthorize("hasAuthority('tag:add')")
     public Response<Object> add(@RequestBody @Validated TagReq tagReq){
         return tagService.insert(tagReq);
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('tag:edit')")
     public Response<Object> edit(@RequestBody @Validated TagReq tagReq){
         return tagService.update(tagReq);
     }
@@ -36,6 +39,7 @@ public class TagController {
      * @return 结果
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('tag:del')")
     public Response<Object> del(@PathVariable int id){
         return tagService.delete(id);
     }
@@ -65,6 +69,7 @@ public class TagController {
      * @return 结果
      */
     @PostMapping(value = "/page")
+    @PreAuthorize("hasAuthority('tag:query')")
     @ResponseBody
     public Response<Object> page(@RequestBody TagPageReq tagPageReq){
         return tagService.page(tagPageReq);

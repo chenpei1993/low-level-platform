@@ -2,6 +2,7 @@ package com.jenschen.service;
 
 import com.jenschen.base.Response;
 import com.jenschen.request.Page;
+import com.jenschen.request.role.RolePermissionReq;
 import com.jenschen.request.role.RoleReq;
 
 public interface RoleService {
@@ -40,5 +41,11 @@ public interface RoleService {
      */
     Response<Object> delete(Integer id);
 
+
+    /**
+     * 更新角色和权限代码的关联表
+     * @param rolePermissionReq 角色 ID 和权限代码
+     */
+    Response<Object> updatePermissions(RolePermissionReq rolePermissionReq);
 
 }

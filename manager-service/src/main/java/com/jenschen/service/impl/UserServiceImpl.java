@@ -3,39 +3,35 @@ package com.jenschen.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
+import com.jenschen.config.WebSecurityConfig;
 import com.jenschen.entity.RoleEntity;
 import com.jenschen.entity.RoleUserEntity;
 import com.jenschen.entity.UserEntity;
 import com.jenschen.exception.BizException;
 import com.jenschen.helper.JwtHelper;
+import com.jenschen.mapper.RolePermissionMapper;
 import com.jenschen.mapper.RoleUserMapper;
 import com.jenschen.mapper.UserMapper;
 import com.jenschen.request.Page;
 import com.jenschen.request.user.UserLoginReq;
 import com.jenschen.request.user.UserReq;
-import com.jenschen.response.LoginResp;
-import com.jenschen.response.PageResp;
-import com.jenschen.response.RoleResp;
-import com.jenschen.response.UserResp;
+import com.jenschen.response.*;
+import com.jenschen.security.CurrentUser;
 import com.jenschen.service.AbstractService;
 import com.jenschen.service.UserService;
 import com.jenschen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.parser.Entity;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,6 +40,8 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
     private final UserMapper userMapper;
 
     private final RoleUserMapper roleUserMapper;
+
+    private final RolePermissionMapper rolePermissionMapper;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -62,17 +60,20 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
     private String password;
 
     @Autowired
-    public UserServiceImpl(UserMapper userMapper, RoleUserMapper roleUserMapper, PasswordEncoder passwordEncoder, JwtHelper jwtHelper){
+    public UserServiceImpl(UserMapper userMapper, RoleUserMapper roleUserMapper,
+                           PasswordEncoder passwordEncoder, JwtHelper jwtHelper,
+                           RolePermissionMapper rolePermissionMapper){
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
         this.jwtHelper = jwtHelper;
         this.roleUserMapper = roleUserMapper;
+        this.rolePermissionMapper = rolePermissionMapper;
     }
 
 
     @Override
     public Response<Object> login(UserLoginReq userLoginReq) {
-        UserDetails user = loadUserByUsername(userLoginReq.getUsername());
+        CurrentUser user = (CurrentUser) loadUserByUsername(userLoginReq.getUsername());
 
         if(!passwordEncoder.matches(prefix + userLoginReq.getPassword(), user.getPassword())){
             throw new BizException("用户名或者密码错误");
@@ -80,11 +81,12 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
 
         Map<String, String> data = new HashMap<>();
 
+        data.put("user_id", String.valueOf(user.getId()));
         data.put("username", user.getUsername());
         String authorities = user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
-        data.put("authorities", authorities);
+        data.put(WebSecurityConfig.AuthorityClaimsName, authorities);
 
         String jwt = jwtHelper.createJwtForClaims(userLoginReq.getUsername(), data);
         return ResultUtil.success(new LoginResp(jwt));
@@ -168,18 +170,22 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         QueryWrapper<UserEntity> queryWrapper = this.getDefaultQuery();
         queryWrapper.eq("username", username);
+
         UserEntity user = userMapper.selectOne(queryWrapper);
-        List<GrantedAuthority> grantedAuthorities = getGrantedAuthorities();
-        return new User(user.getUsername(),
+        List<GrantedAuthority> grantedAuthorities = getGrantedAuthorities(user.getId());
+
+        return new CurrentUser(user.getId(),
+                user.getUsername(),
                 user.getPassword(),
-                true,
-                true,
-                true,
-                true,
                 grantedAuthorities);
     }
 
-    public List<GrantedAuthority> getGrantedAuthorities() {
-        return Collections.EMPTY_LIST;
+    public List<GrantedAuthority> getGrantedAuthorities(Integer userId) {
+        List<RoleEntity> roleEntityList = roleUserMapper.getRoleByUserId(userId);
+        List<GrantedAuthority> list = new ArrayList<>(roleEntityList.size());
+        for(RoleEntity role : roleEntityList){
+            list.add(new SimpleGrantedAuthority(String.valueOf(role.getId())));
+        }
+        return list;
     }
 }

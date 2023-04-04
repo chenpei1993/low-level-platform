@@ -152,7 +152,25 @@ export default {
       this.currentPage = page
     },
     savePermission(){
-        console.log(this.currentRoleId)
+        if(this.currentRoleId == null){
+            ElMessage.error("请先选择角色！")
+            return
+        }
+        let permissionIds = []
+        for(let [key, value] of this.allPermissions){
+            value.forEach(v => {
+                if(v.checked){
+                    permissionIds.push(v.id)
+                }
+            })
+        }
+        let data = {
+            roleId: this.currentRoleId,
+            permissionIds: permissionIds
+        }
+        this.http.post("/role/permission", data).then(res => {
+            ElMessage.success("保存成功")
+        })
     },
     rowClick(row, column, event){
         this.currentRoleId = row.id

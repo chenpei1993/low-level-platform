@@ -7,7 +7,7 @@
         style="max-width: 460px"
     >
         <el-form-item label="用户名">
-            <el-input v-model="user.username" />
+            <el-input v-model="user.username" :disabled="user.id != null"/>
         </el-form-item>
         <el-form-item label="角色">
             <el-select v-model="user.roleIds" placeholder="请选择" style="width: 100%;" multiple >
@@ -43,6 +43,7 @@ export default {
       type: Object,
       default () {
         return {
+            id: "",
             name: "",
             role: "",
         }

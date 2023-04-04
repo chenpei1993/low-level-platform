@@ -54,6 +54,7 @@ export default{
                 username: this.username,
                 password: this.password
             }
+            sessionStorage.removeItem("jwt")
             this.http.post("user/login", data).then((data)=>{
                 sessionStorage.setItem("jwt", data.jwt)
                 //TODO returnValue 处理

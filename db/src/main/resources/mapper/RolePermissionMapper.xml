@@ -4,18 +4,41 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jenschen.mapper.RolePermissionMapper">
-    <resultMap id="BaseResultMap" type="com.jenschen.entity.PermissionEntity">
-        <result column="id" jdbcType="INTEGER" property="id" />
-        <result column="name" jdbcType="VARCHAR" property="name" />
-        <result column="permission" jdbcType="VARCHAR" property="permission" />
+    <resultMap id="PermissionRoleEntity" type="com.jenschen.entity.RolePermissionEntity">
+        <result column="role_id" jdbcType="INTEGER" property="roleId" />
+        <result column="permission_id" jdbcType="INTEGER" property="permissionId" />
     </resultMap>
 
     <select id="getPermissionByRoleId" resultType="com.jenschen.entity.PermissionEntity">
-        select * from permission as t
-            left join role as ct
-            on  ct.id = t.id
-            where ct.id = #{id}
+        select * from permission
+            where is_deleted = 0 and id in (select permission_id from role_permission where is_deleted = 0 and role_id = #{roleId});
     </select>
+
+    <select id="getPermissionByRoleIds" resultType="com.jenschen.entity.PermissionEntity">
+        select * from permission
+        where is_deleted = 0 and id in
+        (select permission_id from role_permission where is_deleted = 0 and role_id in
+            <foreach item="roleId" collection="roleIds" open="(" separator="," close=")">#{roleId}
+            </foreach>
+        )
+    </select>
+
+    <select id="getPermissionByUserId" resultType="java.lang.String">
+        select permission from permission where is_deleted = 0 and id in (
+            select permission_id from role_permission where is_deleted = 0 and role_id in (
+                    select role_id from role_user where is_deleted = 0 and user_id = #{userId}
+                ));
+    </select>
+
+    <update id="deletePermissionByRoleId">
+        update role_permission set is_deleted = 1,
+                             deleted_by = #{operationId},
+                             deleted_at = now(),
+                             updated_by = #{operationId},
+                             updated_at = now()
+                             where role_id = #{roleId};
+    </update>
+
 
 
 </mapper>

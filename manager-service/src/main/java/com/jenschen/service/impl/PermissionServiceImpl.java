@@ -3,7 +3,6 @@ package com.jenschen.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
-import com.jenschen.constant.CommonConstant;
 import com.jenschen.entity.PermissionEntity;
 import com.jenschen.mapper.PermissionMapper;
 import com.jenschen.mapper.RolePermissionMapper;
@@ -56,6 +55,11 @@ public class PermissionServiceImpl extends AbstractService<PermissionEntity> imp
     }
 
     @Override
+    public List<PermissionEntity> getPermissionByRoleIds(List<String> roleIds) {
+        return rolePermissionMapper.getPermissionByRoleIds(roleIds);
+    }
+
+    @Override
     public Response<Object> add(PermissionReq permissionReq) {
         //TODO 是否需要验证标签名是否唯一
         PermissionEntity permission = BeanUtil.copyProperties(permissionReq, PermissionEntity.class);
@@ -79,7 +83,8 @@ public class PermissionServiceImpl extends AbstractService<PermissionEntity> imp
         entity.setId(id);
         entity.deleted(LocalDateTime.now(), 1);
         permissionMapper.updateById(entity);
-        //TODO 删除用户的标签
+
+        //TODO 删除角色下的标签
         return ResultUtil.success();
     }
 
