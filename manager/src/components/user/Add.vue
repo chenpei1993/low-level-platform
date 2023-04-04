@@ -20,7 +20,9 @@
             </el-select>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="confirm">确认</el-button>
+            <div style="display: flex; justify-content: flex-end; width: 100%;">
+              <el-button type="primary" @click="confirm"  size="small" plain>确认</el-button>
+            </div>
         </el-form-item>
     </el-form>
   </div>  

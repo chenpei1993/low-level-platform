@@ -32,20 +32,20 @@
         <div class="row">选项：</div>
         <div class="option-panel">
           <el-input v-model="option" placeholder="选项" class="option-item"></el-input>
-          <el-button type="success" @click="addNewOptions">添加选项</el-button>
+          <el-button type="primary" @click="addNewOptions" size="small" plain>添加选项</el-button>
         </div>
         <div v-for="(o, index) in question.options">
           <div class="option-show">
             <div>选项 {{index + 1}}</div>
             <div>{{o}}</div>
-            <el-button size="small" type="danger" @click="delOption(index)">删除</el-button>
+            <el-button size="small" type="danger" @click="delOption(index)" plain>删除</el-button>
           </div>
         </div>
       </div>
     </div>
 
   <div class="row bottom-panel">
-    <el-button type="success" @click="confirm">确定</el-button>
+    <el-button type="success" @click="confirm" size="small" plain>确定</el-button>
   </div>
 </template>
 
@@ -125,18 +125,17 @@ export default {
   margin: 5px;
 }
 .option-panel{
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .bottom-panel{
-  display: flex;
-  justify-content: flex-end;
-}
-
-.option-panel{
-  margin-top: 5px;
-  margin-bottom: 5px;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
 }
 
 .option-item{
@@ -144,8 +143,9 @@ export default {
 }
 
 .option-show{
-  display: flex;
-  justify-content: space-between;
-  margin: 5px;
+    display: flex;
+    justify-content: space-between;
+    margin: 5px;
+    font-size: 14px;
 }
 </style>

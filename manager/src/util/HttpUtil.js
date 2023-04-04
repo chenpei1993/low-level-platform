@@ -44,7 +44,7 @@ http.interceptors.response.use((res) => {
             message: '登录过期，请重新登录！',
             showClose: true
         });
-        router.push("/login?returnUrl=" + encodeURIComponent(router.currentRoute.fullPath));
+        router.push("/login");
         return Promise.reject(error);
     }
     ElMessage({

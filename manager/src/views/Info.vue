@@ -6,7 +6,7 @@
     </el-breadcrumb>
     <el-divider />
     <div>
-        <el-button link type="primary" size="small" @click="add">添加</el-button>
+        <el-button type="success" size="small" @click="add" plain>添加</el-button>
     </div>
     <div>
         <el-table :data="infos" stripe style="width: 100%" v-loading="loading">
@@ -73,7 +73,8 @@
           :before-close="closeAddOrEditPanel"
           size="50%"
       >
-        <Add :info="info" :tagOptions="tagOptions" @addOrEditInfo="addOrEditInfo"/>
+        <Add :info="info" :tagOptions="tagOptions"
+             :dateTimeRange="[info.startDateTime, info.endDateTime]" @addOrEditInfo="addOrEditInfo"/>
     </el-drawer>
 
     <el-drawer
@@ -147,8 +148,9 @@ export default {
             .then(()=>{
               ElMessage({
                 type: "success",
-                message: "ok",
+                message: "添加成功",
               })
+              this.closeAddOrEditPanel()
               this.refresh()
             })
     },
@@ -156,7 +158,6 @@ export default {
 
     },
     edit(info){
-      console.log(info)
       this.addOrEdit = "编辑"
       this.info = info
       this.isShowAddOrEditPanel = true
@@ -190,7 +191,7 @@ export default {
     },
     showTipDetail(){
       this.isShowTipDetail = true
-      this.http.post("/info/tip", {currentPage: this.currentPage, pageSize: this.pageSize})
+      this.http.get("/info/tip", {currentPage: this.currentPage, pageSize: this.pageSize})
           .then((res) => {
             ElMessage.success("更新成功")
             this.loading = false

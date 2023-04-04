@@ -8,15 +8,21 @@
   <div class="question">
     <div >
       <div class="item">  
-        <div class="item">标题</div>
+        <div class="item" style="display: flex; justify-content: space-between;">
+            <div style="display: flex; align-content: center;">
+                <div>标题</div>
+            </div>
+            <div class="item item-bottom">
+                <el-button type="primary" @click="returnToInfo" size="small" plain>返回</el-button>
+                <el-button type="success" @click="showAddPanel" size="small" plain>添加题目</el-button>
+                <el-button type="info" @click="saveInfo" size="small" plain>保存问卷</el-button>
+            </div>
+        </div>
         <div class="item">
           <el-input v-model="info.title" placeholder="标题" />
         </div>
       </div>  
-      <div class="item item-bottom">
-        <el-button type="success" @click="showAddPanel">添加题目</el-button>
-        <el-button type="info" @click="saveInfo">保存问卷</el-button>
-      </div>
+
 
       <el-drawer
           v-model="isShowAddPanel"
@@ -55,6 +61,9 @@ export default {
     }
   },
   methods:{
+    returnToInfo(){
+      this.$router.push({name: "Info"})
+    },
     showAddPanel(){
       this.addOrEdit = "添加"
       this.question = {}

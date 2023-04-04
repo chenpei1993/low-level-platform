@@ -57,16 +57,29 @@ export default{
             sessionStorage.removeItem("jwt")
             this.http.post("user/login", data).then((data)=>{
                 sessionStorage.setItem("jwt", data.jwt)
-                //TODO returnValue 处理
                 this.$router.push({ name: 'Home'})
             }).catch(e => {
                 console.log(e)
             })
 
+        },
+        addKeyEnterDown(){
+            document.onkeydown = e => {
+                if(e.code === "Enter"){
+                    this.login()
+                }
+            }
+        },
+        removeKeyEnterDown(){
+            document.onkeydown = null;
         }
     },
     created(){
         this.http = inject("$http")
+        this.addKeyEnterDown()
+    },
+    beforeUnmount() {
+        this.removeKeyEnterDown()
     }
 }
 </script>

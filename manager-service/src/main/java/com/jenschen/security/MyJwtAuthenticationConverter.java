@@ -1,19 +1,15 @@
 package com.jenschen.security;
 
 import com.jenschen.entity.PermissionEntity;
-import com.jenschen.mapper.RolePermissionMapper;
 import com.jenschen.service.PermissionService;
-import com.jenschen.service.RoleService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimNames;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.util.*;

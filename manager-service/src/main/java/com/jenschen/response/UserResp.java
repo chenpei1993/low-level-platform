@@ -1,6 +1,5 @@
 package com.jenschen.response;
 
-import com.jenschen.entity.RoleEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

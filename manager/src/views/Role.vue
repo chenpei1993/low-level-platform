@@ -6,7 +6,7 @@
     </el-breadcrumb>
     <el-divider />
     <div>
-        <el-button link type="primary" size="small" @click="add">添加</el-button>
+        <el-button type="success" size="small" @click="add" plain>添加</el-button>
     </div>
     <div style="display: flex; justify-content: space-between;">
         <div style="width: 50%; padding: 20px;">

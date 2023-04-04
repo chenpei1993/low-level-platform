@@ -113,7 +113,7 @@
           <div class="delayTimer">
             <div>
               <span>距离结束时间前
-              <el-input v-model="delayTipTimer.value" size="small" style="width: 40px; margin-right:3px;"/> 
+              <el-input v-model="delayTipTimer.value" size="small" style="width: 40px; margin-right:3px;"/>
               <el-select v-model="delayTipTimer.timeUnit" size="small" style="width: 60px; margin-right:3px;">
                 <el-option
                   v-for="item in timeUnitOptions"
@@ -134,16 +134,16 @@
                 <div>
                   <span >提醒文本模板</span>
                   <el-input size="small"  type="textarea" v-model="delayTipTimer.message" />
-                </div>  
+                </div>
             </div>
             <div>
               <el-button class="mt-2" @click="delDelayTipTimer(index)" type="danger" size="small" style="margin-left:3px;">删除</el-button>
             </div>
-          </div>        
+          </div>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="addDelayTipTimer">添加延时提醒</el-button>
-            <el-button type="primary" @click="confirm">确认</el-button>
+            <el-button type="primary" @click="addDelayTipTimer" size="small" plain>添加延时提醒</el-button>
+            <el-button type="success" @click="confirm" size="small" plain>确认</el-button>
         </el-form-item>
     </el-form>
   </div>  
@@ -175,8 +175,8 @@ export default {
         {label: "天", value: 3},
       ],
       isFixedTimeSendOptions:[
-        {label: "是", value: 1},
-        {label: "否", value: 0},
+        {label: "是", value: true},
+        {label: "否", value: false},
       ],
       sendTypeOptions:[
         {label: "企业微信", value: 1},
@@ -218,6 +218,13 @@ export default {
       default () {
         return []
       }
+    },
+    dateTimeRange: {
+        require: true,
+        type: Array,
+        default () {
+            return []
+        }
     }
   },
   methods:{
