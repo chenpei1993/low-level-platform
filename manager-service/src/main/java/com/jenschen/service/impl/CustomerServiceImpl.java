@@ -46,7 +46,7 @@ public class CustomerServiceImpl extends AbstractService<CustomerEntity> impleme
         if(CollUtil.isNotEmpty(entities)){
             return ResultUtil.error(ErrorEnum.CUSTOMER_DUPLICATE_PHONE_OR_EMAIL);
         }
-
+        //TODO 敏感数据加密
         CustomerEntity customerEntity = BeanUtil.copyProperties(customerReq, CustomerEntity.class);
         customerEntity.created(LocalDateTime.now(), 1);
         customerMapper.insert(customerEntity);
@@ -99,7 +99,7 @@ public class CustomerServiceImpl extends AbstractService<CustomerEntity> impleme
             List<TagResp> tagsResp = customerTagService.getTagsByCustomerId(customerResp.getId());
             customerResp.setTags(tagsResp);
         }
-        int count = customerMapper.selectCount(queryWrapper);
+        int count = customerMapper.selectCount(this.getDefaultQuery());
         return ResultUtil.success(PageResp.build(count, respList));
     }
 

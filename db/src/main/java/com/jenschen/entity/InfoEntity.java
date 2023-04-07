@@ -1,19 +1,10 @@
 package com.jenschen.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.jenschen.enumeration.*;
-import com.jenschen.typehandler.ValueEnumTypeHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.ResultType;
-import org.apache.ibatis.type.JdbcType;
-
-import java.sql.JDBCType;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
 /**
  * 活动信息

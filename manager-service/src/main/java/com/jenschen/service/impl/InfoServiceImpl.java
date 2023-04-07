@@ -52,7 +52,7 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
         QueryWrapper<InfoEntity> queryWrapper = this.getPageQueryWrapper(page);
         List<InfoEntity> infoEntityList = infoMapper.selectList(queryWrapper);
         List<InfoResp> resp = BeanUtil.copyToList(infoEntityList, InfoResp.class);
-        int count = infoMapper.selectCount(queryWrapper);
+        int count = infoMapper.selectCount(this.getDefaultQuery());
         return ResultUtil.success(PageResp.build(count, resp));
     }
 

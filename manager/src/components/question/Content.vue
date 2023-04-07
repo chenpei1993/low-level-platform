@@ -3,11 +3,12 @@
     <div class="question-title">
       <span>{{info.title}}</span>
     </div>
-    <hr style="width: 40%;"/>
+    <hr style="width: 40%;" v-if="info.title != null && info.title"/>
     <div id="mainFrame">
     </div>
     <div class="question-submit-wrapper">
-      <button class="question-submit-button">提交</button>
+      <button class="question-submit-button"
+              v-if="info.questions != null && info.questions.length > 0">提交</button>
     </div>   
   </div>  
 </template>

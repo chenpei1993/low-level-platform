@@ -43,7 +43,7 @@
           <el-pagination
             :currentPage="currentPage"
             :page-size="pageSize"
-            :page-sizes="[20, 50, 100, 200, 300, 400]"
+            :page-sizes="[10, 15, 20, 25, 50]"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total"
             @size-change="handleSizeChange"
@@ -129,7 +129,7 @@ export default {
     del(row){
       ElMessageBox.confirm(
             '是否删除客户',
-            'Warning',
+            '警告',
         { 
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -157,7 +157,8 @@ export default {
       this.refresh()
     },
     handleCurrentChange(page){
-      this.currentPage = page
+        this.currentPage = page
+        this.refresh()
     },
     refresh(){
       this.loading = true
@@ -182,7 +183,7 @@ export default {
   },
   created(){
     this.http = inject("$http")
-    this.lodash = inject("lodash")
+    this.lodash = inject("$lodash")
     this.refresh()
     this.refreshTagOptions()
   }

@@ -111,13 +111,14 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
             userResp.setRoleIds(roleRespList);
         }
 
-        int count = userMapper.selectCount(queryWrapper);
+        int count = userMapper.selectCount(this.getDefaultQuery());
         return ResultUtil.success(PageResp.build(count, resp));
     }
 
     @Override
     public Response<Object> add(UserReq userReq) {
         UserEntity user = BeanUtil.copyProperties(userReq, UserEntity.class);
+        //TODO 敏感数据加密
         String password = passwordEncoder.encode(prefix + this.password);
         user.setPassword(password);
         user.created(LocalDateTime.now(),1);

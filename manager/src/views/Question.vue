@@ -44,6 +44,8 @@
 import Add from '@/components/question/Add.vue'
 import Iphone from '@/components/question/Iphone.vue'
 import Show from '@/components/question/Show.vue'
+import {ElMessage} from "element-plus";
+import {inject} from "vue";
 
 export default {
   name: 'Home',
@@ -73,12 +75,29 @@ export default {
       this.isShowAddPanel = false
     },
     addOrEditQuestion(question){
-      if(question.idx == null){
-        question.idx = this.info.questions.length + 1
-        this.info.questions.push(question)
-      }
-      this.question = {}
-      this.isShowAddPanel = false
+        if(this.lodash.isEmpty(question)){
+            this.isShowAddPanel = false
+            return
+        }
+
+        if(this.lodash.isNil(question.type)){
+            ElMessage.warning("题目类型，未选择")
+            return
+        }
+        if(this.lodash.isNil(question.isRequired)){
+            ElMessage.warning("题目是否必选，未选择")
+            return
+        }
+        if(this.lodash.isNil(question.questionDesc)){
+            ElMessage.warning("题目描述，未填写")
+            return
+        }
+        if(question.idx == null){
+          question.idx = this.info.questions.length + 1
+          this.info.questions.push(question)
+        }
+        this.question = {}
+        this.isShowAddPanel = false
     },
     editQuestion(idx){
       this.addOrEdit = "编辑"
@@ -103,6 +122,9 @@ export default {
       //todo
     }
 
+  },
+  created(){
+      this.lodash = inject("$lodash")
   }
 }
 </script>
@@ -111,7 +133,7 @@ export default {
 <style scoped>
 .question{
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .item{

@@ -25,7 +25,7 @@
             <el-pagination
               v-model:currentPage="currentPage"
               v-model:page-size="pageSize"
-              :page-sizes="[20, 50, 100, 200, 300, 400]"
+              :page-sizes="[10, 15, 20, 25, 50]"
               layout="total, sizes, prev, pager, next, jumper"
               :total="total"
               @size-change="handleSizeChange"
@@ -75,7 +75,7 @@ export default {
         isCheck: true,
       loading: false,
       currentPage: 1,
-      pageSize: 50,
+      pageSize: 15,
       total: 0,
       addOrEdit: "未知",
       isShowAddOrEditPanel: false,
@@ -121,7 +121,7 @@ export default {
     del(row){
         ElMessageBox.confirm(
             '是否删除该角色?',
-            'Warning',
+            '警告',
         { 
             confirmButtonText: '确定',
             cancelButtonText: '取消',

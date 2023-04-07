@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">题目类型：</div>
-    <el-select v-model="question.type" class="m-2" placeholder="Select">
+    <el-select v-model="question.type" class="m-2" placeholder="请选择问题类型">
       <el-option
           v-for="item in typeOptions"
           :key="item.value"
@@ -12,7 +12,7 @@
     </el-select>
 
     <div class="row">是否为必选</div>
-    <el-select v-model="question.isRequired" class="m-2" placeholder="Select">
+    <el-select v-model="question.isRequired" class="m-2" placeholder="请选择问题是否必选">
       <el-option
           v-for="item in isRequiredOptions"
           :key="item.value"
@@ -26,7 +26,7 @@
     <el-input v-model="question.questionDesc"
               :rows="3"
               type="textarea"
-              placeholder="Please input" />
+              placeholder="请输入问题描述" />
 
     <div v-if="question.type === 2 || question.type === 3">
         <div class="row">选项：</div>
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-
+import { ElMessage } from 'element-plus'
 export default {
   name: "question-add",
   props: {
@@ -103,7 +103,7 @@ export default {
       this.option = ""
     },
     confirm(){
-      this.addOrEditQuestion(this.question)
+        this.addOrEditQuestion(this.question)
     },
     delOption(idx){
       let options = this.question.options

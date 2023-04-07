@@ -6,6 +6,7 @@ import com.jenschen.request.CustomerPageReq;
 import com.jenschen.service.CustomerService;
 import com.jenschen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class CustomerController {
      * @return 结果
      */
     @PutMapping
+    @PreAuthorize("hasAuthority('custom:add')")
     public Response<Object> add(@RequestBody @Validated CustomerReq customerReq) {
         return customerService.insert(customerReq);
     }
@@ -36,6 +38,7 @@ public class CustomerController {
      * @return 结果
      */
     @PostMapping
+    @PreAuthorize("hasAuthority('custom:edit')")
     public Response<Object> edit(@RequestBody @Validated CustomerReq customerReq) {
         return customerService.update(customerReq);
     }
@@ -46,6 +49,7 @@ public class CustomerController {
      * @return 结果
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('custom:del')")
     public Response<Object> del(@PathVariable  int id) {
         return customerService.delete(id);
     }
@@ -57,6 +61,7 @@ public class CustomerController {
      */
     @PostMapping(value = "/page")
     @ResponseBody
+    @PreAuthorize("hasAuthority('custom:query')")
     public Response<Object> page(@RequestBody CustomerPageReq customerPageReq){
         return customerService.page(customerPageReq);
     }

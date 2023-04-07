@@ -13,7 +13,8 @@
         <el-menu-item-group title="系统设置">
           <el-menu-item index="/User">用户</el-menu-item>
           <el-menu-item index="/Role">角色</el-menu-item>
-          <el-menu-item index="/Permission">权限</el-menu-item>
+          <el-menu-item index="/Permission">接口权限</el-menu-item>
+          <el-menu-item index="/DataPermission">数据权限</el-menu-item>
         </el-menu-item-group>
       </el-menu>
     </el-scrollbar>
