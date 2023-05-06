@@ -26,7 +26,7 @@ public interface InfoService {
      * @param infoReq 活动信息
      * @return 结果
      */
-    Response<Object> updated(InfoReq infoReq);
+    Response<Object> edit(InfoReq infoReq);
 
     /**
      * 逻辑删除活动

@@ -1,6 +1,5 @@
 package com.jenschen.request;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.jenschen.enumeration.InfoTypeEnum;
 import com.jenschen.enumeration.RepeatCollectTypeEnum;
 import com.jenschen.enumeration.SendCustomerTypeEnum;
@@ -12,6 +11,10 @@ import java.util.List;
 
 @Data
 public class InfoReq {
+    /**
+     * ID
+     */
+    private Integer id;
     /**
      * 活动名
      */

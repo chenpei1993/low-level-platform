@@ -18,8 +18,8 @@
               </template>  
             </el-table-column>
             <el-table-column prop="startDateTime" label="活动开始时间" width="180" />
-            <el-table-column prop="endDateTime" label="推送定时器" width="180"/>
             <el-table-column prop="endDateTime" label="活动结束时间" width="180"/>
+            <el-table-column prop="endDateTime" label="推送定时器" width="180"/>
             <el-table-column prop="autoSend" label="定时推送" width="100">
               <template #default="scope">
                 <span>{{scope.row.autoSend ? "是" : "否"}}</span>
@@ -132,6 +132,7 @@ export default {
     },
     addOrEditInfo(info){
         console.log(info)
+      //TODO 检查参数
         if(info.startDateTime >= info.endDateTime){
           ElMessage.error("问卷开始日期应该小于问卷结束日期")
           return
@@ -144,15 +145,29 @@ export default {
         if(this.info.repeatValue !== null && typeof(this.info.repeatValue) !== "undefined"){
           this.info.repeatValue = this.info.repeatValue.split(",")
         }
-        this.http.put("info", info)
-            .then(()=>{
-              ElMessage({
-                type: "success",
-                message: "添加成功",
+
+        if(this.lodash.isNil(info.id)){
+          this.http.put("info", info)
+              .then(()=>{
+                ElMessage({
+                  type: "success",
+                  message: "添加成功",
+                })
+                this.closeAddOrEditPanel()
+                this.refresh()
               })
-              this.closeAddOrEditPanel()
-              this.refresh()
-            })
+        }else{
+          this.http.post("info", info)
+              .then(()=>{
+                ElMessage({
+                  type: "success",
+                  message: "编辑成功",
+                })
+                this.closeAddOrEditPanel()
+                this.refresh()
+              })
+        }
+
     },
     preview(){
 
@@ -255,6 +270,7 @@ export default {
   },
   created(){
     this.http = inject("$http")
+    this.lodash = inject("$lodash")
     this.refresh();
     this.refreshTagOptions();
   }

@@ -3,7 +3,6 @@ package com.jenschen.controller;
 import com.jenschen.base.Response;
 import com.jenschen.request.InfoPageReq;
 import com.jenschen.request.InfoReq;
-import com.jenschen.request.TagPageReq;
 import com.jenschen.service.InfoService;
 import com.jenschen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +20,23 @@ public class InfoController {
     private InfoService infoService;
 
     /**
-     * 添加消息
-     * @param infoReq 消息
+     * 添加活动
+     * @param infoReq 活动
      * @return 结果
      */
     @PutMapping
     public Response<Object> add(@RequestBody InfoReq infoReq){
         return infoService.insert(infoReq);
+    }
+
+    /**
+     * 编辑活动
+     * @param infoReq 活动
+     * @return 结果
+     */
+    @PostMapping
+    public Response<Object> edit(@RequestBody InfoReq infoReq){
+        return infoService.edit(infoReq);
     }
 
     /**

@@ -163,7 +163,6 @@ export default {
   },
   data(){
     return {
-      dateTimeRange:[],
       total:{
         days: 0,
         minutes: 0,

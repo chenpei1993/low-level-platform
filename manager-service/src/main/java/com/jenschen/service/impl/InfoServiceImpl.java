@@ -98,7 +98,7 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
     }
 
     @Override
-    public Response<Object> updated(InfoReq infoDTO) {
+    public Response<Object> edit(InfoReq infoDTO) {
         InfoEntity infoEntity = new InfoEntity();
         BeanUtils.copyProperties(infoDTO, infoEntity);
         infoEntity.updated(LocalDateTime.now(), 1);
