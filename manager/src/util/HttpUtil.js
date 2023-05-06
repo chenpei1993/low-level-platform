@@ -7,9 +7,12 @@ const headers = {
     Accept: "*/*",
     ContentType: "application/json"
 }
+const url = process.env.VUE_APP_SERVER_API + "/manage"
+console.log(process.env)
+console.log(process.env.VUE_APP_SERVER_API)
 
 const http = axios.create({
-    baseURL: "http://127.0.0.1:8090/manage",
+    baseURL: url,
     timeout: 6000,
     headers: headers
 })

@@ -1,0 +1,32 @@
+version: '3'
+services:
+  mysql-service:
+    build: db
+    container_name: mysql-service
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: manager
+    ports:
+      - 3306:3306
+  manager-service:
+    build: manager-service
+    container_name: manager-service
+    restart: always
+    ports:
+      - 8090:8090
+    environment:
+      SPRING_PROFILES_ACTIVE: test
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-service:3306/manager?useUnicode=true&characterEncoding=utf8
+  manager:
+    build:
+      context: ./manager
+      dockerfile: Dockerfile
+      args:
+        NPM_MODE: test
+    container_name: manager-front-service
+    restart: always
+    ports:
+      - 8080:8080
+
+

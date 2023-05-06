@@ -1,0 +1,26 @@
+server:
+  servlet:
+    context-path: "/manage"
+  port: 8090
+spring:
+  security:
+    prefix: lowcodeplatform
+    defaultPassword: 123456
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+mybatis-plus:
+    configuration:
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+      mapper-locations: classpath*:mapper/*.xml
+      default-enum-type-handler: com.jenschen.typehandler.ValueEnumTypeHandler
+logging:
+  level:
+    com.jenschen.mapper: debug
+jwt:
+  key-store-path: keys/keystore.jks
+  key-store-password: 123456
+  key-alias: jwtsigning
+  private-key-password: 123456

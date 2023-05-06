@@ -1,11 +1,9 @@
 package com.jenschen.typehandler;
 
 import com.jenschen.enumeration.BaseEnum;
-import com.jenschen.enumeration.RepeatCollectTypeEnum;
 import com.jenschen.util.EnumUtil;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
-import org.apache.ibatis.type.MappedTypes;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;

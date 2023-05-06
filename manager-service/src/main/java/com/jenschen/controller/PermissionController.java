@@ -49,7 +49,7 @@ public class PermissionController {
     }
 
     /**
-     * 根据 id 删除问卷
+     * 根据 id 删除权限
      * @param id ID
      * @return 结果
      */
