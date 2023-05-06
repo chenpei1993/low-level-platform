@@ -9,6 +9,10 @@ import javax.validation.constraints.NotBlank;
 public class QuestionInfo {
 
     /**
+     * 题目顺序
+     */
+    private Integer idx;
+    /**
      * 题目类型
      */
     private QuestionTypeEnum type;
@@ -22,5 +26,5 @@ public class QuestionInfo {
      * 问题描述
      */
     @NotBlank(message = "问题描述不能空")
-    private String desc;
+    private String questionDesc;
 }

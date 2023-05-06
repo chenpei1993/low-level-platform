@@ -1,7 +1,6 @@
 package com.jenschen.service;
 
 import com.jenschen.base.Response;
-import com.jenschen.request.QuestionPageReq;
 import com.jenschen.request.QuestionReq;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,10 +24,10 @@ public interface QuestionService {
 
     /**
      * 根据Info ID 获取对应的 问题
-     * @param questionPageReq 分页参数
+     * @param id 活动ID
      * @return 结果
      */
-    Response<Object> getByInfoId(QuestionPageReq questionPageReq);
+    Response<Object> getByInfoId(Integer id);
 
     /**
      * 根据问题id 删除问题

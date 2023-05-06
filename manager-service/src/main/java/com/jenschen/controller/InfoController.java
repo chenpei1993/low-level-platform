@@ -46,7 +46,7 @@ public class InfoController {
      */
     @DeleteMapping("/{id}")
     public Response<Object> del(@PathVariable Integer id){
-        return ResultUtil.success();
+        return infoService.delete(id);
     }
 
     /**

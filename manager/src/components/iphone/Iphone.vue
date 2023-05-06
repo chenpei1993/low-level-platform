@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import Content from '@/components/question/Content.vue'
+import Content from '@/components/iphone/Content.vue'
 export default {
   name: 'Iphone',
   components: {
@@ -116,6 +116,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   font-family: 'Open Sans', sans-serif;
+    align-items: center;
 }
 
 

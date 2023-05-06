@@ -242,6 +242,9 @@ export default {
     },
     changeDatetimeRange(){
       console.log(this.dateTimeRange)
+      if(this.dateTimeRange == null || this.dateTimeRange.length === 0){
+          return
+      }
       this.info.startDateTime = this.dateTimeRange[0];
       this.info.endDateTime = this.dateTimeRange[1];
       this.info.beginHours = this.info.startDateTime.getHours()

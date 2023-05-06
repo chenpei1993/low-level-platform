@@ -1,7 +1,6 @@
 package com.jenschen.controller;
 
 import com.jenschen.base.Response;
-import com.jenschen.request.QuestionPageReq;
 import com.jenschen.request.QuestionReq;
 import com.jenschen.service.QuestionService;
 import com.jenschen.util.ResultUtil;
@@ -19,14 +18,14 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
-    @PostMapping("/getByInfoId")
-    public Response<Object> get(@RequestBody QuestionPageReq questionPageReq){
-        return questionService.getByInfoId(questionPageReq);
+    @GetMapping("/getByInfoId/{id}")
+    public Response<Object> get(@PathVariable Integer id){
+        return questionService.getByInfoId(id);
     }
 
-    @PostMapping
+    @PutMapping
     public Response<Object> add(@RequestBody @Validated QuestionReq questionReq){
-        return ResultUtil.success();
+        return questionService.add(questionReq);
     }
 
     /**

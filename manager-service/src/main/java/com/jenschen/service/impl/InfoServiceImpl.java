@@ -18,6 +18,7 @@ import com.jenschen.response.InfoResp;
 import com.jenschen.response.PageResp;
 import com.jenschen.service.AbstractService;
 import com.jenschen.service.InfoService;
+import com.jenschen.service.QuestionService;
 import com.jenschen.service.TaskService;
 import com.jenschen.service.impl.taskConverter.InfoSpliter;
 import com.jenschen.service.impl.taskConverter.InfoSpliterFactory;
@@ -25,6 +26,7 @@ import com.jenschen.util.ResultUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +48,10 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
 
     @Autowired
     private InfoSpliterFactory infoSpliterFactory;
+
+    @Autowired
+    @Lazy
+    private QuestionService questionService;
 
     @Override
     public Response<Object> page(Page page) {
@@ -107,11 +113,14 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
     }
 
     @Override
-    public Response<Object> deleted(int id) {
+    public Response<Object> delete(int id) {
         InfoEntity infoEntity = new InfoEntity();
         infoEntity.setId(id);
         infoEntity.deleted(LocalDateTime.now(), 1);
         infoMapper.updateById(infoEntity);
+
+        //删除 Question 列表
+        questionService.deleteByInfoId(id);
         return ResultUtil.success();
     }
 

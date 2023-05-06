@@ -9,7 +9,6 @@ import com.jenschen.enumeration.ErrorEnum;
 import com.jenschen.enumeration.InfoStatusEnum;
 import com.jenschen.mapper.QuestionMapper;
 import com.jenschen.request.QuestionInfo;
-import com.jenschen.request.QuestionPageReq;
 import com.jenschen.request.QuestionReq;
 import com.jenschen.response.PageResp;
 import com.jenschen.response.QuestionResp;
@@ -18,6 +17,7 @@ import com.jenschen.service.InfoService;
 import com.jenschen.service.QuestionService;
 import com.jenschen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,6 +30,7 @@ public class QuestionServiceImpl extends AbstractService<QuestionEntity> impleme
     private QuestionMapper questionMapper;
 
     @Autowired
+    @Lazy
     private InfoService infoService;
 
     @Override
@@ -44,6 +45,7 @@ public class QuestionServiceImpl extends AbstractService<QuestionEntity> impleme
 //        List<QuestionEntity> questionEntityList = new ArrayList<>();
         for(QuestionInfo questionInfo : questionReq.getQuestionInfoList()){
             QuestionEntity question = BeanUtil.copyProperties(questionInfo, QuestionEntity.class);
+            question.setInfoId(questionReq.getInfoId());
             question.created(LocalDateTime.now(), 1);
 //            questionEntityList.add(question);
             questionMapper.insert(question);
@@ -67,13 +69,12 @@ public class QuestionServiceImpl extends AbstractService<QuestionEntity> impleme
     }
 
     @Override
-    public Response<Object> getByInfoId(QuestionPageReq questionPageReq) {
-        QueryWrapper<QuestionEntity> queryWrapper = this.getPageQueryWrapper(questionPageReq);
-        queryWrapper.eq("info_id", questionPageReq.getInfoId());
+    public Response<Object> getByInfoId(Integer id) {
+        QueryWrapper<QuestionEntity> queryWrapper = this.getDefaultQuery();
+        queryWrapper.eq("info_id", id);
         List<QuestionEntity> questionEntityList = questionMapper.selectList(queryWrapper);
         List<QuestionResp> resp = BeanUtil.copyToList(questionEntityList, QuestionResp.class);
-        int count = questionMapper.selectCount(queryWrapper);
-        return ResultUtil.success(PageResp.build(count, resp));
+        return ResultUtil.success(resp);
     }
 
     @Override

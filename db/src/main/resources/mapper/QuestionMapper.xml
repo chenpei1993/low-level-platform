@@ -14,7 +14,7 @@
             deleted_at = now(),
             updated_by = #{updatedBy},
             updated_at = now()
-        where info_id = #{info_id}
+        where info_id = #{infoId}
     </select>
 
 

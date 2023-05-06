@@ -33,7 +33,7 @@ public interface InfoService {
      * @param id 活动id
      * @return 结果
      */
-    Response<Object> deleted(int id);
+    Response<Object> delete(int id);
 
     /**
      *  根据活动Id获取一条数据

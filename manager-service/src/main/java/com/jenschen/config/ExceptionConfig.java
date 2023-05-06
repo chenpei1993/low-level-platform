@@ -20,7 +20,7 @@ public class ExceptionConfig {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public Response<Object> globalException(Exception e){
-        log.error(e.getMessage());
+        log.error(e.getMessage(), e);
         return ResultUtil.error(ErrorEnum.ERROR);
     }
 

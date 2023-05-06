@@ -42,7 +42,7 @@
 
 <script>
 import Add from '@/components/question/Add.vue'
-import Iphone from '@/components/question/Iphone.vue'
+import Iphone from '@/components/iphone/Iphone.vue'
 import Show from '@/components/question/Show.vue'
 import {ElMessage} from "element-plus";
 import {inject} from "vue";
@@ -120,11 +120,31 @@ export default {
     },
     saveInfo(){
       //todo
+        // 限制问题描述的字数
+      let data = {}
+      data.infoId = this.infoId
+      data.questionInfoList = this.info.questions
+      this.http.put("question", data)
+          .then(()=>{
+              ElMessage({
+                  type: "success",
+                  message: "保存成功",
+              })
+          })
+    },
+    getInfoQuestion(){
+        this.http.get("question/getByInfoId/" + this.infoId)
+            .then((data)=>{
+                //todo 排序
+                this.info.questions = data
+            })
     }
-
   },
   created(){
+      this.infoId = this.$route.query.id
+      this.http = inject("$http")
       this.lodash = inject("$lodash")
+      this.getInfoQuestion()
   }
 }
 </script>

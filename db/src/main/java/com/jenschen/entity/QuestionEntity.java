@@ -18,6 +18,11 @@ public class QuestionEntity extends BaseEntity{
     private int infoId;
 
     /**
+     * 问题顺序
+     */
+    private int idx;
+
+    /**
      * 题目类型
      */
     private QuestionTypeEnum type;
@@ -30,5 +35,5 @@ public class QuestionEntity extends BaseEntity{
     /**
      * 问题描述
      */
-    private String desc;
+    private String questionDesc;
 }

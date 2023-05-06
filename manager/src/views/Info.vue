@@ -44,13 +44,13 @@
             <el-table-column prop="updatedAt" label="更新时间" width="180"/>
             <el-table-column fixed="right" label="操作" width="250">
                 <template #default="scope">
-                    <el-button link type="primary" size="small" @click="editQuestions">编辑问题</el-button>
-                    <el-button link type="primary" size="small" @click="publish">发布</el-button>
-                    <el-button link type="primary" size="small" @click="preview">预览</el-button>
+                    <el-button link type="primary" size="small" @click="editQuestions(scope.row)">编辑问题</el-button>
+                    <el-button link type="primary" size="small" @click="publish(scope.row)">发布</el-button>
+                    <el-button link type="primary" size="small" @click="preview(scope.row)">预览</el-button>
                     <el-button link type="primary" size="small" @click="edit(scope.row)">编辑</el-button>
                     <el-button link type="primary" size="small" @click="stop">停用</el-button>
-                    <el-button link type="primary" size="small" @click="del">删除</el-button>
-                    <el-button link type="primary" size="small" @click="showResult">收集结果</el-button>
+                    <el-button link type="primary" size="small" @click="del(scope.row)">删除</el-button>
+                    <el-button link type="primary" size="small" @click="showResult(scope.row)">收集结果</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -95,6 +95,16 @@
     >
       <TipDetail :infos="infos"/>
     </el-drawer>
+
+    <el-drawer
+        v-model="isShowPreview"
+        direction="ltr"
+        title="预览"
+        :before-close="closePreview"
+        size="50%"
+    >
+        <Iphone :info="infoData"/>
+    </el-drawer>
   </div>
 </template>
 
@@ -102,13 +112,14 @@
 import Add from '@/components/info/Add.vue'
 import SendDetail from '@/components/info/SendDetail.vue'
 import TipDetail from '@/components/info/TipDetail.vue'
-import { ElMessage } from 'element-plus'
+import Iphone from '@/components/iphone/Iphone.vue'
+import {ElMessage, ElMessageBox} from 'element-plus'
 import { inject } from "vue"
 
 export default {
   name: 'Info',
   components: {
-    Add, SendDetail, TipDetail
+    Add, SendDetail, TipDetail, Iphone
   },
   data(){
     return {
@@ -120,10 +131,14 @@ export default {
       isShowTipDetail: false,
       addOrEdit: "未知",
       isShowAddOrEditPanel: false,
-      info: {},
+      isShowPreview: false,
+      info:{},
+      infoData: {
+          questions:[]
+      },
       infos: [],
       infoDetails:[],
-      tagOptions:[]
+      tagOptions:[],
     }
   }, 
   methods: {
@@ -132,7 +147,28 @@ export default {
     },
     addOrEditInfo(info){
         console.log(info)
-      //TODO 检查参数
+        //TODO 检查参数
+
+        if(this.lodash.isEmpty(info.name)){
+            ElMessage.error("问卷名称不能为空")
+            return
+        }
+
+        if(this.lodash.isEmpty(info.title)){
+            ElMessage.error("问卷标题不能为空")
+            return
+        }
+
+        if(this.lodash.isEmpty(info.startDateTime)){
+            ElMessage.error("问卷开始日期不能为空")
+            return
+        }
+
+        if(this.lodash.isEmpty(info.endDateTime)){
+            ElMessage.error("问卷结束时间不能为空")
+            return
+        }
+
         if(info.startDateTime >= info.endDateTime){
           ElMessage.error("问卷开始日期应该小于问卷结束日期")
           return
@@ -169,9 +205,19 @@ export default {
         }
 
     },
-    preview(){
-
+    preview(info){
+        console.log(info)
+      this.http.get("question/getByInfoId/" + info.id)
+          .then((data)=>{
+              //todo 排序
+              this.infoData.questions = data
+              this.isShowPreview = true
+          })
     },
+    closePreview(){
+        this.isShowPreview = false
+    },
+
     edit(info){
       this.addOrEdit = "编辑"
       this.info = info
@@ -183,19 +229,37 @@ export default {
     stop(){
 
     },
-    del(){
-
+    del(info){
+      ElMessageBox.confirm(
+          '是否删除问卷，会将问题也一并删除',
+          '警告',
+          {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning',
+          })
+          .then(() => {
+              this.http.delete("info/" + info.id)
+                  .then(()=>{
+                      ElMessage.success("操作成功")
+                      this.refresh()
+                  })
+          })
+          .catch((e) => {
+              console.log(e)
+              ElMessage.info('取消删除')
+          })
     },
     add(){
       this.addOrEdit = "添加"
       this.info = {repeatCollectType: 1}
       this.isShowAddOrEditPanel = true
     },
-    showResult(){
-      this.$router.push({ name: 'InfoResult', params: {id: this.info.id}})   
+    showResult(info){
+      this.$router.push({ name: 'InfoResult', query: {id: info.id}})
     },
-    editQuestions(){
-      this.$router.push({ name: 'Question', params: {id: this.info.id}})
+    editQuestions(info){
+      this.$router.push({ name: 'Question', query: {id: info.id}})
     },
     showInfoDetail(){
       this.isShowInfoDetail = true
