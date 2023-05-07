@@ -6,7 +6,6 @@ import com.jenschen.entity.QuestionEntity;
 import com.jenschen.mapper.InfoMapper;
 import com.jenschen.response.InfoResponse;
 import com.jenschen.service.InfoService;
-import com.jenschen.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

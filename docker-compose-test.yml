@@ -18,6 +18,15 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: test
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-service:3306/manager?useUnicode=true&characterEncoding=utf8
+  question-service:
+    build: question-service
+    container_name: question-service
+    restart: always
+    ports:
+      - 8091:8091
+    environment:
+      SPRING_PROFILES_ACTIVE: test
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-service:3306/manager?useUnicode=true&characterEncoding=utf8
   manager:
     build:
       context: ./manager
@@ -28,5 +37,15 @@ services:
     restart: always
     ports:
       - 8080:8080
+  question:
+    build:
+      context: ./question
+      dockerfile: Dockerfile
+      args:
+        NPM_MODE: test
+    container_name: question-front-service
+    restart: always
+    ports:
+      - 8081:8081
 
 

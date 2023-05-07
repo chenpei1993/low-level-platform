@@ -6,6 +6,7 @@ import com.jenschen.response.CheckQuestionResponse;
 import com.jenschen.response.InfoResponse;
 import com.jenschen.response.QuestionResponse;
 import com.jenschen.util.ResultUtil;
+import org.apache.tomcat.util.http.ResponseUtil;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -18,8 +19,7 @@ import java.util.List;
 public class ActivityController {
 
     @GetMapping("/info/{id}")
-    public InfoResponse getQuestionsInfo(@PathVariable String id){
-
+    public Response<Object> getQuestionsInfo(@PathVariable String id){
         InfoResponse info = new InfoResponse();
         info.setTitle("测试");
         info.setStyleUrl("./css/default.css");
@@ -52,7 +52,7 @@ public class ActivityController {
         questionList.add(c);
 
         info.setQuestions(questionList);
-        return info;
+        return ResultUtil.success(info);
     }
 
     @PostMapping("submit")

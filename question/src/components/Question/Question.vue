@@ -9,7 +9,7 @@
     <div class="question-submit-wrapper">
       <button class="question-submit-button"
               v-if="info.questions != null && info.questions.length > 0">提交</button>
-    </div>   
+    </div>
   </div>  
 </template>
 
@@ -62,6 +62,7 @@ export default {
   },
   mounted(){
     this.mainFrame = document.getElementById("mainFrame")
+    console.log(this.info)
     this.createFrame()
   }
 }
