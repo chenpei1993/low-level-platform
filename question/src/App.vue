@@ -19,8 +19,12 @@ export default {
 
   },
   created() {
-    //TODO
-    this.type = 1;
+    this.type = 1
+    let pathname = window.location.pathname
+    pathname = pathname.substring(1, pathname.length)
+    let value = pathname.split("/")
+    let id = value[0]
+    console.log(id)
   }
 }
 </script>

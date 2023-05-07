@@ -3,6 +3,7 @@ package com.jenschen.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
+import com.jenschen.dao.QuestionDao;
 import com.jenschen.entity.InfoEntity;
 import com.jenschen.entity.QuestionEntity;
 import com.jenschen.enumeration.ErrorEnum;
@@ -28,6 +29,9 @@ public class QuestionServiceImpl extends AbstractService<QuestionEntity> impleme
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private QuestionDao questionDao;
 
     @Autowired
     @Lazy
@@ -73,9 +77,7 @@ public class QuestionServiceImpl extends AbstractService<QuestionEntity> impleme
 
     @Override
     public Response<Object> getByInfoId(Integer id) {
-        QueryWrapper<QuestionEntity> queryWrapper = this.getDefaultQuery();
-        queryWrapper.eq("info_id", id);
-        List<QuestionEntity> questionEntityList = questionMapper.selectList(queryWrapper);
+        List<QuestionEntity> questionEntityList = questionDao.getByInfoId(id);
         List<QuestionResp> resp = BeanUtil.copyToList(questionEntityList, QuestionResp.class);
         return ResultUtil.success(resp);
     }

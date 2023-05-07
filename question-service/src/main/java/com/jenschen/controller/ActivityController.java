@@ -13,9 +13,9 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("question")
+@RequestMapping("activity")
 @CrossOrigin("*")
-public class QuestionController {
+public class ActivityController {
 
     @GetMapping("/info/{id}")
     public InfoResponse getQuestionsInfo(@PathVariable String id){
