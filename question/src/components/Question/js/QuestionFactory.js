@@ -1,4 +1,8 @@
-class QuestionFactory{
+import InputQuestion from "./InputQuestion"
+import SingleCheckQuestion from "./SingleCheckQuestion"
+import MultiCheckQuestion from "./MultiCheckQuestion"
+
+export class QuestionFactory{
     static INPUT_QUESTION = 1
     static SINGLE_CHECK_QUESTION = 2
     static MULTI_CHECK_QUESTION = 3
