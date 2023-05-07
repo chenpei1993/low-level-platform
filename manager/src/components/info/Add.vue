@@ -9,7 +9,7 @@
         <el-form-item label="名称">
           <el-input v-model="info.name" sytle="width:220px" />
         </el-form-item>
-        <el-form-item label="网页标题">
+        <el-form-item label="问卷标题">
             <el-input v-model="info.title" sytle="width:220px" />
         </el-form-item>
       <el-form-item label="重复次数">

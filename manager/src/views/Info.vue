@@ -34,7 +34,7 @@
               <template #default="scope">
                   <el-button link type="primary" size="small" @click="showTipDetail(scope.row.id)">推送定时器详情</el-button>
               </template>  
-            </el-table-column>  
+            </el-table-column>
             <el-table-column prop="status" label="状态">
               <template #default="scope">
                 <span>{{getStatus(scope.row.status)}}</span>
@@ -44,13 +44,14 @@
             <el-table-column prop="updatedAt" label="更新时间" width="180"/>
             <el-table-column fixed="right" label="操作" width="250">
                 <template #default="scope">
-                    <el-button link type="primary" size="small" @click="editQuestions(scope.row)">编辑问题</el-button>
-                    <el-button link type="primary" size="small" @click="publish(scope.row)">发布</el-button>
+                    <el-button link type="primary" size="small" @click="editQuestions(scope.row)" v-if="scope.row.status === 1">编辑问题</el-button>
+                    <el-button link type="primary" size="small" @click="publish(scope.row)" v-if="scope.row.status === 1">发布</el-button>
                     <el-button link type="primary" size="small" @click="preview(scope.row)">预览</el-button>
-                    <el-button link type="primary" size="small" @click="edit(scope.row)">编辑</el-button>
-                    <el-button link type="primary" size="small" @click="stop">停用</el-button>
-                    <el-button link type="primary" size="small" @click="del(scope.row)">删除</el-button>
+                    <el-button link type="primary" size="small" @click="edit(scope.row)" v-if="scope.row.status === 1">编辑</el-button>
+                    <el-button link type="primary" size="small" @click="stop(scope.row)" v-if="scope.row.status === 2">停用</el-button>
+                    <el-button link type="primary" size="small" @click="del(scope.row)" v-if="scope.row.status === 1">删除</el-button>
                     <el-button link type="primary" size="small" @click="showResult(scope.row)">收集结果</el-button>
+                    <el-button link type="primary" size="small" @click="showQRCode(scope.row)" v-if="scope.row.status === 2">显示地址</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -103,8 +104,18 @@
         :before-close="closePreview"
         size="50%"
     >
-        <Iphone :info="infoData"/>
+        <Iphone :info="infoData" />
     </el-drawer>
+
+      <el-drawer
+              v-model="isShowQRCode"
+              direction="ltr"
+              title="前端页面地址"
+              :before-close="closeQRCode"
+              size="50%"
+      >
+          <QRCode :info="info" />
+      </el-drawer>
   </div>
 </template>
 
@@ -113,13 +124,14 @@ import Add from '@/components/info/Add.vue'
 import SendDetail from '@/components/info/SendDetail.vue'
 import TipDetail from '@/components/info/TipDetail.vue'
 import Iphone from '@/components/iphone/Iphone.vue'
+import QRCode from '@/components/info/QRCode.vue'
 import {ElMessage, ElMessageBox} from 'element-plus'
 import { inject } from "vue"
 
 export default {
   name: 'Info',
   components: {
-    Add, SendDetail, TipDetail, Iphone
+    Add, SendDetail, TipDetail, Iphone, QRCode
   },
   data(){
     return {
@@ -132,6 +144,7 @@ export default {
       addOrEdit: "未知",
       isShowAddOrEditPanel: false,
       isShowPreview: false,
+      isShowQRCode: false,
       info:{},
       infoData: {
           questions:[]
@@ -159,12 +172,12 @@ export default {
             return
         }
 
-        if(this.lodash.isEmpty(info.startDateTime)){
+        if(this.lodash.isNil(info.startDateTime)){
             ElMessage.error("问卷开始日期不能为空")
             return
         }
 
-        if(this.lodash.isEmpty(info.endDateTime)){
+        if(this.lodash.isNil(info.endDateTime)){
             ElMessage.error("问卷结束时间不能为空")
             return
         }
@@ -178,9 +191,9 @@ export default {
           ElMessage.error("问卷推送时间应该大于问卷开始时间，并且小于问卷结束时间")
         }
         
-        if(this.info.repeatValue !== null && typeof(this.info.repeatValue) !== "undefined"){
-          this.info.repeatValue = this.info.repeatValue.split(",")
-        }
+        // if(this.info.repeatValue !== null && typeof(this.info.repeatValue) !== "undefined"){
+        //   this.info.repeatValue = this.info.repeatValue.split(",")
+        // }
 
         if(this.lodash.isNil(info.id)){
           this.http.put("info", info)
@@ -217,17 +230,31 @@ export default {
     closePreview(){
         this.isShowPreview = false
     },
-
+    showQRCode(info){
+        this.info = info
+        this.isShowQRCode = true;
+    },
+    closeQRCode(){
+        this.isShowQRCode = false;
+    },
     edit(info){
       this.addOrEdit = "编辑"
       this.info = info
       this.isShowAddOrEditPanel = true
     },
-    publish(){
-        //判断时间
+    publish(info){
+        this.http.post("info/publish", { id: info.id})
+            .then((data)=>{
+                ElMessage.success("发布成功")
+                this.refresh()
+            })
     },
-    stop(){
-
+    stop(info){
+        this.http.post("info/stop", { id: info.id})
+            .then(()=>{
+                ElMessage.success("停止成功")
+                this.refresh()
+            })
     },
     del(info){
       ElMessageBox.confirm(
@@ -269,16 +296,16 @@ export default {
       this.isShowInfoDetail = false
     },
     showTipDetail(){
-      this.isShowTipDetail = true
-      this.http.get("/info/tip", {currentPage: this.currentPage, pageSize: this.pageSize})
-          .then((res) => {
-            ElMessage.success("更新成功")
-            this.loading = false
-            this.infos = res.data
-            this.total = res.total
-          }).catch(()=>{
-        this.loading = false
-      })
+      // this.isShowTipDetail = true
+      // this.http.get("/info/tip", {currentPage: this.currentPage, pageSize: this.pageSize})
+      //     .then((res) => {
+      //       ElMessage.success("更新成功")
+      //       this.loading = false
+      //       this.infos = res.data
+      //       this.total = res.total
+      //     }).catch(()=>{
+      //   this.loading = false
+      // })
     },
     closeTipDetail(){
       this.isShowTipDetail = false

@@ -35,7 +35,7 @@
       <Show :questions="info.questions" @editQuestion="editQuestion" @delQuestion="delQuestion"/>
     </div>
     <div>
-      <Iphone :info="info"/>
+      <Iphone :info="info" />
     </div>
   </div>
 </template>
@@ -123,6 +123,7 @@ export default {
         // 限制问题描述的字数
       let data = {}
       data.infoId = this.infoId
+      data.title = this.info.title
       data.questionInfoList = this.info.questions
       this.http.put("question", data)
           .then(()=>{

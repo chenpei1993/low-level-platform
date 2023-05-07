@@ -29,6 +29,20 @@ public interface InfoService {
     Response<Object> edit(InfoReq infoReq);
 
     /**
+     * 发布活动
+     * @param infoReq 活动信息
+     * @return 结果
+     */
+    Response<Object> publish(InfoReq infoReq);
+
+    /**
+     * 停用活动
+     * @param infoReq 活动信息
+     * @return 结果
+     */
+    Response<Object> stop(InfoReq infoReq);
+
+    /**
      * 逻辑删除活动
      * @param id 活动id
      * @return 结果

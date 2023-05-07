@@ -3,8 +3,10 @@ package com.jenschen.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
+import com.jenschen.constant.SettingsConstant;
 import com.jenschen.entity.SubInfoEntity;
 import com.jenschen.entity.TaskEntity;
 import com.jenschen.enumeration.InfoStatusEnum;
@@ -16,10 +18,7 @@ import com.jenschen.entity.InfoEntity;
 import com.jenschen.request.Page;
 import com.jenschen.response.InfoResp;
 import com.jenschen.response.PageResp;
-import com.jenschen.service.AbstractService;
-import com.jenschen.service.InfoService;
-import com.jenschen.service.QuestionService;
-import com.jenschen.service.TaskService;
+import com.jenschen.service.*;
 import com.jenschen.service.impl.taskConverter.InfoSpliter;
 import com.jenschen.service.impl.taskConverter.InfoSpliterFactory;
 import com.jenschen.util.ResultUtil;
@@ -31,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -53,13 +53,25 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
     @Lazy
     private QuestionService questionService;
 
+    @Autowired
+    private SettingService settingService;
+
     @Override
     public Response<Object> page(Page page) {
         QueryWrapper<InfoEntity> queryWrapper = this.getPageQueryWrapper(page);
         List<InfoEntity> infoEntityList = infoMapper.selectList(queryWrapper);
-        List<InfoResp> resp = BeanUtil.copyToList(infoEntityList, InfoResp.class);
+
+        String ip = settingService.getValue(SettingsConstant.QUESTION_FRONT_URL);
+
+        List<InfoResp> list = new ArrayList<>(infoEntityList.size());
+        for(var info : infoEntityList){
+            InfoResp resp = BeanUtil.copyProperties(info, InfoResp.class);
+            resp.setUrl(ip + "/" + info.getUrl());
+            list.add(resp);
+        }
+
         int count = infoMapper.selectCount(this.getDefaultQuery());
-        return ResultUtil.success(PageResp.build(count, resp));
+        return ResultUtil.success(PageResp.build(count, list));
     }
 
 
@@ -73,7 +85,7 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
         InfoEntity infoEntity = BeanUtil.copyProperties(infoReq, InfoEntity.class);
         //限制默认参数
         infoEntity.setType(InfoTypeEnum.QUESTION);
-        infoEntity.setUrl(RandomUtil.randomString(5));
+        infoEntity.setUrl(RandomUtil.randomString(16));
         infoEntity.setStatus(InfoStatusEnum.EDIT);
         infoEntity.created(LocalDateTime.now(), 1);
         infoMapper.insert(infoEntity);
@@ -110,6 +122,24 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
         infoEntity.updated(LocalDateTime.now(), 1);
         infoMapper.updateById(infoEntity);
         return ResultUtil.success();
+    }
+
+    @Override
+    public Response<Object> publish(InfoReq infoReq) {
+        this.setStatus(InfoStatusEnum.PUBLISH, infoReq.getId());
+        return ResultUtil.success();
+    }
+
+    @Override
+    public Response<Object> stop(InfoReq infoReq) {
+        this.setStatus(InfoStatusEnum.EDIT, infoReq.getId());
+        return ResultUtil.success();
+    }
+
+    private void setStatus(InfoStatusEnum status, int id){
+        InfoEntity info = infoMapper.selectById(id);
+        info.setStatus(status);
+        infoMapper.updateById(info);
     }
 
     @Override

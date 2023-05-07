@@ -41,6 +41,9 @@ public class QuestionServiceImpl extends AbstractService<QuestionEntity> impleme
             return ResultUtil.error(ErrorEnum.DELETED_RECORD);
         }
 
+        //删除问题
+        deleteByInfoId(questionReq.getInfoId());
+
         //TODO 批量添加
 //        List<QuestionEntity> questionEntityList = new ArrayList<>();
         for(QuestionInfo questionInfo : questionReq.getQuestionInfoList()){

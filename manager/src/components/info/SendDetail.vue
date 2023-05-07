@@ -4,7 +4,7 @@
       <el-table-column property="startDateTime" label="提醒时间" width="150" />
       <el-table-column property="sendType" label="推送方式" width="100" />
       <el-table-column property="sendMessage" label="文本模板" width="400" />
-      <el-table-column property="status" label="状态" width="50" />
+      <el-table-column property="status" label="状态" width="100" />
     </el-table>
   </div>
 </template>

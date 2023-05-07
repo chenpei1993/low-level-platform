@@ -80,6 +80,11 @@ public class InfoResp extends BaseResponse {
     private String sendCustomers;
 
     /**
+     * URL
+     */
+    private String url;
+
+    /**
      * 状态
      */
     private int status;

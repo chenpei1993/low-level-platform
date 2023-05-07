@@ -40,6 +40,24 @@ public class InfoController {
     }
 
     /**
+     * 发布活动
+     * @return 结果
+     */
+    @PostMapping("publish")
+    public Response<Object> publish(@RequestBody InfoReq infoReq){
+        return infoService.publish(infoReq);
+    }
+
+    /**
+     * 停用活动
+     * @return 结果
+     */
+    @PostMapping("stop")
+    public Response<Object> stop(@RequestBody InfoReq infoReq){
+        return infoService.stop(infoReq);
+    }
+
+    /**
      * 删除消息
      * @param id ID
      * @return 结果
