@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@Builder
 @TableName("setting")
 @EqualsAndHashCode(callSuper = true)
 public class SettingEntity extends BaseEntity {

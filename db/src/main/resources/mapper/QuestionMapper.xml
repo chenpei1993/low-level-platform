@@ -4,8 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jenschen.mapper.QuestionMapper">
-    <resultMap id="BaseResultMap" type="com.jenschen.entity.CustomerEntity">
+    <resultMap id="BaseResultMap" type="com.jenschen.entity.QuestionEntity">
         <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="options" property="options" typeHandler="com.jenschen.typehandler.ListTypeHandler"/>
     </resultMap>
 
     <select id="deleteByInfoId" resultType="java.lang.Integer">

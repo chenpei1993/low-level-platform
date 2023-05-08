@@ -4,6 +4,7 @@ import com.jenschen.enumeration.question.QuestionTypeEnum;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Data
 public class QuestionInfo {
@@ -27,4 +28,9 @@ public class QuestionInfo {
      */
     @NotBlank(message = "问题描述不能空")
     private String questionDesc;
+
+    /**
+     * 选项按钮
+     */
+    private List<String> options;
 }

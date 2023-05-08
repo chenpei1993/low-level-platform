@@ -6,9 +6,7 @@ import com.jenschen.enumeration.SendTypeEnum;
 import com.jenschen.enumeration.TaskStatusEnum;
 import com.jenschen.enumeration.TaskTypeEnum;
 import com.jenschen.typehandler.ValueEnumTypeHandler;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +15,8 @@ import java.time.LocalDateTime;
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("task")
 @EqualsAndHashCode(callSuper = true)
 public class TaskEntity extends BaseEntity{
@@ -24,7 +24,6 @@ public class TaskEntity extends BaseEntity{
     /**
      * 任务类型 参考 TaskTypeEnum
      */
-    @TableField(typeHandler = ValueEnumTypeHandler.class)
     private TaskTypeEnum type;
 
     /**
@@ -40,7 +39,6 @@ public class TaskEntity extends BaseEntity{
     /**
      * 发送方式
      */
-    @TableField(typeHandler = ValueEnumTypeHandler.class)
     private SendTypeEnum sendType;
 
     /**
@@ -51,7 +49,6 @@ public class TaskEntity extends BaseEntity{
     /**
      * 执行状态
      */
-    @TableField(typeHandler = ValueEnumTypeHandler.class)
     private TaskStatusEnum status;
 
 

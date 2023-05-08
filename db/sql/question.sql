@@ -5,6 +5,7 @@ create table if not exists question (
     info_id           int               not null,
     is_required       tinyint          not null,
     question_desc     varchar(3000)       not null,
+    options         varchar(3000)    ,
     is_deleted     tinyint default 0 not null,
     deleted_at     datetime          null,
     deleted_by     int               null,

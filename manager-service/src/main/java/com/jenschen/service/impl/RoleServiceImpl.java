@@ -39,8 +39,8 @@ public class RoleServiceImpl extends AbstractService<RoleEntity> implements Role
     @Override
     public Response<Object> page(Page page) {
         QueryWrapper<RoleEntity> queryWrapper = this.getPageQueryWrapper(page);
-        List<RoleEntity> permissionEntityList = roleMapper.selectList(queryWrapper);
-        List<RoleResp> resp = BeanUtil.copyToList(permissionEntityList, RoleResp.class);
+        List<RoleEntity> roleEntityList = roleMapper.selectList(queryWrapper);
+        List<RoleResp> resp = BeanUtil.copyToList(roleEntityList, RoleResp.class);
         int count = roleMapper.selectCount(this.getDefaultQuery());
         return ResultUtil.success(PageResp.build(count, resp));
     }

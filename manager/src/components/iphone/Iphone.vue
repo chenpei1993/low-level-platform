@@ -116,7 +116,6 @@ export default {
   flex-direction: column;
   justify-content: center;
   font-family: 'Open Sans', sans-serif;
-    align-items: center;
 }
 
 

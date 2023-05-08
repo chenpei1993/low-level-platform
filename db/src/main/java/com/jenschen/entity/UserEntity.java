@@ -9,7 +9,6 @@ import lombok.EqualsAndHashCode;
  * 系统用户
  */
 @Data
-@Builder
 @TableName("user")
 @EqualsAndHashCode(callSuper = true)
 public class UserEntity extends BaseEntity{

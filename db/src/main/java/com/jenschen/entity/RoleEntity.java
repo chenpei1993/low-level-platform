@@ -2,12 +2,12 @@ package com.jenschen.entity;
 
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("role")
 @EqualsAndHashCode(callSuper = true)
 public class RoleEntity extends BaseEntity {

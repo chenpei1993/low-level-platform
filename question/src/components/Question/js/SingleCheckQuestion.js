@@ -7,6 +7,9 @@ export default class SingleCheckQuestion extends Question{
     }
 
     generate(wrapper){
+        if(this.options == null){
+            return
+        }
         let divElement = document.createElement("div")
         divElement.classList.add("question-wrapper")
         divElement.appendChild(super._label())

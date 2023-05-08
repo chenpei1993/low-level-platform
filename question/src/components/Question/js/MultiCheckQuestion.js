@@ -7,6 +7,9 @@ export default class MultiCheckQuestion extends Question{
     }
 
     generate(wrapper){
+        if(this.options == null){
+            return
+        }
         this.divElement = document.createElement("div")
         this.divElement.classList.add("question-wrapper")
         this.divElement.appendChild(super._label())

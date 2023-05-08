@@ -1,4 +1,0 @@
-spring:
-  mybatis:
-    configuration:
-      default-enum-type-handler: com.jenschen.typehandler.ValueEnumTypeHandler
