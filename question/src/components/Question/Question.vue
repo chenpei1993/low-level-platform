@@ -19,6 +19,7 @@
 
 <script>
 import {QuestionFactory} from "./js/QuestionFactory"
+import {inject} from "vue";
 
 export default {
   name: "question-content",
@@ -102,14 +103,22 @@ export default {
             infoId: this.info.id,
             answers: answer
         }
-        console.log(data)
+
+        this.http.post( "activity/submit/", data)
+            .then((data) => {
+                this.info = data
+                this.type = 1
+            })
     }
   },
   mounted(){
     this.mainFrame = document.getElementById("mainFrame")
       // this.loadStyles()
     this.createFrame()
-  }
+  },
+    created() {
+        this.http = inject("$http")
+    }
 }
 </script>
 
