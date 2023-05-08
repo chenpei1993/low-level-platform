@@ -4,9 +4,11 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
 import com.jenschen.config.WebSecurityConfig;
+import com.jenschen.constant.CommonConstant;
 import com.jenschen.entity.RoleEntity;
 import com.jenschen.entity.RoleUserEntity;
 import com.jenschen.entity.UserEntity;
+import com.jenschen.enumeration.ErrorEnum;
 import com.jenschen.exception.BizException;
 import com.jenschen.helper.JwtHelper;
 import com.jenschen.mapper.RolePermissionMapper;
@@ -132,6 +134,11 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
 
     @Override
     public Response<Object> edit(UserReq userReq) {
+        //默认用户admin禁止编辑
+        if(userReq.getId() == CommonConstant.DEFAULT_USER_ADMIN_ID){
+            return ResultUtil.error(ErrorEnum.ACCESS_DENIED);
+        }
+
         UserEntity user = BeanUtil.copyProperties(userReq, UserEntity.class);
         user.updated(LocalDateTime.now(), 1);
         userMapper.updateById(user);
@@ -157,6 +164,11 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
 
     @Override
     public Response<Object> delete(Integer id) {
+        //默认用户admin禁止删除
+        if(id == CommonConstant.DEFAULT_USER_ADMIN_ID){
+            return ResultUtil.error(ErrorEnum.ACCESS_DENIED);
+        }
+
         UserEntity user = userMapper.selectById(id);
         user.deleted(LocalDateTime.now(), 1);
         userMapper.updateById(user);

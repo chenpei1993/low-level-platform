@@ -7,6 +7,7 @@ import com.jenschen.request.user.UserPageReq;
 import com.jenschen.request.user.UserReq;
 import com.jenschen.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,17 +33,20 @@ public class UserController {
     }
 
     @PostMapping(value = "/page")
+    @PreAuthorize("hasAuthority('user:query')")
     @ResponseBody
     public Response<Object> page(@RequestBody UserPageReq userPageReq){
         return userService.page(userPageReq);
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('user:add')")
     public Response<Object> add(@RequestBody @Validated UserReq userReq){
         return userService.add(userReq);
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('user:edit')")
     public Response<Object> edit(@RequestBody @Validated UserReq userReq){
         return userService.edit(userReq);
     }
@@ -53,6 +57,7 @@ public class UserController {
      * @return 结果
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('user:del')")
     public Response<Object> del(@PathVariable Integer id){
         return userService.delete(id);
     }

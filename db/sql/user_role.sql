@@ -11,4 +11,7 @@ create table if not exists role_user(
     updated_by     int               not null,
     constraint role_pk
     primary key (id)
-)
+);
+
+insert into role_user (user_id, role_id, created_by, updated_by)
+    value (1, 1, 1, 1)

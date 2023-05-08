@@ -7,7 +7,7 @@
 
     <select id="getRoleByUserId" resultType="com.jenschen.entity.RoleEntity">
         select * from role where id in
-            (select role_id from role_user where user_id = #{userId})
+            (select role_id from role_user where user_id = #{userId} and is_deleted = 0)
     </select>
 
     <update id="deleteByUserId" >
@@ -15,8 +15,8 @@
                              deleted_by = #{operationId},
                              deleted_at = now(),
                              updated_by = #{operationId},
-                             updated_at = now(),
-                         where user_id = #{userId}
+                             updated_at = now()
+                         where user_id = #{userId} and is_deleted = 0
     </update>
 
     <update id="deleteByRoleId" >
@@ -24,8 +24,8 @@
                              deleted_by = #{operationId},
                              deleted_at = now(),
                              updated_by = #{operationId},
-                             updated_at = now(),
-                             where role_id = #{roleId}
+                             updated_at = now()
+                             where role_id = #{roleId} and is_deleted = 0
     </update>
 
 

@@ -16,8 +16,8 @@
               <el-table-column prop="updatedAt" label="更新时间" />
               <el-table-column fixed="right" label="操作" width="120">
                   <template #default="scope">
-                      <el-button link type="primary" size="small" @click="edit(scope.row)">编辑</el-button>
-                      <el-button link type="primary" size="small" @click="del(scope.row)">删除</el-button>
+                      <el-button link type="primary" size="small" @click="edit(scope.row)" v-if="scope.row.id !== 1">编辑</el-button>
+                      <el-button link type="primary" size="small" @click="del(scope.row)" v-if="scope.row.id !== 1">删除</el-button>
                   </template>
               </el-table-column>
           </el-table>
@@ -44,7 +44,7 @@
                     <el-checkbox v-if="i !== 0" v-model="v.checked">{{v.name}}</el-checkbox>
                 </span>
             </div>
-            <el-button @click="savePermission">保存</el-button>
+            <el-button @click="savePermission" v-if="currentRoleId !== 1">保存</el-button>
         </div>
     </div>
     <el-drawer
