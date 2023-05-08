@@ -7,4 +7,6 @@ import java.util.List;
 public interface QuestionDao {
 
     List<QuestionEntity> getByInfoId(Integer id);
+
+    List<QuestionEntity> getByCode(String code);
 }

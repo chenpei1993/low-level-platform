@@ -19,6 +19,7 @@ export default class MultiCheckQuestion extends Question{
 
             let inputElement = document.createElement("input")
             inputElement.type = "checkbox"
+            inputElement.idx = this.idx
             inputElement.value = this.options[i]
             wrapperElement.appendChild(inputElement)
 

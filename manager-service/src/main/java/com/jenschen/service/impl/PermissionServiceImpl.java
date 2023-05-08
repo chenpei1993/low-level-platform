@@ -3,6 +3,7 @@ package com.jenschen.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
+import com.jenschen.constant.CommonConstant;
 import com.jenschen.entity.PermissionEntity;
 import com.jenschen.mapper.PermissionMapper;
 import com.jenschen.mapper.RolePermissionMapper;
@@ -56,6 +57,11 @@ public class PermissionServiceImpl extends AbstractService<PermissionEntity> imp
 
     @Override
     public List<PermissionEntity> getPermissionByRoleIds(List<String> roleIds) {
+        for(var id : roleIds){
+            if(Integer.parseInt(id) == CommonConstant.DEFAULT_ROLE_ADMIN_ID){
+                return rolePermissionMapper.getAdminPermission();
+            }
+        }
         return rolePermissionMapper.getPermissionByRoleIds(roleIds);
     }
 

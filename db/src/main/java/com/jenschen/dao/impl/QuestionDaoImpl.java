@@ -24,4 +24,9 @@ public class QuestionDaoImpl extends AbstractDao<QuestionEntity> implements Ques
         queryWrapper.eq("info_id", id);
         return questionMapper.selectList(queryWrapper);
     }
+
+    @Override
+    public List<QuestionEntity> getByCode(String code) {
+        return questionMapper.getByCode(code);
+    }
 }

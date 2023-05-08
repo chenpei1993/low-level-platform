@@ -26,19 +26,31 @@ public class ListTypeHandler extends BaseTypeHandler<List<String>> {
 
     @Override
     public List<String> getNullableResult(ResultSet resultSet, String s) throws SQLException {
-        String[] arr = resultSet.getString(s).split(",");
+        String str = resultSet.getString(s);
+        if(str == null){
+            return null;
+        }
+        String[] arr = str.split(",");
         return Arrays.asList(arr);
     }
 
     @Override
     public List<String> getNullableResult(ResultSet resultSet, int i) throws SQLException {
-        String[] arr = resultSet.getString(i).split(",");
+        String str = resultSet.getString(i);
+        if(str == null){
+            return null;
+        }
+        String[] arr = str.split(",");
         return Arrays.asList(arr);
     }
 
     @Override
     public List<String> getNullableResult(CallableStatement callableStatement, int i) throws SQLException {
-        String[] arr  = callableStatement.getString(i).split(",");
+        String str = callableStatement.getString(i);
+        if(str == null){
+            return null;
+        }
+        String[] arr = str.split(",");
         return Arrays.asList(arr);
     }
 

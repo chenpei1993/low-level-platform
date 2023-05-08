@@ -18,4 +18,28 @@ export class QuestionFactory{
             throw "未定义类型"
         }
     }
+
+    static getValueByType(question, arr){
+        if(QuestionFactory.INPUT_QUESTION === question.type){
+            return arr[0].value;
+        }else if(QuestionFactory.SINGLE_CHECK_QUESTION === question.type){
+            let value = ""
+            arr.forEach(e => {
+                if(e.checked){
+                    value = e.value
+                }
+            })
+            return value;
+        }else if(QuestionFactory.MULTI_CHECK_QUESTION === question.type){
+            let values = []
+            arr.forEach(e => {
+                if(e.checked){
+                    values.push(e.value)
+                }
+            })
+            return values.join(",")
+        }else{
+            throw "未定义类型"
+        }
+    }
 }

@@ -7,10 +7,12 @@ export default class InputQuestion extends Question{
 
     generate(wrapper){
         let divElement = document.createElement("div")
+
         divElement.appendChild(super._label())
         divElement.classList.add("question-wrapper")
         this.inputElement = document.createElement("input")
         this.inputElement.classList.add("question-input")
+        this.inputElement.idx = this.idx
         divElement.appendChild(this.inputElement)
         wrapper.appendChild(divElement)
     }

@@ -8,7 +8,11 @@ public enum ErrorEnum {
     INVALID_PARAMS(10001, "错误的重复类型"),
     DELETED_RECORD(10002, "数据已被删除"),
 
-    ACCESS_DENIED(20001, "无访问权限");
+    ACCESS_DENIED(20001, "无访问权限"),
+
+    ACTIVITY_NOT_EXIST(70001, "活动不存在"),
+    ACTIVITY_NOT_BEGIN(70002, "活动已结束"),
+    ACTIVITY_END(70003, "活动未开始");
 
 
     private final int code;

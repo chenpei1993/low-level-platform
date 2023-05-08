@@ -51,16 +51,16 @@ insert into permission (name, permission, created_by, updated_by)
 SELECT '角色', 'role', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'role');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '角色查询', 'role', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'role:query');
+SELECT '角色查询', 'role:query', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'role:query');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '角色添加', 'role', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'role:add');
+SELECT '角色添加', 'role:add', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'role:add');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '角色添加', 'role', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'role:edit');
+SELECT '角色修改', 'role:add', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'role:edit');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '角色删除', 'role', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'role:del');
+SELECT '角色删除', 'role:del', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'role:del');
 
 
 # 标签
@@ -68,16 +68,16 @@ insert into permission (name, permission, created_by, updated_by)
 SELECT '标签', 'tag', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'tag');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '标签查询', 'tag', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'tag:query');
+SELECT '标签查询', 'tag:query', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'tag:query');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '标签添加', 'tag', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'tag:add');
+SELECT '标签添加', 'tag:add', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'tag:add');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '标签添加', 'tag', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'tag:edit');
+SELECT '标签修改', 'tag:edit', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'tag:edit');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '标签删除', 'tag', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'tag:del');
+SELECT '标签删除', 'tag:del', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'tag:del');
 
 
 # 客户
@@ -85,41 +85,41 @@ insert into permission (name, permission, created_by, updated_by)
 SELECT '客户', 'custom', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'custom');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '客户查询', 'custom', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'custom:query');
+SELECT '客户查询', 'custom:query', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'custom:query');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '客户添加', 'custom', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'custom:add');
+SELECT '客户添加', 'custom:add', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'custom:add');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '客户添加', 'custom', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'custom:edit');
+SELECT '客户修改', 'custom:edit', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'custom:edit');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '客户删除', 'custom', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'custom:del');
+SELECT '客户删除', 'custom:del', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'custom:del');
 
 # 问卷
 insert into permission (name, permission, created_by, updated_by)
 SELECT '问卷', 'info', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'info');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '问卷查询', 'info', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'info:query');
+SELECT '问卷查询', 'info:query', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'info:query');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '问卷添加', 'info', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'info:add');
+SELECT '问卷添加', 'info:add', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'info:add');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '问卷编辑', 'info', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'info:edit');
+SELECT '问卷编辑', 'info:edit', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'info:edit');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '问卷编辑问题', 'info', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'info:edit_question');
+SELECT '问卷编辑问题', 'info:edit_question', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'info:edit_question');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '问卷发布', 'info', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'info:publish');
+SELECT '问卷发布', 'info:publish', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'info:publish');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '问卷预览', 'info', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'info:preview');
+SELECT '问卷预览', 'info:preview', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'info:preview');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '问卷删除', 'info', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'info:del');
+SELECT '问卷删除', 'info:del', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'info:del');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '问卷结果', 'info', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'info:result');
+SELECT '问卷结果', 'info:result', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'info:result');

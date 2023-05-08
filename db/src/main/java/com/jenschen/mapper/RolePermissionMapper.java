@@ -24,6 +24,13 @@ public interface RolePermissionMapper extends BaseMapper<RolePermissionEntity> {
      */
     List<PermissionEntity> getPermissionByRoleIds(List<String> roleIds);
 
+
+    /**
+     * 查找所有的管理员权限
+     * @return 角色的权限集合
+     */
+    List<PermissionEntity> getAdminPermission();
+
     /**
      * 根据角色ID 删除所有的权限集合
      * @param roleId 角色ID

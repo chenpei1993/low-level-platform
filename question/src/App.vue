@@ -25,8 +25,8 @@ export default {
     let pathname = window.location.pathname
     pathname = pathname.substring(1, pathname.length)
     let value = pathname.split("/")
-    let id = value[0]
-    this.http.get( "activity/info/" + id)
+    let code = value[0]
+    this.http.get( "activity/info/" + code)
         .then((data) => {
           this.info = data
           this.type = 1

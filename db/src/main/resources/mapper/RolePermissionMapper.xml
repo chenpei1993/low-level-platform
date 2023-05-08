@@ -30,6 +30,10 @@
                 ));
     </select>
 
+    <select id="getAdminPermission" resultType="com.jenschen.entity.PermissionEntity">
+        select * from permission where is_deleted = 0
+    </select>
+
     <update id="deletePermissionByRoleId">
         update role_permission set is_deleted = 1,
                              deleted_by = #{operationId},

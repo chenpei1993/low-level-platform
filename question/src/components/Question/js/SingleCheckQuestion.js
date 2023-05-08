@@ -21,6 +21,7 @@ export default class SingleCheckQuestion extends Question{
             inputElement.type = "radio"
             inputElement.value = this.options[i]
             inputElement.name = this.idx
+            inputElement.idx = this.idx
             wrapperElement.appendChild(inputElement)
 
             let spanElement = document.createElement("span")
