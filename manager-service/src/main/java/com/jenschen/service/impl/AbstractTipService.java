@@ -3,6 +3,7 @@ package com.jenschen.service.impl;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import com.jenschen.base.Response;
 import com.jenschen.entity.InfoEntity;
+import com.jenschen.entity.TaskEntity;
 import com.jenschen.enumeration.RepeatCollectTypeEnum;
 import com.jenschen.enumeration.TaskStatusEnum;
 import com.jenschen.enumeration.TaskTypeEnum;
@@ -12,19 +13,16 @@ import com.jenschen.mapper.TaskMapper;
 import com.jenschen.request.InfoReq;
 import com.jenschen.request.SendTimerPageReq;
 import com.jenschen.request.TaskReq;
-import com.jenschen.entity.TaskEntity;
 import com.jenschen.request.TipTimerPageReq;
 import com.jenschen.service.AbstractService;
 import com.jenschen.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service("TaskServiceImpl")
-public class TaskServiceImpl extends AbstractService<TaskEntity> implements TaskService {
+public abstract class AbstractTipService  extends AbstractService<TaskEntity> implements TaskService {
 
     @Autowired
     protected TaskMapper taskMapper;
@@ -32,17 +30,17 @@ public class TaskServiceImpl extends AbstractService<TaskEntity> implements Task
     @Override
     public List<TaskEntity> insertSendTask(InfoReq infoReq, List<InfoEntity> infoEntityList) {
         List<TaskEntity> list = new ArrayList<>();
-        LocalDateTime sendDateTime = infoReq.getSendDateTime();
+
         if(RepeatCollectTypeEnum.ONCE.equals(infoReq.getRepeatCollectType())){
             InfoEntity infoEntity = infoEntityList.get(0);
             TaskEntity taskEntity = TaskEntity.builder()
-                        .infoId(infoEntity.getId())
-                        .type(TaskTypeEnum.SEND)
-                        .executionDateTime(sendDateTime)
-                        .sendType(infoReq.getSendType())
-                        .sendMessage(infoReq.getSendMessage())
-                        .status(TaskStatusEnum.INIT)
-                        .build();
+                    .infoId(infoEntity.getId())
+                    .type(TaskTypeEnum.SEND)
+                    .executionDateTime(infoEntity.getSendDateTime())
+                    .sendType(infoReq.getSendType())
+                    .sendMessage(infoReq.getSendMessage())
+                    .status(TaskStatusEnum.INIT)
+                    .build();
             taskEntity.created(LocalDateTime.now(), 1);
             list.add(taskEntity);
             return list;
@@ -50,7 +48,7 @@ public class TaskServiceImpl extends AbstractService<TaskEntity> implements Task
 
         for(InfoEntity infoEntity : infoEntityList){
             LocalDateTime dateTime = LocalDateTimeUtil.of(infoEntity.getStartDateTime());
-            dateTime = dateTime.withHour(sendDateTime.getHour()).withMinute(sendDateTime.getMinute());
+            dateTime = dateTime.withHour(infoEntity.getSendDateTime().getHour()).withMinute(infoEntity.getSendDateTime().getMinute());
             TaskEntity taskEntity = TaskEntity.builder()
                     .infoId(infoEntity.getId())
                     .type(TaskTypeEnum.SEND)
@@ -88,13 +86,6 @@ public class TaskServiceImpl extends AbstractService<TaskEntity> implements Task
         return delayList;
     }
 
-    @Override
-    public void saveList(List<TaskEntity> taskEntityList) {
-        for(TaskEntity taskEntity : taskEntityList){
-            taskMapper.insert(taskEntity);
-        }
-    }
-
     private int beforeMinutes(TimeUnitEnum timeUnit, int value){
         if(TimeUnitEnum.MINUTES.equals(timeUnit)){
             return value;
@@ -105,6 +96,13 @@ public class TaskServiceImpl extends AbstractService<TaskEntity> implements Task
         }
 
         return value;
+    }
+
+    @Override
+    public void saveList(List<TaskEntity> taskEntityList) {
+        for(TaskEntity taskEntity : taskEntityList){
+            taskMapper.insert(taskEntity);
+        }
     }
 
     @Override

@@ -63,11 +63,6 @@ public class InfoResp extends BaseResponse {
      */
     private SendTypeEnum sendType;
 
-    /**
-     * 发送的时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDateTime sendDateTime;
 
     /**
      * 发送的消息模板
@@ -93,4 +88,8 @@ public class InfoResp extends BaseResponse {
      * 其他，备用
      */
     private String other;
+
+    private List<TaskResp> tipTasks;
+
+    private List<TaskResp> sendTasks;
 }

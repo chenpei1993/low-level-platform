@@ -20,10 +20,7 @@ import com.jenschen.request.AnswerPageReq;
 import com.jenschen.request.InfoReq;
 import com.jenschen.entity.InfoEntity;
 import com.jenschen.request.Page;
-import com.jenschen.response.AnswerPageResp;
-import com.jenschen.response.AnswerResp;
-import com.jenschen.response.InfoResp;
-import com.jenschen.response.PageResp;
+import com.jenschen.response.*;
 import com.jenschen.service.*;
 import com.jenschen.service.impl.taskConverter.InfoSpliter;
 import com.jenschen.service.impl.taskConverter.InfoSpliterFactory;
@@ -51,8 +48,12 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
     private SubInfoMapper subInfoMapper;
 
     @Autowired
-    @Qualifier("TaskServiceImpl")
-    private TaskService taskService;
+    @Qualifier("TipTaskService")
+    private TaskService tipTaskService;
+
+    @Autowired
+    @Qualifier("SendTaskService")
+    private TaskService sendTaskService;
 
     @Autowired
     private InfoSpliterFactory infoSpliterFactory;
@@ -82,6 +83,14 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
             InfoResp resp = BeanUtil.copyProperties(info, InfoResp.class);
             resp.setUrl(ip + "/" + info.getUrl());
             list.add(resp);
+
+            List<TaskEntity> tips = tipTaskService.getByInfoId(info.getId());
+            List<TaskResp> tipsResp = BeanUtil.copyToList(tips, TaskResp.class);
+            resp.setTipTasks(tipsResp);
+
+            List<TaskEntity> sends = sendTaskService.getByInfoId(info.getId());
+            List<TaskResp> sendRep = BeanUtil.copyToList(sends, TaskResp.class);
+            resp.setSendTasks(sendRep);
         }
 
         int count = infoMapper.selectCount(this.getDefaultQuery());
@@ -92,7 +101,6 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Response<Object> insert(InfoReq infoReq) {
-        InfoSpliter infoSpliter = infoSpliterFactory.getTaskConverter(infoReq.getRepeatCollectType());
 
         //TODO 验证数据
 
@@ -104,38 +112,55 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
         infoEntity.created(LocalDateTime.now(), 1);
         infoMapper.insert(infoEntity);
 
-        //分割的活动信息
-        List<InfoEntity> infoEntityList = infoSpliter.convert(infoReq, infoEntity.getId());
-        List<SubInfoEntity> subInfoEntityList = BeanUtil.copyToList(infoEntityList, SubInfoEntity.class);
-        for(SubInfoEntity subInfoEntity : subInfoEntityList){
-            subInfoEntity.created(LocalDateTime.now(), 1);
-            subInfoMapper.insert(subInfoEntity);
-        }
 
-        //如果设置定时发送
-        List<TaskEntity> sendList;
-        if(infoReq.isAutoSend()){
-            sendList = taskService.insertSendTask(infoReq, infoEntityList);
-            taskService.saveList(sendList);
-        }
-
-        //如果延时器不为空
-        List<TaskEntity> delayList;
-        if(CollUtil.isNotEmpty(infoReq.getDelayTipTimers())){
-            delayList = taskService.insertTipTask(infoReq, infoEntityList);
-            taskService.saveList(delayList);
-        }
+        updateTask(infoReq, infoEntity);
 
         return ResultUtil.success();
     }
 
     @Override
-    public Response<Object> edit(InfoReq infoDTO) {
+    public Response<Object> edit(InfoReq infoReq) {
         InfoEntity infoEntity = new InfoEntity();
-        BeanUtils.copyProperties(infoDTO, infoEntity);
+        BeanUtils.copyProperties(infoReq, infoEntity);
         infoEntity.updated(LocalDateTime.now(), 1);
         infoMapper.updateById(infoEntity);
+
+        //删除任务表
+        tipTaskService.deleteByInfoId(infoReq.getId());
+        sendTaskService.deleteByInfoId(infoReq.getId());
+
+        //重新构建任务
+        updateTask(infoReq, infoEntity);
+
         return ResultUtil.success();
+    }
+
+    private void updateTask(InfoReq infoReq, InfoEntity infoEntity){
+        InfoSpliter infoSpliter = infoSpliterFactory.getTaskConverter(infoReq.getRepeatCollectType());
+
+        //分割的活动信息
+        List<InfoEntity> infoEntityList = infoSpliter.convert(infoReq, infoEntity.getId());
+        List<SubInfoEntity> subInfoEntityList = BeanUtil.copyToList(infoEntityList, SubInfoEntity.class);
+        for(SubInfoEntity subInfoEntity : subInfoEntityList){
+            subInfoEntity.created(LocalDateTime.now(), 1);
+//            subInfoMapper.insert(subInfoEntity);
+        }
+
+        //如果提醒器不为空
+        if(CollUtil.isNotEmpty(infoReq.getDelayTipTimers())){
+            List<TaskEntity> delayList;
+            if(CollUtil.isNotEmpty(infoReq.getDelayTipTimers())){
+                delayList = tipTaskService.insertTipTask(infoReq, infoEntityList);
+                tipTaskService.saveList(delayList);
+            }
+
+        }
+
+        //如果设置定时发送
+        if(infoReq.isAutoSend()){
+            List<TaskEntity> sendList = tipTaskService.insertSendTask(infoReq, infoEntityList);
+            tipTaskService.saveList(sendList);
+        }
     }
 
     @Override

@@ -8,7 +8,6 @@ import com.jenschen.request.SendTimerPageReq;
 import com.jenschen.request.TaskReq;
 import com.jenschen.request.TipTimerPageReq;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 public interface TaskService {
@@ -62,4 +61,9 @@ public interface TaskService {
      * @return 结果
      */
     Response<Object> pageTipTimer(TipTimerPageReq tipTimerPageReq);
+
+    List<TaskEntity> getByInfoId(Integer infoId);
+
+    void deleteByInfoId(Integer infoId);
+
 }

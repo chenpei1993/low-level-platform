@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public interface InfoSpliter {
 
@@ -22,7 +23,10 @@ public interface InfoSpliter {
         List<InfoEntity> infoEntityList = new ArrayList<>();
         LocalDateTime cur = LocalDateTimeUtil.beginOfDay(infoReq.getStartDateTime());
         while(cur.isBefore(infoReq.getEndDateTime())){
-            if(Arrays.binarySearch(infoReq.getRepeatValue(), cur.getDayOfWeek().getValue()) >= 0) {
+            int[] weeks = Arrays.stream(infoReq.getRepeatValue().split(","))
+                    .flatMapToInt(e -> IntStream.of(Integer.parseInt(e)))
+                    .toArray();
+            if(Arrays.binarySearch(weeks, cur.getDayOfWeek().getValue()) >= 0) {
                 InfoEntity infoEntity = getValidSubInfo(cur, infoReq, infoId);
                 infoEntityList.add(infoEntity);
             }
@@ -34,22 +38,24 @@ public interface InfoSpliter {
     default InfoEntity getValidSubInfo(LocalDateTime dateTime, InfoReq infoReq, int infoId){
         int hours = infoReq.getBeginHours();
         int minutes = infoReq.getBeginMinutes();
-        int total = infoReq.getTotal();
 
         InfoEntity infoEntity = BeanUtil.copyProperties(infoReq, InfoEntity.class);
         infoEntity.setId(infoId);
         LocalDateTime startDateTime = infoReq.getStartDateTime().withSecond(0);
         LocalDateTime endDateTime = infoReq.getEndDateTime().withSecond(0);
 
+
+
         LocalDateTime begin = LocalDateTimeUtil.of(dateTime);
+        infoEntity.setStartDateTime(LocalDateTimeUtil.of(begin));
+
         begin = begin.withHour(hours).withMinute(minutes);
         if(begin.isBefore(startDateTime)){
             begin = begin.withHour(startDateTime.getHour()).withMinute(startDateTime.getMinute()).withSecond(0);
         }
-        infoEntity.setStartDateTime(begin);
+        infoEntity.setSendDateTime(begin);
 
         LocalDateTime end = LocalDateTimeUtil.endOfDay(begin);
-        end = end.plusMinutes(total);
         if(end.isAfter(endDateTime)){
             end = end.withHour(endDateTime.getHour()).withMinute(endDateTime.getMinute()).withSecond(0);
         }

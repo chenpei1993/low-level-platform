@@ -1,5 +1,6 @@
 package com.jenschen.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jenschen.enumeration.InfoTypeEnum;
 import com.jenschen.enumeration.RepeatCollectTypeEnum;
 import com.jenschen.enumeration.SendCustomerTypeEnum;
@@ -33,7 +34,7 @@ public class InfoReq {
     /**
      * 针对每周，每月，后面的数值，可以，分割
      */
-    private int[] repeatValue;
+    private String repeatValue;
 
     /**
      * 定时发送
@@ -46,34 +47,33 @@ public class InfoReq {
     /**
      * 活动开始时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime startDateTime;
     /**
      * 活动结束时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime endDateTime;
 
     /**
-     * 一次活动的开始小时
+     * 推送开始小时
      */
     private int beginHours;
 
     /**
-     * 一次活动的开始分钟
+     * 推送开始分钟
      */
     private int beginMinutes;
 
-    /**
-     * 一次活动时长
-     */
-    private int total;
     /**
      * 发送的方式
      */
     private SendTypeEnum sendType;
 
     /**
-     * 发送的时间
+     * 推送的时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime sendDateTime;
 
     /**

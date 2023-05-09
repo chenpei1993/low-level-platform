@@ -12,42 +12,17 @@
         <el-form-item label="问卷标题">
             <el-input v-model="info.title" sytle="width:220px" />
         </el-form-item>
-      <el-form-item label="重复次数">
-        <el-select v-model="info.repeatCollectType">
-          <el-option
-              v-for="item in repeatCollectionTypeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="每周几" v-if="info.repeatCollectType === 100">
-        <el-input v-model="info.repeatValue" sytle="width:200px" />
-      </el-form-item>
-      <el-form-item label="每月几号" v-if="info.repeatCollectType === 1000">
-        <el-input v-model="info.repeatValue" sytle="width:200px" />
-      </el-form-item>
-
       <el-form-item label="活动开始结束时间">
         <el-date-picker
           v-model="dateTimeRange"
           type="datetimerange"
           format="YYYY-MM-DD HH:mm"
+          value-format="YYYY-MM-DD HH:mm:00"
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
           @change="changeDatetimeRange"
         />
-      </el-form-item>
-      <el-form-item label="开始时间" v-if="info.repeatCollectType !== 1 ">
-        <el-input v-model="info.beginHours"  style="width: 50px; margin-right: 3px"/><span class="gap">时</span>
-        <el-input v-model="info.beginMinutes"  style="width: 50px; margin-right: 3px" /><span class="gap">分</span>
-      </el-form-item>
-      <el-form-item label="时长" v-if="info.repeatCollectType !== 1 ">
-        <el-input v-model="total.days" style="width: 50px; margin-right: 3px" /><span class="gap">天</span>
-        <el-input v-model="total.hours"  style="width: 50px; margin-right: 3px"/><span class="gap">时</span>
-        <el-input v-model="total.minutes"  style="width: 50px; margin-right: 3px" /><span class="gap">分</span>
       </el-form-item>
         <el-form-item label="是否定时推送">
             <el-select v-model="info.autoSend">
@@ -62,14 +37,34 @@
       <el-form-item label="推送的文本模板" v-if="info.autoSend">
         <el-input v-model="info.sendMessage" type="textarea" sytle="width:200px" />
       </el-form-item>
-
-        <el-form-item label="定时推送时间" v-if="info.autoSend" >
+        <el-form-item label="推送次数" v-if="info.autoSend">
+            <el-select v-model="info.repeatCollectType">
+                <el-option
+                        v-for="item in repeatCollectionTypeOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                />
+            </el-select>
+        </el-form-item>
+        <el-form-item label="定时推送时间" v-if="info.repeatCollectType === 1 && info.autoSend" >
             <el-date-picker
-              v-model="info.sendDateTime"
-              type="datetime"
-              format="YYYY-MM-DD HH:mm"
-              placeholder="选择推送日期时间"
+                    v-model="info.sendDateTime"
+                    value-format="YYYY-MM-DD HH:mm:00"
+                    type="datetime"
+                    format="YYYY-MM-DD HH:mm"
+                    placeholder="选择推送日期时间"
             />
+        </el-form-item>
+        <el-form-item label="每周几" v-if="info.repeatCollectType === 100">
+            <el-input v-model="info.repeatValue" sytle="width:200px" />
+        </el-form-item>
+        <el-form-item label="每月几号" v-if="info.repeatCollectType === 1000">
+            <el-input v-model="info.repeatValue" sytle="width:200px" />
+        </el-form-item>
+        <el-form-item label="开始时间" v-if="info.repeatCollectType !== 1 ">
+            <el-input v-model="info.beginHours"  style="width: 50px; margin-right: 3px"/><span class="gap">时</span>
+            <el-input v-model="info.beginMinutes"  style="width: 50px; margin-right: 3px" /><span class="gap">分</span>
         </el-form-item>
         <el-form-item label="推送方式" v-if="info.autoSend">
           <el-select v-model="info.sendType">
@@ -151,7 +146,7 @@
 
 <script>
 import ArrayUtil from '@/util/ArrayUtil'
-
+import TaskUtil from '@/util/TaskUtil'
 export default {
   name: "info-add-edit",
   emits: ["addOrEditInfo"],
@@ -163,11 +158,6 @@ export default {
   },
   data(){
     return {
-      total:{
-        days: 0,
-        minutes: 0,
-        hours: 0
-      },
       timeUnitOptions: [
         {label: "分", value: 1},
         {label: "小时", value: 2},
@@ -177,11 +167,7 @@ export default {
         {label: "是", value: true},
         {label: "否", value: false},
       ],
-      sendTypeOptions:[
-        {label: "企业微信", value: 1},
-        {label: "手机号", value: 2},
-        {label: "邮箱", value: 3},
-      ],
+      sendTypeOptions: TaskUtil.sendTypeOptions,
       sendCustomerTypeOptions:[
         {label: "自定义", value: 1},
         {label: "标签", value: 2},
@@ -207,7 +193,6 @@ export default {
             sendDateTime: "",
             beginHours: 0,
             beginMinutes: 0,
-            time: 0
         }
       }
     },
@@ -228,7 +213,6 @@ export default {
   },
   methods:{
     confirm(){
-      this.time = this.total.days * 24 * 60 + this.total.hours * 60 + this.total.minutes
       this.addOrEditInfo(this.info)
     },
     delDelayTipTimer(idx){
@@ -240,15 +224,13 @@ export default {
       }
       this.info.delayTipTimers.push({timeUnit: 1})
     },
-    changeDatetimeRange(){
-      console.log(this.dateTimeRange)
+      changeDatetimeRange(){
+
       if(this.dateTimeRange == null || this.dateTimeRange.length === 0){
           return
       }
       this.info.startDateTime = this.dateTimeRange[0];
       this.info.endDateTime = this.dateTimeRange[1];
-      this.info.beginHours = this.info.startDateTime.getHours()
-      this.info.beginMinutes = this.info.startDateTime.getMinutes()
     }
   }
 }

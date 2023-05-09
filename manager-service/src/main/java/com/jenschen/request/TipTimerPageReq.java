@@ -6,4 +6,5 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class TipTimerPageReq extends Page{
+    private Integer infoId;
 }

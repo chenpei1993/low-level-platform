@@ -22,7 +22,7 @@ public class InfoController {
 
     /**
      * 添加活动
-     * @param infoReq 活动
+     * @param infoReq 活动在
      * @return 结果
      */
     @PutMapping

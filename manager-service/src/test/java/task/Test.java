@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Test {
 
@@ -50,7 +51,10 @@ public class Test {
             cur = LocalDateTimeUtil.beginOfDay(cur);
             cur = cur.plusDays(1);
             while(cur.isBefore(infoReq.getEndDateTime())){
-                if(Arrays.binarySearch(infoReq.getRepeatValue(), cur.getDayOfWeek().getValue()) >= 0){
+                int[] weeks = Arrays.stream(infoReq.getRepeatValue().split(","))
+                        .flatMapToInt(e -> IntStream.of(Integer.parseInt(e)))
+                        .toArray();
+                if(Arrays.binarySearch(weeks, cur.getDayOfWeek().getValue()) >= 0){
                     InfoEntity info = new InfoEntity();
                     infoEntity.setStartDateTime(cur);
                     LocalDateTime end = LocalDateTimeUtil.endOfDay(cur);

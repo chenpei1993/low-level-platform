@@ -12,27 +12,21 @@
         <el-table :data="infos" stripe style="width: 100%" v-loading="loading">
             <el-table-column prop="name" label="名称" width="100"/>
             <el-table-column prop="title" label="网页标题"/>
-            <el-table-column prop="" label="重复信息" width="100">
-              <template #default="scope">
-                <span> {{ getRepeatInfo(scope.row) }}</span>                  
-              </template>  
-            </el-table-column>
             <el-table-column prop="startDateTime" label="活动开始时间" width="180" />
             <el-table-column prop="endDateTime" label="活动结束时间" width="180"/>
-            <el-table-column prop="endDateTime" label="推送定时器" width="180"/>
             <el-table-column prop="autoSend" label="定时推送" width="100">
               <template #default="scope">
-                <span>{{scope.row.autoSend ? "是" : "否"}}</span>
+                <span>{{scope.row.sendTasks.length ? "是" : "否"}}</span>
               </template>  
             </el-table-column>
             <el-table-column prop="" label="提醒定时器" width="100">
               <template #default="scope">
-                  <el-button link type="primary" size="small" @click="showInfoDetail(scope.row.id)">提醒定时器详情</el-button>
+                  <el-button link type="primary" size="small" @click="showTipDetail(scope.row)">提醒定时器详情</el-button>
               </template>  
             </el-table-column>
             <el-table-column prop="" label="推送定时器" width="100">
               <template #default="scope">
-                  <el-button link type="primary" size="small" @click="showTipDetail(scope.row.id)">推送定时器详情</el-button>
+                  <el-button link type="primary" size="small" @click="showSendDetail(scope.row)">推送定时器详情</el-button>
               </template>  
             </el-table-column>
             <el-table-column prop="status" label="状态">
@@ -79,22 +73,22 @@
     </el-drawer>
 
     <el-drawer
-        v-model="isShowInfoDetail"
+        v-model="isShowSendDetail"
         direction="ltr"
         title="定时器详情"
-        :before-close="closeInfoDetail"
+        :before-close="closeSendDetail"
         size="50%"
     >
-      <SendDetail :infoDetails="infoDetails"/>
+      <SendDetail ref="SendDetail" :infoId="info.id"/>
     </el-drawer>
     <el-drawer
         v-model="isShowTipDetail"
         direction="ltr"
         title="提醒器详情"
         :before-close="closeTipDetail"
-        size="50%"
+        size="80%"
     >
-      <TipDetail :infos="infos"/>
+      <TipDetail ref="TipDetail" :infoId="info.id"/>
     </el-drawer>
 
     <el-drawer
@@ -141,7 +135,7 @@ export default {
       currentPage: 1,
       pageSize: 15,
       total: 0,
-      isShowInfoDetail: false,
+      isShowSendDetail: false,
       isShowTipDetail: false,
       addOrEdit: "未知",
       isShowAddOrEditPanel: false,
@@ -163,7 +157,6 @@ export default {
     addOrEditInfo(info){
         console.log(info)
         //TODO 检查参数
-
         if(this.lodash.isEmpty(info.name)){
             ElMessage.error("问卷名称不能为空")
             return
@@ -241,7 +234,37 @@ export default {
     },
     edit(info){
       this.addOrEdit = "编辑"
-      this.info = info
+        this.info = JSON.parse(JSON.stringify(info))
+
+        this.info.autoSend = info.sendTasks.length > 0
+        let tipTimes = []
+        let endTime = new Date(info.endDateTime).getTime() / 1000
+        for(let i = 0; i < info.tipTasks.length; i++){
+            let t = info.tipTasks[i]
+            let time = new Date(t.executionDateTime).getTime() / 1000
+            let d = endTime - time
+            let timeUnit = 3
+            let value = d / (3600 * 24)
+            if( d >= 60 && d < 3600){
+                value = d / 60
+                timeUnit = 1
+            }else if(d >= 3600 && d < 3600 * 24){
+                value = d / 3600
+                timeUnit = 2
+            }
+            tipTimes.push({message: t.sendMessage, tipType: t.sendType, timeUnit: timeUnit, value: value})
+        }
+        console.log(info)
+        if(info.repeatCollectType === 1){
+            this.info.sendDateTime = info.sendTasks[0].executionDateTime
+        }else {
+            let time = new Date(info.sendTasks[0].executionDateTime);
+            this.info.beginHours = time.getHours()
+            this.info.beginMinutes = time.getMinutes()
+        }
+        this.info.sendCustomerType= 1
+        this.info.sendCustomers = info.sendCustomers
+        this.info.delayTipTimers = tipTimes
       this.isShowAddOrEditPanel = true
     },
     publish(info){
@@ -290,24 +313,22 @@ export default {
     editQuestions(info){
       this.$router.push({ name: 'Question', query: {id: info.id}})
     },
-    showInfoDetail(){
-      this.isShowInfoDetail = true
-
+    showSendDetail(info){
+        this.info = info
+      this.isShowSendDetail = true
+        if(this.$refs.SendDetail != null){
+            this.$refs.SendDetail.refresh()
+        }
     },
-    closeInfoDetail(){
-      this.isShowInfoDetail = false
+    closeSendDetail(){
+      this.isShowSendDetail = false
     },
-    showTipDetail(){
-      // this.isShowTipDetail = true
-      // this.http.get("/info/tip", {currentPage: this.currentPage, pageSize: this.pageSize})
-      //     .then((res) => {
-      //       ElMessage.success("更新成功")
-      //       this.loading = false
-      //       this.infos = res.data
-      //       this.total = res.total
-      //     }).catch(()=>{
-      //   this.loading = false
-      // })
+    showTipDetail(info){
+        this.info = info
+      this.isShowTipDetail = true
+        if(this.$refs.TipDetail != null){
+            this.$refs.TipDetail.refresh()
+        }
     },
     closeTipDetail(){
       this.isShowTipDetail = false
