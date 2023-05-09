@@ -104,7 +104,9 @@
         :before-close="closePreview"
         size="50%"
     >
-        <Iphone :info="infoData" />
+        <div style="display: flex; justify-content: center;">
+          <Iphone :info="infoData" />
+        </div>
     </el-drawer>
 
       <el-drawer

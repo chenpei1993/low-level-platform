@@ -4,6 +4,7 @@ import router from './router'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import http from './util/HttpUtil'
+import * as echarts from 'echarts'
 import zhCN from 'element-plus/lib/locale/lang/zh-cn'
 import lodash from  'lodash'
 
@@ -12,4 +13,5 @@ createApp(App)
     .use(ElementPlus, {locale: zhCN})
     .provide("$http", http)
     .provide("$lodash", lodash)
+    .provide("$echarts", echarts)
     .mount('#app')
