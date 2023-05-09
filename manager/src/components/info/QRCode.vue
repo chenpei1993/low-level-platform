@@ -43,7 +43,7 @@ export default {
   methods:{
       createQRCode(){
           let dom = document.getElementById("qrcode")
-          QRCode.toCanvas(dom, this.info.url, (e) => {
+          QRCode.toCanvas(dom, "http://" + this.info.url, (e) => {
               console.log(e)
           })
       }

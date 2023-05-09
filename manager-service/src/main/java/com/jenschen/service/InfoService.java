@@ -2,6 +2,7 @@ package com.jenschen.service;
 
 import com.jenschen.base.Response;
 import com.jenschen.entity.InfoEntity;
+import com.jenschen.request.AnswerPageReq;
 import com.jenschen.request.InfoReq;
 import com.jenschen.request.Page;
 
@@ -55,4 +56,6 @@ public interface InfoService {
      * @return 结果
      */
     InfoEntity get(int id);
+
+    Response<Object> getAnswers(AnswerPageReq page);
 }

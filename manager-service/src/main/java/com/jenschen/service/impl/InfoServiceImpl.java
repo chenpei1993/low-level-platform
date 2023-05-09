@@ -6,15 +6,22 @@ import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
 import com.jenschen.constant.SettingsConstant;
+import com.jenschen.dao.QuestionDao;
+import com.jenschen.elastic.dao.AnswerDao;
+import com.jenschen.elastic.entity.AnswerEntity;
+import com.jenschen.entity.QuestionEntity;
 import com.jenschen.entity.SubInfoEntity;
 import com.jenschen.entity.TaskEntity;
 import com.jenschen.enumeration.InfoStatusEnum;
 import com.jenschen.mapper.InfoMapper;
 import com.jenschen.enumeration.InfoTypeEnum;
 import com.jenschen.mapper.SubInfoMapper;
+import com.jenschen.request.AnswerPageReq;
 import com.jenschen.request.InfoReq;
 import com.jenschen.entity.InfoEntity;
 import com.jenschen.request.Page;
+import com.jenschen.response.AnswerPageResp;
+import com.jenschen.response.AnswerResp;
 import com.jenschen.response.InfoResp;
 import com.jenschen.response.PageResp;
 import com.jenschen.service.*;
@@ -25,6 +32,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +63,12 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
 
     @Autowired
     private SettingService settingService;
+
+    @Autowired
+    private AnswerDao answerDao;
+
+    @Autowired
+    private QuestionDao questionDao;
 
     @Override
     public Response<Object> page(Page page) {
@@ -156,5 +171,24 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
     @Override
     public InfoEntity get(int id) {
         return  infoMapper.selectById(id);
+    }
+
+    @Override
+    public Response<Object> getAnswers(AnswerPageReq page) {
+        List<QuestionEntity> questionEntityList = questionDao.getByInfoId(page.getInfoId());
+
+        Pageable pageable = PageRequest.of(page.getCurrentPage() - 1, page.getPageSize());
+        org.springframework.data.domain.Page<AnswerEntity> ans = answerDao.findByInfoId(page.getInfoId(), pageable);
+        int count = (int) ans.getTotalElements();
+        List<AnswerResp> list = new ArrayList();
+        ans.forEach((e) -> {
+            AnswerResp resp = AnswerResp.builder()
+                    .answer(e.getAnswer())
+                    .build();
+            resp.setCreatedAt(e.getCreatedAt());
+            resp.setUpdatedAt(e.getUpdatedAt());
+            list.add(resp);
+        });
+        return ResultUtil.success(AnswerPageResp.build(questionEntityList, count, list));
     }
 }

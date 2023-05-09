@@ -1,10 +1,13 @@
 package com.jenschen.elastic.entity;
 
+import com.jenschen.elastic.convert.LocalDateTimeConverter;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.*;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -20,4 +23,12 @@ public class AnswerEntity {
     private Integer questionId;
 
     private String answer;
+
+    @Field(type = FieldType.Date)
+    @ValueConverter(LocalDateTimeConverter.class)
+    private LocalDateTime createdAt;
+
+    @Field(type = FieldType.Date)
+    @ValueConverter(LocalDateTimeConverter.class)
+    private LocalDateTime updatedAt;
 }

@@ -12,7 +12,8 @@ export default {
     name: "Header",
     methods: {
         logout(){
-          //todo
+            sessionStorage.removeItem("jwt")
+            this.$router.push({ name: 'Login'})
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.jenschen.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.json.JSONUtil;
 import com.jenschen.base.Response;
 import com.jenschen.dao.InfoDao;
 import com.jenschen.dao.QuestionDao;
@@ -63,17 +64,15 @@ public class InfoServiceImpl implements InfoService {
     public Response<Object> submit(AnswerRequest answerRequest) {
         List<Answer> list = answerRequest.getAnswers();
         Integer infoId = answerRequest.getInfoId();
-
-        List<AnswerEntity> data = new ArrayList<>(list.size());
-        for(var ans : list){
-            AnswerEntity answerEntity = AnswerEntity.builder()
-                    .infoId(infoId)
-                    .questionId(ans.getQuestionId())
-                    .answer(ans.getAnswer())
-                    .build();
-            data.add(answerEntity);
-        }
-        answerDao.saveAll(data);
+        String answer = JSONUtil.toJsonPrettyStr(list);
+        LocalDateTime now = LocalDateTime.now();
+        AnswerEntity data =  AnswerEntity.builder()
+                .infoId(infoId)
+                .answer(answer)
+                .createdAt(now)
+                .updatedAt(now)
+                .build();
+        answerDao.save(data);
 
         return ResultUtil.success();
     }

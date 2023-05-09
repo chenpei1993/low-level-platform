@@ -7,5 +7,5 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 
 public interface AnswerDao extends ElasticsearchRepository<AnswerEntity, String> {
 
-//    Page<AnswerEntity> findByInfoId(Integer infoId, Pageable pageable);
+    Page<AnswerEntity> findByInfoId(Integer infoId, Pageable pageable);
 }

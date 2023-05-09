@@ -96,7 +96,7 @@ export default {
             let q = questions[i]
             let arr = map.get(q.idx)
             let value = QuestionFactory.getValueByType(q, arr)
-            answer.push({id: q.id, value: value})
+            answer.push({questionId: q.id, answer: value})
         }
 
         let data = {
@@ -106,8 +106,6 @@ export default {
 
         this.http.post( "activity/submit/", data)
             .then((data) => {
-                this.info = data
-                this.type = 1
             })
     }
   },

@@ -1,8 +1,10 @@
 package com.jenschen.controller;
 
 import com.jenschen.base.Response;
+import com.jenschen.request.AnswerPageReq;
 import com.jenschen.request.InfoPageReq;
 import com.jenschen.request.InfoReq;
+import com.jenschen.request.Page;
 import com.jenschen.service.InfoService;
 import com.jenschen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,5 +78,16 @@ public class InfoController {
     @ResponseBody
     public Response<Object> page(@RequestBody InfoPageReq infoPageReq){
         return infoService.page(infoPageReq);
+    }
+
+    /**
+     * 结果分页查询
+     * @param anwserPage 结果分页查询
+     * @return  结果
+     */
+    @PostMapping(value = "answer/page")
+    @ResponseBody
+    public Response<Object> answerPage(@RequestBody AnswerPageReq anwserPage){
+        return infoService.getAnswers(anwserPage);
     }
 }
