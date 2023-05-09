@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jenschen.mapper.CustomerTagMapper">
+    <resultMap id="BaseResultMap" type="com.jenschen.entity.TagEntity">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="color" jdbcType="VARCHAR" property="color" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+    </resultMap>
+
+    <select id="getTagsByCustomerId" resultType="com.jenschen.entity.TagEntity">
+        select * from tag as t
+            left join customer_tag as ct
+            on  ct.tag_id = t.id
+            where ct.customer_id = #{id}
+    </select>
+
+
+</mapper>

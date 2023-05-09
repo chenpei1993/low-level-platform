@@ -1,0 +1,21 @@
+server:
+  port: 8091
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.221.128:3306/manager?useUnicode=true&characterEncoding=utf8
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+  elasticsearch:
+    uris: 192.168.221.128:9200
+    password: 123456
+    username: elastic
+mybatis-plus:
+    type-handlers-package: com.jenschen.typehandler
+    configuration:
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+      mapper-locations: classpath*:mapper/*.xml
+      default-enum-type-handler: com.jenschen.typehandler.ValueEnumTypeHandler
+logging:
+  level:
+    com.jenschen.mapper: debug

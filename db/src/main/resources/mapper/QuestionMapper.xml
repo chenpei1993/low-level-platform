@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jenschen.mapper.QuestionMapper">
+    <resultMap id="BaseResultMap" type="com.jenschen.entity.QuestionEntity">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="options" property="options" typeHandler="com.jenschen.typehandler.ListTypeHandler"/>
+    </resultMap>
+
+    <update id="deleteByInfoId">
+        update question set is_deleted = 1,
+            deleted_by = #{deletedBy},
+            deleted_at = now(),
+            updated_by = #{updatedBy},
+            updated_at = now()
+        where info_id = #{infoId}
+    </update>
+
+    <select id="getByCode" resultType="com.jenschen.entity.QuestionEntity">
+        select * from question where is_deleted = 0
+           and info_id = (select id from info where is_deleted = 0 and status = 2 and url = #{code})
+    </select>
+
+
+</mapper>
