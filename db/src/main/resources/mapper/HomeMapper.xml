@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jenschen.mapper.HomeMapper">
+    <resultMap id="BaseResultMap" type="com.jenschen.entity.HomeEntity">
+        <result column="id" jdbcType="INTEGER" property="id" />
+    </resultMap>
+
+    <select id="getBasicHomeInfo" resultType="com.jenschen.entity.HomeEntity">
+        select
+            username as name,
+            (select name from role where id = (select role_id from role_user where user_id = u.id))as role,
+            (select count(id) from info where is_deleted = 0) as infoTotal,
+            (select count(id) from info where is_deleted = 0 and status = 2) as publishInfoTotal
+        from user as u where is_deleted = 0 and username = #{username}
+    </select>
+
+
+</mapper>

@@ -21,4 +21,9 @@ public class InfoDaoImpl extends AbstractDao<InfoDao> implements InfoDao {
     public InfoEntity getByCode(String code) {
         return infoMapper.getByCode(code);
     }
+
+    @Override
+    public List<InfoEntity> getLastNInfo(Integer num) {
+        return infoMapper.getLastNInfo(num);
+    }
 }

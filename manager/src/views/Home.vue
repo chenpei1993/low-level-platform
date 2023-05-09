@@ -9,19 +9,20 @@
       <div style="display: flex;justify-content: space-between;">
         <div style="width: 45%;">
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <div><el-avatar> 用户 </el-avatar></div>
-            <div><span>Admin</span></div>
+            <div style="margin-bottom: 10px;"><el-avatar> 用户 </el-avatar></div>
+            <div style="margin-bottom: 10px;"><span>用户名：</span> <span>{{name}}</span></div>
+            <div style="margin-bottom: 10px;"><span>角色名：</span> <span>{{role}}</span></div>
           </div>
         </div>
         <div style="width: 45%;">
-          <div><span>问卷数: </span> <span>2</span></div>
+          <div><span>问卷数: </span> <span>{{infoTotal}} / {{publishInfoTotal}}</span></div>
         </div>
       </div>
     </el-card>
 
-    <el-card class="box-card">
-      <div><span>问卷：</span><span>测试1</span></div>
-      <div id="myChart" style="height: 200px;"></div>
+    <el-card class="box-card" v-for="(d, id) in data" :key="id" style="margin-bottom: 15px;">
+      <div><span>问卷：</span><span>{{d.name}}</span></div>
+      <div :id="'chart_' + id" style="height: 200px;"></div>
     </el-card>
 
   </div>
@@ -34,55 +35,69 @@ export default {
   name: 'Home',
   data(){
     return {
+        data:[],
+        publishInfoTotal: 0,
+        infoTotal: 0,
+        name:"",
+        role:"",
     }
   },
   methods: {
-    drawLine() {
-      // var i=0;
-      // 基于准备好的dom，初始化echarts实例
-      let myChart = this.echarts.init(document.getElementById("myChart"));
+      _drawLine(id, dates, values){
+          let dom = document.getElementById(id)
+          let chart = this.echarts.init(dom)
 
-      let option = {
-        xAxis: {
-          type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        },
-        yAxis: {
-          type: 'value'
-        },
-        grid:{
-          left: 40,
-          right: 20,
-          top:20,
-          bottom: 20
-        },
-        series: [
-          {
-            data: [150, 230, 224, 218, 135, 147, 260],
-            type: 'line'
-          }
-        ]
-      };
-      // 绘制图表
-      myChart.setOption(option)
+          let option = {
+              xAxis: {
+                  type: 'category',
+                  data: dates
+              },
+              yAxis: {
+                  type: 'value'
+              },
+              grid:{
+                  left: 40,
+                  right: 20,
+                  top:20,
+                  bottom: 20
+              },
+              series: [
+                  {
+                      data: values,
+                      type: 'line'
+                  }
+              ]
+          };
+          // 绘制图表
+          chart.setOption(option)          // let chart = this.echarts.init(dom);
+
+      },
+    drawLine() {
+      for(let i = 0; i < this.data.length; i++){
+          let data = this.data[i]
+          this._drawLine('chart_' + i, data.dates, data.values)
+        }
     },
     refresh(){
       this.loading = true
-      this.drawLine();
-
-      // this.http.post("/tag/page", {currentPage: this.currentPage, pageSize: this.pageSize})
-      //     .then((res) => {
-      //       ElMessage.success("更新成功")
-      //       this.loading = false
-      //       this.tags = res.data
-      //       this.total = res.total
-      //     }).catch(()=>{
-      //   this.loading = false
-      // })
+      this.http.get("/home")
+          .then((res) => {
+            this.data = res.data
+            this.publishInfoTotal = res.publishInfoTotal
+            this.infoTotal = res.infoTotal
+              this.role = res.role
+              this.name = res.name
+              this.$nextTick(()=>{
+                  this.drawLine()
+              })
+          }).catch(()=>{
+        this.loading = false
+      })
     }
   },
   mounted() {
     this.refresh()
+      console.log(document.getElementById("chart_0"))
   },
   created(){
     this.http = inject("$http")

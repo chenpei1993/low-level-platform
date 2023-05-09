@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("info")
-@CrossOrigin("*")
 public class InfoController {
 
     @Autowired

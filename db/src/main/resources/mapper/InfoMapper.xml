@@ -13,4 +13,9 @@
     </select>
 
 
+    <select id="getLastNInfo" resultType="com.jenschen.entity.InfoEntity">
+        select * from info where is_deleted = 0 and status = 2 order by created_at desc limit 0, #{num}
+    </select>
+
+
 </mapper>

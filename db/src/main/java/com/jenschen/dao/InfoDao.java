@@ -8,4 +8,6 @@ public interface InfoDao {
 
 
     InfoEntity getByCode(String code);
+
+    List<InfoEntity> getLastNInfo(Integer num);
 }
