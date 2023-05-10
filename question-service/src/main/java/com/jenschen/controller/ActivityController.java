@@ -29,7 +29,7 @@ public class ActivityController {
     }
 
     @PostMapping("submit")
-    private Response<Object> submit(@RequestBody AnswerRequest answer){
-        return infoService.submit(answer);
+    private Response<Object> submit(@RequestBody AnswerRequest answerRequest){
+        return infoService.submit(answerRequest);
     }
 }

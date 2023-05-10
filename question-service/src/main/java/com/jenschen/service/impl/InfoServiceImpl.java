@@ -1,6 +1,7 @@
 package com.jenschen.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.jenschen.base.Response;
 import com.jenschen.dao.InfoDao;
@@ -21,7 +22,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class InfoServiceImpl implements InfoService {
@@ -64,6 +67,23 @@ public class InfoServiceImpl implements InfoService {
     public Response<Object> submit(AnswerRequest answerRequest) {
         List<Answer> list = answerRequest.getAnswers();
         Integer infoId = answerRequest.getInfoId();
+
+        List<QuestionEntity> questionEntities = questionDao.getByInfoId(infoId);
+        Map<Integer, QuestionEntity> map = new HashMap<>();
+        for(var entity : questionEntities){
+            map.put(entity.getId(), entity);
+        }
+        for(var answer : list){
+            QuestionEntity question = map.get(answer.getQuestionId());
+            if(question == null){
+                return ResultUtil.error(ErrorEnum.QUESTION_REQUIRED);
+            }
+
+            if(question.isRequired() && StrUtil.isBlank(answer.getAnswer())){
+                return ResultUtil.error(ErrorEnum.QUESTION_REQUIRED);
+            }
+        }
+
         String answer = JSONUtil.toJsonPrettyStr(list);
         LocalDateTime now = LocalDateTime.now();
         AnswerEntity data =  AnswerEntity.builder()

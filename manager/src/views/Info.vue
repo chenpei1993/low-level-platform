@@ -236,7 +236,7 @@ export default {
       this.addOrEdit = "编辑"
         this.info = JSON.parse(JSON.stringify(info))
 
-        this.info.autoSend = info.sendTasks.length > 0
+        this.info.autoSend = info.sendTasks != null && info.sendTasks.length > 0
         let tipTimes = []
         let endTime = new Date(info.endDateTime).getTime() / 1000
         for(let i = 0; i < info.tipTasks.length; i++){
@@ -254,14 +254,17 @@ export default {
             }
             tipTimes.push({message: t.sendMessage, tipType: t.sendType, timeUnit: timeUnit, value: value})
         }
-        console.log(info)
-        if(info.repeatCollectType === 1){
-            this.info.sendDateTime = info.sendTasks[0].executionDateTime
-        }else {
-            let time = new Date(info.sendTasks[0].executionDateTime);
-            this.info.beginHours = time.getHours()
-            this.info.beginMinutes = time.getMinutes()
+
+        if( this.info.autoSend){
+            if(info.repeatCollectType === 1){
+                this.info.sendDateTime = info.sendTasks[0].executionDateTime
+            }else {
+                let time = new Date(info.sendTasks[0].executionDateTime);
+                this.info.beginHours = time.getHours()
+                this.info.beginMinutes = time.getMinutes()
+            }
         }
+
         this.info.sendCustomerType= 1
         this.info.sendCustomers = info.sendCustomers
         this.info.delayTipTimers = tipTimes

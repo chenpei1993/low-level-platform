@@ -16,7 +16,7 @@ export default class Question{
 
     _label(){
         let label = document.createElement("span")
-        if(this.isRequired === 1){
+        if(this.isRequired){
             let requiredElement = document.createElement("span")
             requiredElement.innerText = "*"
             requiredElement.classList.add("question-required")

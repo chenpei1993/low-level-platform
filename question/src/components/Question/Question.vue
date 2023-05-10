@@ -10,11 +10,27 @@
           <div class="question-submit-wrapper">
               <button class="question-submit-button"
                       @click="submit"
-                      v-if="info.questions != null && info.questions.length > 0">提交</button>
+                      v-if="info.questions != null && info.questions.length > 0" :disabled="end">
+                        {{ end ? "已提交" : "提交" }}
+              </button>
           </div>
       </div>
   </div>
+    <div class="popup-panel-wrapper">
+          <div class="popup-panel" v-if="show">
+              <div v-if="code === 200" style="display: flex;">
+                  <img src="@/assets/check.png" style="width: 20px;"/>
+                  <span class="pop-up-message">提交成功</span>
+              </div>
+              <div v-else style="display: flex;">
+                  <img src="@/assets/remove.png" style="width: 20px;"/>
+                  <span class="pop-up-message">{{message}}</span>
+              </div>
+          </div>
+    </div>
 
+    <div class="end" v-if="end">
+    </div>
 </template>
 
 <script>
@@ -36,6 +52,10 @@ export default {
     return {
       mainFrame: null,
       questionMap: new Map(),
+      code: -1,
+      message: "未知错误",
+      show: false,
+      end: false
     }
   },
   watch: {
@@ -48,6 +68,9 @@ export default {
     }
   },
   methods:{
+      messages() {
+          return messages
+      },
     createFrame(){
 
       while(this.mainFrame.children.length > 0){
@@ -106,6 +129,15 @@ export default {
 
         this.http.post( "activity/submit/", data)
             .then((data) => {
+                this.show = true
+                this.code = data.code
+                this.message = data.msg
+                if(this.code === 200){
+                    this.end = true
+                }
+                setTimeout(()=>{
+                    this.show = false
+                }, 3000)
             })
     }
   },

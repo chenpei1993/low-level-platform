@@ -2,7 +2,7 @@ import Question from "./Question"
 
 export default class MultiCheckQuestion extends Question{
     constructor(question){
-        super(question.idx, question.type, question.isRequired, question.questionDesc)
+        super(question.idx, question.type, question.required, question.questionDesc)
         this.options = question.options
     }
 

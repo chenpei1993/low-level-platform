@@ -1,20 +1,23 @@
 <template>
   <Question :info="info" v-if="type === 1"/>
+  <ShowFullMessage :message="message" v-if="type === -1"/>
 </template>
 
 <script>
 import Question from './components/Question/Question.vue'
+import ShowFullMessage from './components/ShowFullMessage.vue'
 import { inject } from "vue"
 
 export default {
   name: 'App',
   components: {
-    Question
+    Question, ShowFullMessage
   },
   data(){
     return {
       type: -1,
       info: {},
+      message:""
     }
   },
   methods:{
@@ -28,8 +31,15 @@ export default {
     let code = value[0]
     this.http.get( "activity/info/" + code)
         .then((data) => {
-          this.info = data
-          this.type = 1
+            console.log(data)
+            if(data.code === 200){
+                this.info = data.data
+                this.type = 1
+            }else{
+                this.type = -1
+                this.message = data.msg
+            }
+
         })
   }
 }

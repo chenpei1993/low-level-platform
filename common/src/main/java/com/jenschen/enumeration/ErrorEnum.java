@@ -11,8 +11,10 @@ public enum ErrorEnum {
     ACCESS_DENIED(20001, "无访问权限"),
 
     ACTIVITY_NOT_EXIST(70001, "活动不存在"),
-    ACTIVITY_NOT_BEGIN(70002, "活动已结束"),
-    ACTIVITY_END(70003, "活动未开始");
+    ACTIVITY_NOT_BEGIN(70002, "活动未开始"),
+    ACTIVITY_END(70003, "活动已结束"),
+
+    QUESTION_REQUIRED(80001, "请回答必填问题");
 
 
     private final int code;

@@ -11,7 +11,7 @@ public class QuestionResponse {
     private Long id;
     private Integer idx;
     private QuestionTypeEnum type;
-    private boolean isRequire;
+    private boolean isRequired;
     private String questionDesc;
     private List<String> options;
 }

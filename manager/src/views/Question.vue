@@ -84,7 +84,7 @@ export default {
             ElMessage.warning("题目类型，未选择")
             return
         }
-        if(this.lodash.isNil(question.isRequired)){
+        if(this.lodash.isNil(question.required)){
             ElMessage.warning("题目是否必选，未选择")
             return
         }

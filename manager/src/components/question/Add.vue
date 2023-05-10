@@ -12,7 +12,7 @@
     </el-select>
 
     <div class="row">是否为必选</div>
-    <el-select v-model="question.isRequired" class="m-2" placeholder="请选择问题是否必选">
+    <el-select v-model="question.required" class="m-2" placeholder="请选择问题是否必选">
       <el-option
           v-for="item in isRequiredOptions"
           :key="item.value"
@@ -83,8 +83,8 @@ export default {
         { value: 3, label: "多选题"}
       ],
       isRequiredOptions:[
-        { value: 0, label: "否"},
-        { value: 1, label: "是"},
+        { value: false, label: "否"},
+        { value: true, label: "是"},
       ],
       questionDesc: "",
       option: "",
