@@ -1,5 +1,17 @@
 version: '3'
 services:
+  elasticsearch-service:
+    build: elastic
+    container_name: elasticsearch-service
+    volumes:
+      - ./elastic/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z
+    ports:
+      - 9200:9200
+    environment:
+      node.name: elasticsearch
+#      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      ELASTIC_PASSWORD: 123456
+      discovery.type: single-node
   mysql-service:
     build: db
     container_name: mysql-service
@@ -18,6 +30,8 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: test
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-service:3306/manager?useUnicode=true&characterEncoding=utf8
+      SPRING_ELASTIC_URL: elasticsearch-service:9200
+
   question-service:
     build: question-service
     container_name: question-service
