@@ -6,6 +6,7 @@
   </el-breadcrumb>
     <el-divider />
     <div>
+        <el-button type="primary" size="small" @click="returnToInfo" plain>返回</el-button>
         <el-button type="success" size="small" @click="exportExcel" plain>导出</el-button>
     </div>
     <div>
@@ -51,6 +52,9 @@ export default {
         }
     },
     methods: {
+        returnToInfo(){
+            this.$router.push({name: "Info"})
+        },
         exportExcel(){
 
         },

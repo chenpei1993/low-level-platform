@@ -83,8 +83,21 @@ export default {
 }
 
 .wrapper{
-  min-width: 500px;
-  /*overflow-y: scroll;*/
+  min-width: 600px;
+  max-height: 600px;
+  overflow-y: scroll;
+  padding: 5px;
+}
+
+::-webkit-scrollbar{
+    background-color: transparent;
+    width: 12px;
+}
+::-webkit-scrollbar-thumb{
+    background-color: inherit;
+    border-radius: 8px;
+    background-clip: content-box;
+    border: 2px solid transparent;
 }
 
 .number{

@@ -3,8 +3,8 @@
     <div style="display: flex; justify-content: center;">
         <canvas id="qrcode"></canvas>
     </div>
-    <div style="margin-top: 20px; color: #303133;">
-        <span style="margin-right: 10px">网页地址：</span>
+    <div style="margin-top: 20px; color: #303133; text-align: center;">
+        <span>网页地址：</span>
         <span>{{info.url}}</span>
     </div>
   </div>

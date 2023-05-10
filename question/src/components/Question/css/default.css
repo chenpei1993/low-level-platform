@@ -29,6 +29,7 @@
 .question-submit-wrapper{
     display: flex;
     justify-content: center;
+    margin-bottom: 10px;
 }
 
 .question-submit-button{

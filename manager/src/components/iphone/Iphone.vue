@@ -96,6 +96,7 @@ export default {
 
 .screen {
   height: calc(600px - 45px);
+  overflow-y: scroll;
 }
 
 .indicator {
@@ -118,6 +119,15 @@ export default {
   font-family: 'Open Sans', sans-serif;
 }
 
-
+::-webkit-scrollbar{
+    background-color: transparent;
+    width: 12px;
+}
+::-webkit-scrollbar-thumb{
+    background-color: inherit;
+    border-radius: 8px;
+    background-clip: content-box;
+    border: 2px solid transparent;
+}
 
 </style>

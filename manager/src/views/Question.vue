@@ -10,7 +10,7 @@
       <div class="item">  
         <div class="item" style="display: flex; justify-content: space-between;">
             <div style="display: flex; align-content: center;">
-                <div>标题</div>
+                <div>问题</div>
             </div>
             <div class="item item-bottom">
                 <el-button type="primary" @click="returnToInfo" size="small" plain>返回</el-button>
@@ -18,8 +18,8 @@
                 <el-button type="info" @click="saveInfo" size="small" plain>保存问卷</el-button>
             </div>
         </div>
-        <div class="item">
-          <el-input v-model="info.title" placeholder="标题" />
+        <div class="item" style="display: none;">
+          <el-input v-model="info.title" placeholder="问题" />
         </div>
       </div>  
 
