@@ -57,7 +57,7 @@ export default{
             sessionStorage.removeItem("jwt")
             this.http.post("user/login", data).then((data)=>{
                 sessionStorage.setItem("jwt", data.jwt)
-                sessionStorage.setItem("permission", data.permissions)
+                sessionStorage.setItem("permissions", data.permissions)
                 this.$router.push({ name: 'Home'})
             }).catch(e => {
                 console.log(e)

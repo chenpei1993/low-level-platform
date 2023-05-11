@@ -27,7 +27,7 @@ public class CustomerController {
      * @return 结果
      */
     @PutMapping
-    @PreAuthorize("hasAuthority('custom:add')")
+    @PreAuthorize("hasAuthority('relation:custom:add')")
     public Response<Object> add(@RequestBody @Validated CustomerReq customerReq) {
         return customerService.insert(customerReq);
     }
@@ -38,7 +38,7 @@ public class CustomerController {
      * @return 结果
      */
     @PostMapping
-    @PreAuthorize("hasAuthority('custom:edit')")
+    @PreAuthorize("hasAuthority('relation:custom:edit')")
     public Response<Object> edit(@RequestBody @Validated CustomerReq customerReq) {
         return customerService.update(customerReq);
     }
@@ -49,7 +49,7 @@ public class CustomerController {
      * @return 结果
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('custom:del')")
+    @PreAuthorize("hasAuthority('relation:custom:del')")
     public Response<Object> del(@PathVariable  int id) {
         return customerService.delete(id);
     }
@@ -61,7 +61,7 @@ public class CustomerController {
      */
     @PostMapping(value = "/page")
     @ResponseBody
-    @PreAuthorize("hasAuthority('custom:query')")
+    @PreAuthorize("hasAuthority('relation:custom:query')")
     public Response<Object> page(@RequestBody CustomerPageReq customerPageReq){
         return customerService.page(customerPageReq);
     }

@@ -33,20 +33,20 @@ public class UserController {
     }
 
     @PostMapping(value = "/page")
-    @PreAuthorize("hasAuthority('user:query')")
+    @PreAuthorize("hasAuthority('setting:user:query')")
     @ResponseBody
     public Response<Object> page(@RequestBody UserPageReq userPageReq){
         return userService.page(userPageReq);
     }
 
     @PutMapping
-    @PreAuthorize("hasAuthority('user:add')")
+    @PreAuthorize("hasAuthority('setting:user:add')")
     public Response<Object> add(@RequestBody @Validated UserReq userReq){
         return userService.add(userReq);
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('user:edit')")
+    @PreAuthorize("hasAuthority('setting:user:edit')")
     public Response<Object> edit(@RequestBody @Validated UserReq userReq){
         return userService.edit(userReq);
     }
@@ -57,7 +57,7 @@ public class UserController {
      * @return 结果
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('user:del')")
+    @PreAuthorize("hasAuthority('setting:user:del')")
     public Response<Object> del(@PathVariable Integer id){
         return userService.delete(id);
     }

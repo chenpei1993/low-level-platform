@@ -29,7 +29,7 @@ public class RoleController {
      */
     @PostMapping(value = "/page")
     @ResponseBody
-    @PreAuthorize("hasAuthority('role:query')")
+    @PreAuthorize("hasAuthority('setting:role:query')")
     public Response<Object> page(@RequestBody RolePageReq rolePageReq){
         return roleService.page(rolePageReq);
     }
@@ -46,13 +46,13 @@ public class RoleController {
 
 
     @PutMapping
-    @PreAuthorize("hasAuthority('role:add')")
+    @PreAuthorize("hasAuthority('setting:role:add')")
     public Response<Object> add(@RequestBody @Validated RoleReq roleReq){
         return roleService.add(roleReq);
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('role:edit')")
+    @PreAuthorize("hasAuthority('setting:role:edit')")
     public Response<Object> edit(@RequestBody @Validated RoleReq roleReq){
         return roleService.edit(roleReq);
     }
@@ -63,7 +63,7 @@ public class RoleController {
      * @return 结果
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('role:del')")
+    @PreAuthorize("hasAuthority('setting:role:del')")
     public Response<Object> del(@PathVariable Integer id){
         return roleService.delete(id);
     }

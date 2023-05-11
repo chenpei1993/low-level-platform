@@ -22,13 +22,13 @@ public class TagController {
     private TagService tagService;
 
     @PutMapping
-    @PreAuthorize("hasAuthority('tag:add')")
+    @PreAuthorize("hasAuthority('relation:tag:add')")
     public Response<Object> add(@RequestBody @Validated TagReq tagReq){
         return tagService.insert(tagReq);
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('tag:edit')")
+    @PreAuthorize("hasAuthority('relation:tag:edit')")
     public Response<Object> edit(@RequestBody @Validated TagReq tagReq){
         return tagService.update(tagReq);
     }
@@ -39,7 +39,7 @@ public class TagController {
      * @return 结果
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('tag:del')")
+    @PreAuthorize("hasAuthority('relation:tag:del')")
     public Response<Object> del(@PathVariable int id){
         return tagService.delete(id);
     }
@@ -69,7 +69,7 @@ public class TagController {
      * @return 结果
      */
     @PostMapping(value = "/page")
-    @PreAuthorize("hasAuthority('tag:query')")
+    @PreAuthorize("hasAuthority('relation:tag:query')")
     @ResponseBody
     public Response<Object> page(@RequestBody TagPageReq tagPageReq){
         return tagService.page(tagPageReq);
