@@ -14,10 +14,10 @@
             <el-table-column
                     v-for="col in cols"
                     :key="col.id"
-                    :prop="col.id + ''"
-                    :label="'第' + col.idx + '题'">
+                    :prop="col.prop"
+                    :label="col.label">
                 <template #default="scope">
-                    {{ scope.row[col.id] }}
+                    {{ scope.row[col.prop] }}
                 </template>
             </el-table-column>
         </el-table>
@@ -72,9 +72,18 @@ export default {
                 .then((res) => {
                     ElMessage.success("更新成功")
                     this.loading = false
+                    console.log(res)
 
                     this.total = res.total
-                    this.cols = res.questionsInfo
+                    this.cols = []
+                    if(res.questionsInfo != null){
+                        res.questionsInfo.forEach(e => {
+                            let label = '第' + e.idx + '题'
+                            let prop = '' + e.id
+                            this.cols.push({"id": e.id, "label": label, "prop": prop})
+                        })
+                        this.cols.push({id: res.questionsInfo.length, label: '提交时间', prop: 'createdAt'})
+                    }
                     let answers = res.data
                     let arr = []
                     answers.forEach(e => {

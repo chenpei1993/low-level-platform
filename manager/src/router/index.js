@@ -10,6 +10,8 @@ import Login from '../views/Login.vue'
 import User from '../views/User.vue'
 import Role from '../views/Role.vue'
 import Permission from '../views/Permission.vue'
+import NotFound from '../views/404.vue'
+import Error from '../views/Error.vue'
 
 
 const routes = [
@@ -17,6 +19,7 @@ const routes = [
     path: '/',
     name: 'Index',
     component: Index,
+    redirect: 'Home',
     children: [
       {
         path: '/home',
@@ -69,6 +72,16 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: NotFound
+  },
+  {
+    path: '/error',
+    name: 'Error',
+    component: Error
   }
 ]
 

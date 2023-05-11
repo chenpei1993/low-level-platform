@@ -47,14 +47,18 @@ http.interceptors.response.use((res) => {
             message: '登录过期，请重新登录！',
             showClose: true
         });
-        router.push("/login");
-        return Promise.reject(error);
+        router.push("/login")
+        return Promise.reject(error)
+    }else if(error.response.status === 404){
+        router.push("/404")
+        return Promise.reject(error)
     }
     ElMessage({
         type: 'error',
         message: 'Oooops，发生错误，请联系管理员！',
         showClose: true
     });
+    router.push("/error")
     return Promise.reject(error);
 });
 
