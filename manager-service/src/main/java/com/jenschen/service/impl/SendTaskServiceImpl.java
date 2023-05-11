@@ -15,9 +15,6 @@ import java.util.List;
 
 @Service("SendTaskService")
 public class SendTaskServiceImpl extends AbstractTipService {
-
-
-
     private static final int TYPE = 1;
 
     @Override

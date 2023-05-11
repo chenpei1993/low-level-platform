@@ -1,24 +1,19 @@
 package com.jenschen.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
+import com.jenschen.dao.InfoDao;
 import com.jenschen.dao.QuestionDao;
 import com.jenschen.entity.InfoEntity;
 import com.jenschen.entity.QuestionEntity;
 import com.jenschen.enumeration.ErrorEnum;
 import com.jenschen.enumeration.InfoStatusEnum;
-import com.jenschen.mapper.QuestionMapper;
 import com.jenschen.request.QuestionInfo;
 import com.jenschen.request.QuestionReq;
-import com.jenschen.response.PageResp;
 import com.jenschen.response.QuestionResp;
 import com.jenschen.service.AbstractService;
-import com.jenschen.service.InfoService;
 import com.jenschen.service.QuestionService;
 import com.jenschen.util.ResultUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,19 +22,18 @@ import java.util.List;
 @Service
 public class QuestionServiceImpl extends AbstractService<QuestionEntity> implements QuestionService {
 
-    @Autowired
-    private QuestionMapper questionMapper;
+    private final QuestionDao questionDao;
 
-    @Autowired
-    private QuestionDao questionDao;
+    private final InfoDao infoDao;
 
-    @Autowired
-    @Lazy
-    private InfoService infoService;
+    public QuestionServiceImpl(QuestionDao questionDao, InfoDao infoDao){
+        this.questionDao = questionDao;
+        this.infoDao = infoDao;
+    }
 
     @Override
     public Response<Object> add(QuestionReq questionReq) {
-        InfoEntity infoEntity = infoService.get(questionReq.getInfoId());
+        InfoEntity infoEntity = infoDao.selectById(questionReq.getInfoId());
         //当info 被删除 或者已经发布时，不能添加内容
         if(InfoStatusEnum.PUBLISH.equals(infoEntity.getStatus()) || infoEntity.getIsDeleted()){
             return ResultUtil.error(ErrorEnum.DELETED_RECORD);
@@ -55,14 +49,14 @@ public class QuestionServiceImpl extends AbstractService<QuestionEntity> impleme
             question.setInfoId(questionReq.getInfoId());
             question.created(LocalDateTime.now(), 1);
 //            questionEntityList.add(question);
-            questionMapper.insert(question);
+            questionDao.insert(question);
         }
         return ResultUtil.success();
     }
 
     @Override
     public Response<Object> edit(QuestionReq questionReq) {
-        InfoEntity infoEntity = infoService.get(questionReq.getInfoId());
+        InfoEntity infoEntity =  infoDao.selectById(questionReq.getInfoId());
         //当info 被删除 或者已经发布时，不能修改内容
         if(InfoStatusEnum.PUBLISH.equals(infoEntity.getStatus()) || infoEntity.getIsDeleted()){
             return ResultUtil.error(ErrorEnum.DELETED_RECORD);
@@ -87,7 +81,7 @@ public class QuestionServiceImpl extends AbstractService<QuestionEntity> impleme
         QuestionEntity questionEntity = QuestionEntity.builder().build();
         questionEntity.setId(id);
         questionEntity.deleted(LocalDateTime.now(), 1);
-        questionMapper.updateById(questionEntity);
+        questionDao.updateById(questionEntity);
         return ResultUtil.success();
     }
 
@@ -96,7 +90,7 @@ public class QuestionServiceImpl extends AbstractService<QuestionEntity> impleme
         QuestionEntity questionEntity = QuestionEntity.builder().build();
         questionEntity.setInfoId(infoId);
         questionEntity.deleted(LocalDateTime.now(), 1);
-        questionMapper.deleteByInfoId(questionEntity);
+        questionDao.deleteByInfoId(questionEntity);
         return ResultUtil.success();
     }
 }

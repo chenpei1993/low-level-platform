@@ -1,5 +1,6 @@
 package com.jenschen.dao.impl;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jenschen.dao.AbstractDao;
 import com.jenschen.dao.InfoDao;
 import com.jenschen.dao.QuestionDao;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class InfoDaoImpl extends AbstractDao<InfoDao> implements InfoDao {
+public class InfoDaoImpl extends AbstractDao<InfoEntity> implements InfoDao {
 
     @Autowired
     private InfoMapper infoMapper;
@@ -25,5 +26,10 @@ public class InfoDaoImpl extends AbstractDao<InfoDao> implements InfoDao {
     @Override
     public List<InfoEntity> getLastNInfo(Integer num) {
         return infoMapper.getLastNInfo(num);
+    }
+
+    @Override
+    public BaseMapper<InfoEntity> getMapper() {
+        return infoMapper;
     }
 }

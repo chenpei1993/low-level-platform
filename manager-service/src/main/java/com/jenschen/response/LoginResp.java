@@ -11,4 +11,9 @@ public class LoginResp {
      * json web token
      */
     private String jwt;
+
+    /**
+     * 权限列表
+     */
+    private String permissions;
 }

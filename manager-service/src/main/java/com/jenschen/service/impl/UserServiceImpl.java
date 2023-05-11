@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
 import com.jenschen.config.WebSecurityConfig;
 import com.jenschen.constant.CommonConstant;
+import com.jenschen.dao.PermissionDao;
+import com.jenschen.entity.PermissionEntity;
 import com.jenschen.entity.RoleEntity;
 import com.jenschen.entity.RoleUserEntity;
 import com.jenschen.entity.UserEntity;
@@ -43,9 +45,9 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
 
     private final RoleUserMapper roleUserMapper;
 
-    private final RolePermissionMapper rolePermissionMapper;
-
     private final PasswordEncoder passwordEncoder;
+
+    private final PermissionDao permissionDao;
 
     private final JwtHelper jwtHelper;
 
@@ -64,12 +66,12 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
     @Autowired
     public UserServiceImpl(UserMapper userMapper, RoleUserMapper roleUserMapper,
                            PasswordEncoder passwordEncoder, JwtHelper jwtHelper,
-                           RolePermissionMapper rolePermissionMapper){
+                            PermissionDao permissionDao){
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
         this.jwtHelper = jwtHelper;
         this.roleUserMapper = roleUserMapper;
-        this.rolePermissionMapper = rolePermissionMapper;
+        this.permissionDao = permissionDao;
     }
 
 
@@ -90,8 +92,11 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
                 .collect(Collectors.joining(","));
         data.put(WebSecurityConfig.AuthorityClaimsName, authorities);
 
+        List<PermissionEntity> permissionEntityList = this.permissionDao.getPermissionByRoleIds(Arrays.asList(authorities.split(",")));
+        String permissions = permissionEntityList.stream()
+                .map(PermissionEntity::getPermission).collect(Collectors.joining(","));
         String jwt = jwtHelper.createJwtForClaims(userLoginReq.getUsername(), data);
-        return ResultUtil.success(new LoginResp(jwt));
+        return ResultUtil.success(new LoginResp(jwt, permissions));
     }
 
     @Override

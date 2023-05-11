@@ -13,7 +13,9 @@ export default {
     methods: {
         logout(){
             sessionStorage.removeItem("jwt")
+            sessionStorage.removeItem("permissions")
             this.$router.push({ name: 'Login'})
+
         }
     }
 }

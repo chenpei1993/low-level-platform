@@ -4,7 +4,7 @@ import com.jenschen.entity.InfoEntity;
 
 import java.util.List;
 
-public interface InfoDao {
+public interface InfoDao extends BaseDao<InfoEntity> {
 
 
     InfoEntity getByCode(String code);

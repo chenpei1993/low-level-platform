@@ -1,6 +1,7 @@
 package com.jenschen.dao.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jenschen.base.Response;
 import com.jenschen.dao.AbstractDao;
 import com.jenschen.dao.QuestionDao;
@@ -28,5 +29,15 @@ public class QuestionDaoImpl extends AbstractDao<QuestionEntity> implements Ques
     @Override
     public List<QuestionEntity> getByCode(String code) {
         return questionMapper.getByCode(code);
+    }
+
+    @Override
+    public void deleteByInfoId(QuestionEntity questionEntity) {
+        questionMapper.deleteByInfoId(questionEntity);
+    }
+
+    @Override
+    public BaseMapper<QuestionEntity> getMapper() {
+        return questionMapper;
     }
 }
