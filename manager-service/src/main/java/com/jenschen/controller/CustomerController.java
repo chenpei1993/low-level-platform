@@ -4,8 +4,6 @@ import com.jenschen.base.Response;
 import com.jenschen.request.CustomerReq;
 import com.jenschen.request.CustomerPageReq;
 import com.jenschen.service.CustomerService;
-import com.jenschen.util.ResultUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +16,11 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 public class CustomerController {
 
-    @Autowired
-    private CustomerService customerService;
+    private final CustomerService customerService;
+
+    public CustomerController(CustomerService customerService){
+        this.customerService = customerService;
+    }
 
     /**
      * 新增用户

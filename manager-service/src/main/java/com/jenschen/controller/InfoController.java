@@ -4,10 +4,7 @@ import com.jenschen.base.Response;
 import com.jenschen.request.AnswerPageReq;
 import com.jenschen.request.InfoPageReq;
 import com.jenschen.request.InfoReq;
-import com.jenschen.request.Page;
 import com.jenschen.service.InfoService;
-import com.jenschen.util.ResultUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -17,8 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("info")
 public class InfoController {
 
-    @Autowired
-    private InfoService infoService;
+    private final InfoService infoService;
+
+    public InfoController(InfoService infoService){
+        this.infoService = infoService;
+    }
 
     /**
      * 添加活动

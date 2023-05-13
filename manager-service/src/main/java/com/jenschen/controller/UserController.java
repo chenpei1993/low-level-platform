@@ -1,12 +1,10 @@
 package com.jenschen.controller;
 
 import com.jenschen.base.Response;
-import com.jenschen.request.role.RoleReq;
 import com.jenschen.request.user.UserLoginReq;
 import com.jenschen.request.user.UserPageReq;
 import com.jenschen.request.user.UserReq;
 import com.jenschen.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

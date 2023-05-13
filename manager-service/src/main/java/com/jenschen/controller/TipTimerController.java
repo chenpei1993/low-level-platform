@@ -3,7 +3,6 @@ package com.jenschen.controller;
 import com.jenschen.base.Response;
 import com.jenschen.request.TipTimerPageReq;
 import com.jenschen.service.TaskService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +10,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("tip_timer")
 public class TipTimerController {
 
-    @Autowired
-    @Qualifier("TipTaskService")
-    private TaskService taskService;
+    private final TaskService taskService;
+
+    public TipTimerController(@Qualifier("TipTaskService") TaskService taskService){
+        this.taskService = taskService;
+    }
 
     /**
      * 分页

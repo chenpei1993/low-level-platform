@@ -4,7 +4,6 @@ import com.jenschen.base.Response;
 import com.jenschen.request.TagReq;
 import com.jenschen.request.TagPageReq;
 import com.jenschen.service.TagService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +14,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("tag")
-@CrossOrigin("*")
 public class TagController {
 
-    @Autowired
-    private TagService tagService;
+    private final TagService tagService;
+
+    public TagController(TagService tagService){
+        this.tagService = tagService;
+    }
 
     @PutMapping
     @PreAuthorize("hasAuthority('relation:tag:add')")

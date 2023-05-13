@@ -4,7 +4,6 @@ import com.jenschen.base.Response;
 import com.jenschen.request.QuestionReq;
 import com.jenschen.service.QuestionService;
 import com.jenschen.util.ResultUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/question")
 public class QuestionController {
 
-    @Autowired
-    private QuestionService questionService;
+    private final QuestionService questionService;
+
+    public QuestionController(QuestionService questionService){
+        this.questionService = questionService;
+    }
 
     @GetMapping("/getByInfoId/{id}")
     public Response<Object> get(@PathVariable Integer id){
