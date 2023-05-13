@@ -4,6 +4,8 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
 import com.jenschen.constant.CommonConstant;
+import com.jenschen.dao.RoleDao;
+import com.jenschen.entity.InfoEntity;
 import com.jenschen.entity.PermissionEntity;
 import com.jenschen.entity.RoleEntity;
 import com.jenschen.entity.RolePermissionEntity;
@@ -26,14 +28,14 @@ import java.util.List;
 
 @Service
 public class RoleServiceImpl extends AbstractService<RoleEntity> implements RoleService {
-    private final RoleMapper roleMapper;
+    private final RoleDao roleDao;
 
     private final RoleUserMapper roleUserMapper;
 
     private final RolePermissionMapper rolePermissionMapper;
 
-    public RoleServiceImpl(RoleMapper roleMapper, RoleUserMapper roleUserMapper, RolePermissionMapper rolePermissionMapper){
-        this.roleMapper = roleMapper;
+    public RoleServiceImpl(RoleDao roleDao, RoleUserMapper roleUserMapper, RolePermissionMapper rolePermissionMapper){
+        this.roleDao = roleDao;
         this.roleUserMapper = roleUserMapper;
         this.rolePermissionMapper = rolePermissionMapper;
     }
@@ -41,16 +43,16 @@ public class RoleServiceImpl extends AbstractService<RoleEntity> implements Role
     @Override
     public Response<Object> page(Page page) {
         QueryWrapper<RoleEntity> queryWrapper = this.getPageQueryWrapper(page);
-        List<RoleEntity> roleEntityList = roleMapper.selectList(queryWrapper);
+        List<RoleEntity> roleEntityList = roleDao.selectList(queryWrapper);
         List<RoleResp> resp = BeanUtil.copyToList(roleEntityList, RoleResp.class);
-        int count = roleMapper.selectCount(this.getDefaultQuery());
+        int count = roleDao.selectCount(this.getDefaultQuery());
         return ResultUtil.success(PageResp.build(count, resp));
     }
 
     @Override
     public Response<Object> all() {
         QueryWrapper<RoleEntity> queryWrapper = this.getDefaultQuery();
-        List<RoleEntity> roleEntityList = roleMapper.selectList(queryWrapper);
+        List<RoleEntity> roleEntityList = roleDao.selectList(queryWrapper);
         return ResultUtil.success(roleEntityList);
     }
 
@@ -59,7 +61,7 @@ public class RoleServiceImpl extends AbstractService<RoleEntity> implements Role
         //TODO 是否需要验证标签名是否唯一
         RoleEntity role = BeanUtil.copyProperties(roleReq, RoleEntity.class);
         role.created(LocalDateTime.now(),1);
-        roleMapper.insert(role);
+        roleDao.insert(role);
         return ResultUtil.success();
     }
 
@@ -70,9 +72,15 @@ public class RoleServiceImpl extends AbstractService<RoleEntity> implements Role
             return ResultUtil.error(ErrorEnum.ACCESS_DENIED);
         }
 
+        //数据被删除时
+        RoleEntity roleEntity =  roleDao.selectById(roleReq.getId());
+        if(roleEntity == null ||  roleEntity.getIsDeleted()){
+            return ResultUtil.error(ErrorEnum.DELETED_RECORD);
+        }
+
         RoleEntity role = BeanUtil.copyProperties(roleReq, RoleEntity.class);
         role.updated(LocalDateTime.now(), 1);
-        roleMapper.updateById(role);
+        roleDao.updateById(role);
         return ResultUtil.success();
     }
 
@@ -87,7 +95,7 @@ public class RoleServiceImpl extends AbstractService<RoleEntity> implements Role
         RoleEntity entity = RoleEntity.builder().build();
         entity.setId(id);
         entity.deleted(LocalDateTime.now(), 1);
-        roleMapper.updateById(entity);
+        roleDao.updateById(entity);
 
         //同时删除角色用户关联表中数据
         roleUserMapper.deleteByRoleId(id, 1);

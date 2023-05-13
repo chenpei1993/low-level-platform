@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
 import com.jenschen.constant.CommonConstant;
 import com.jenschen.dao.PermissionDao;
+import com.jenschen.entity.InfoEntity;
 import com.jenschen.entity.PermissionEntity;
+import com.jenschen.enumeration.ErrorEnum;
 import com.jenschen.mapper.PermissionMapper;
 import com.jenschen.mapper.RolePermissionMapper;
 import com.jenschen.request.Page;
@@ -75,6 +77,12 @@ public class PermissionServiceImpl extends AbstractService<PermissionEntity> imp
 
     @Override
     public Response<Object> edit(PermissionReq permissionReq) {
+        //更新时，先检查数据是否被删除
+        PermissionEntity permissionData = permissionDao.selectById(permissionReq.getId());
+        if(permissionData == null || permissionData.getIsDeleted()){
+            return ResultUtil.error(ErrorEnum.DELETED_RECORD);
+        }
+
         PermissionEntity permission = BeanUtil.copyProperties(permissionReq, PermissionEntity.class);
         permission.updated(LocalDateTime.now(), 1);
         permissionDao.updateById(permission);

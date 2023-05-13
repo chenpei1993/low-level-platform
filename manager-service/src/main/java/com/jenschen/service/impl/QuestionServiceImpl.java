@@ -56,10 +56,15 @@ public class QuestionServiceImpl extends AbstractService<QuestionEntity> impleme
 
     @Override
     public Response<Object> edit(QuestionReq questionReq) {
+        //数据被删除时
         InfoEntity infoEntity =  infoDao.selectById(questionReq.getInfoId());
-        //当info 被删除 或者已经发布时，不能修改内容
-        if(InfoStatusEnum.PUBLISH.equals(infoEntity.getStatus()) || infoEntity.getIsDeleted()){
+        if(infoEntity == null ||  infoEntity.getIsDeleted()){
             return ResultUtil.error(ErrorEnum.DELETED_RECORD);
+        }
+
+        //当info已发布
+        if(InfoStatusEnum.PUBLISH.equals(infoEntity.getStatus())){
+            return ResultUtil.error(ErrorEnum.PUBLISHED_RECORD);
         }
 
         //需要先删除所有的数据

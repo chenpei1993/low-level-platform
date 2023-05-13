@@ -6,12 +6,14 @@ import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
 import com.jenschen.constant.SettingsConstant;
+import com.jenschen.dao.InfoDao;
 import com.jenschen.dao.QuestionDao;
 import com.jenschen.elastic.dao.AnswerDao;
 import com.jenschen.elastic.entity.AnswerEntity;
 import com.jenschen.entity.QuestionEntity;
 import com.jenschen.entity.SubInfoEntity;
 import com.jenschen.entity.TaskEntity;
+import com.jenschen.enumeration.ErrorEnum;
 import com.jenschen.enumeration.InfoStatusEnum;
 import com.jenschen.mapper.InfoMapper;
 import com.jenschen.enumeration.InfoTypeEnum;
@@ -42,7 +44,7 @@ import java.util.List;
 public class InfoServiceImpl extends AbstractService<InfoEntity> implements InfoService {
 
     @Autowired
-    private InfoMapper infoMapper;
+    private InfoDao infoDao;
 
     @Autowired
     private SubInfoMapper subInfoMapper;
@@ -74,7 +76,7 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
     @Override
     public Response<Object> page(Page page) {
         QueryWrapper<InfoEntity> queryWrapper = this.getPageQueryWrapper(page);
-        List<InfoEntity> infoEntityList = infoMapper.selectList(queryWrapper);
+        List<InfoEntity> infoEntityList = infoDao.selectList(queryWrapper);
 
         String ip = settingService.getValue(SettingsConstant.QUESTION_FRONT_URL);
 
@@ -93,7 +95,7 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
             resp.setSendTasks(sendRep);
         }
 
-        int count = infoMapper.selectCount(this.getDefaultQuery());
+        int count = infoDao.selectCount(this.getDefaultQuery());
         return ResultUtil.success(PageResp.build(count, list));
     }
 
@@ -110,7 +112,7 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
         infoEntity.setUrl(RandomUtil.randomString(16));
         infoEntity.setStatus(InfoStatusEnum.EDIT);
         infoEntity.created(LocalDateTime.now(), 1);
-        infoMapper.insert(infoEntity);
+        infoDao.insert(infoEntity);
 
 
         updateTask(infoReq, infoEntity);
@@ -120,10 +122,16 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
 
     @Override
     public Response<Object> edit(InfoReq infoReq) {
+        //更新时，先检查数据是否被删除
+        InfoEntity info = infoDao.selectById(infoReq.getId());
+        if(info== null || info.getIsDeleted()){
+            return ResultUtil.error(ErrorEnum.DELETED_RECORD);
+        }
+
         InfoEntity infoEntity = new InfoEntity();
         BeanUtils.copyProperties(infoReq, infoEntity);
         infoEntity.updated(LocalDateTime.now(), 1);
-        infoMapper.updateById(infoEntity);
+        infoDao.updateById(infoEntity);
 
         //删除任务表
         tipTaskService.deleteByInfoId(infoReq.getId());
@@ -176,9 +184,9 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
     }
 
     private void setStatus(InfoStatusEnum status, int id){
-        InfoEntity info = infoMapper.selectById(id);
+        InfoEntity info = infoDao.selectById(id);
         info.setStatus(status);
-        infoMapper.updateById(info);
+        infoDao.updateById(info);
     }
 
     @Override
@@ -186,7 +194,7 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
         InfoEntity infoEntity = new InfoEntity();
         infoEntity.setId(id);
         infoEntity.deleted(LocalDateTime.now(), 1);
-        infoMapper.updateById(infoEntity);
+        infoDao.updateById(infoEntity);
 
         //删除 Question 列表
         questionService.deleteByInfoId(id);
@@ -195,7 +203,7 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
 
     @Override
     public InfoEntity get(int id) {
-        return  infoMapper.selectById(id);
+        return  infoDao.selectById(id);
     }
 
     @Override

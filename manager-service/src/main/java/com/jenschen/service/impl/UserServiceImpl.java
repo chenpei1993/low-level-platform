@@ -6,6 +6,7 @@ import com.jenschen.base.Response;
 import com.jenschen.config.WebSecurityConfig;
 import com.jenschen.constant.CommonConstant;
 import com.jenschen.dao.PermissionDao;
+import com.jenschen.dao.UserDao;
 import com.jenschen.entity.PermissionEntity;
 import com.jenschen.entity.RoleEntity;
 import com.jenschen.entity.RoleUserEntity;
@@ -41,7 +42,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl extends AbstractService<UserEntity> implements UserService, UserDetailsService {
 
-    private final UserMapper userMapper;
+    private final UserDao userDao;
 
     private final RoleUserMapper roleUserMapper;
 
@@ -64,10 +65,10 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
     private String password;
 
     @Autowired
-    public UserServiceImpl(UserMapper userMapper, RoleUserMapper roleUserMapper,
+    public UserServiceImpl(UserDao userDao, RoleUserMapper roleUserMapper,
                            PasswordEncoder passwordEncoder, JwtHelper jwtHelper,
                             PermissionDao permissionDao){
-        this.userMapper = userMapper;
+        this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
         this.jwtHelper = jwtHelper;
         this.roleUserMapper = roleUserMapper;
@@ -108,7 +109,7 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
     @Override
     public Response<Object> page(Page page) {
         QueryWrapper<UserEntity> queryWrapper = this.getPageQueryWrapper(page);
-        List<UserEntity> userEntityList = userMapper.selectList(queryWrapper);
+        List<UserEntity> userEntityList = userDao.selectList(queryWrapper);
         List<UserResp> resp = BeanUtil.copyToList(userEntityList, UserResp.class);
 
         //获得所有角色
@@ -118,7 +119,7 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
             userResp.setRoleIds(roleRespList);
         }
 
-        int count = userMapper.selectCount(this.getDefaultQuery());
+        int count = userDao.selectCount(this.getDefaultQuery());
         return ResultUtil.success(PageResp.build(count, resp));
     }
 
@@ -129,7 +130,7 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
         String password = passwordEncoder.encode(prefix + this.password);
         user.setPassword(password);
         user.created(LocalDateTime.now(),1);
-        userMapper.insert(user);
+        userDao.insert(user);
 
         // 添加用户和角色的关系的表
         updateRoleUserRelation(userReq, user);
@@ -144,9 +145,15 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
             return ResultUtil.error(ErrorEnum.ACCESS_DENIED);
         }
 
+        UserEntity userEntity = userDao.selectById(userReq.getId());
+        //默认用户admin禁止编辑
+        if(userEntity == null || userEntity.getIsDeleted()){
+            return ResultUtil.error(ErrorEnum.DELETED_RECORD);
+        }
+
         UserEntity user = BeanUtil.copyProperties(userReq, UserEntity.class);
         user.updated(LocalDateTime.now(), 1);
-        userMapper.updateById(user);
+        userDao.updateById(user);
 
         //先删除
         roleUserMapper.deleteByUserId(user.getId(), 1);
@@ -174,9 +181,9 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
             return ResultUtil.error(ErrorEnum.ACCESS_DENIED);
         }
 
-        UserEntity user = userMapper.selectById(id);
+        UserEntity user = userDao.selectById(id);
         user.deleted(LocalDateTime.now(), 1);
-        userMapper.updateById(user);
+        userDao.updateById(user);
 
         //同时删除关联表中信息
         roleUserMapper.deleteByUserId(user.getId(), 1);
@@ -189,7 +196,7 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
         QueryWrapper<UserEntity> queryWrapper = this.getDefaultQuery();
         queryWrapper.eq("username", username);
 
-        UserEntity user = userMapper.selectOne(queryWrapper);
+        UserEntity user = userDao.selectOne(queryWrapper);
         List<GrantedAuthority> grantedAuthorities = getGrantedAuthorities(user.getId());
 
         return new CurrentUser(user.getId(),

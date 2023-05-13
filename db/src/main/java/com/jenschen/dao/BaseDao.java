@@ -45,4 +45,11 @@ public interface BaseDao<T> {
      * @param queryWrapper 实体对象封装操作类（可以为 null）
      */
     List<T> selectList(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+
+    /**
+     * 根据 entity 条件，查询一条记录
+     *
+     * @param queryWrapper 实体对象封装操作类（可以为 null）
+     */
+    T selectOne(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 }

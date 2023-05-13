@@ -53,6 +53,10 @@ public abstract class AbstractDao<T> implements BaseDao<T>{
         return getMapper().selectList(queryWrapper);
     }
 
+    public T selectOne(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper){
+        return getMapper().selectOne(queryWrapper);
+    }
+
     public abstract BaseMapper<T> getMapper();
 
 }

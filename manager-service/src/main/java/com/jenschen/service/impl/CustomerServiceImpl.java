@@ -59,15 +59,22 @@ public class CustomerServiceImpl extends AbstractService<CustomerEntity> impleme
     @Transactional
     public Response<Object> update(CustomerReq customerReq) {
         List<CustomerEntity> entities = customerMapper.findByEmailOrPhone(customerReq.getEmail(), customerReq.getPhone());
+
         //如果存在多条，则有重复记录
         if(entities.size() > 1){
             return ResultUtil.error(ErrorEnum.CUSTOMER_DUPLICATE_PHONE_OR_EMAIL);
         }
 
         //只存在一条，但是id号不相等，则有重复记录
-        if(entities.size() == 1 && entities.get(0).getId() != customerReq.getId()){
+        if(entities.get(0).getId() != customerReq.getId()){
             return ResultUtil.error(ErrorEnum.CUSTOMER_DUPLICATE_PHONE_OR_EMAIL);
         }
+
+        //更新时，先检查数据是否被删除
+        if(entities.get(0).getIsDeleted()){
+            return ResultUtil.error(ErrorEnum.DELETED_RECORD);
+        }
+
 
         CustomerEntity customerEntity = BeanUtil.copyProperties(customerReq, CustomerEntity.class);
         customerEntity.updated(LocalDateTime.now(), 1);
