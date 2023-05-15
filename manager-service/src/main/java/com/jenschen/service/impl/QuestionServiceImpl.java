@@ -15,6 +15,7 @@ import com.jenschen.service.AbstractService;
 import com.jenschen.service.QuestionService;
 import com.jenschen.util.ResultUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,6 +33,7 @@ public class QuestionServiceImpl extends AbstractService<QuestionEntity> impleme
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Response<Object> add(QuestionReq questionReq) {
         InfoEntity infoEntity = infoDao.selectById(questionReq.getInfoId());
         //当info 被删除 或者已经发布时，不能添加内容
@@ -55,6 +57,7 @@ public class QuestionServiceImpl extends AbstractService<QuestionEntity> impleme
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Response<Object> edit(QuestionReq questionReq) {
         //数据被删除时
         InfoEntity infoEntity =  infoDao.selectById(questionReq.getInfoId());

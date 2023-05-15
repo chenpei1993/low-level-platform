@@ -5,9 +5,9 @@ import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
-import com.jenschen.mapper.CustomerMapper;
 import com.jenschen.entity.CustomerEntity;
 import com.jenschen.enumeration.ErrorEnum;
+import com.jenschen.mapper.CustomerMapper;
 import com.jenschen.request.CustomerReq;
 import com.jenschen.request.Page;
 import com.jenschen.response.CustomerResp;
@@ -27,9 +27,10 @@ import java.util.List;
 @Service
 public class CustomerServiceImpl extends AbstractService<CustomerEntity> implements CustomerService {
 
-    private static CopyOptions customerCCopyOption;
+    private static final CopyOptions customerCCopyOption;
+
     static {
-        customerCCopyOption =  CopyOptions.create().setIgnoreProperties("tags");
+        customerCCopyOption = CopyOptions.create().setIgnoreProperties("tags");
     }
 
     @Autowired
@@ -56,7 +57,7 @@ public class CustomerServiceImpl extends AbstractService<CustomerEntity> impleme
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Response<Object> update(CustomerReq customerReq) {
         List<CustomerEntity> entities = customerMapper.findByEmailOrPhone(customerReq.getEmail(), customerReq.getPhone());
 

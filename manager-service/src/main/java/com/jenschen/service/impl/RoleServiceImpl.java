@@ -5,12 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
 import com.jenschen.constant.CommonConstant;
 import com.jenschen.dao.RoleDao;
-import com.jenschen.entity.InfoEntity;
-import com.jenschen.entity.PermissionEntity;
 import com.jenschen.entity.RoleEntity;
 import com.jenschen.entity.RolePermissionEntity;
 import com.jenschen.enumeration.ErrorEnum;
-import com.jenschen.mapper.RoleMapper;
 import com.jenschen.mapper.RolePermissionMapper;
 import com.jenschen.mapper.RoleUserMapper;
 import com.jenschen.request.Page;
@@ -22,6 +19,7 @@ import com.jenschen.service.AbstractService;
 import com.jenschen.service.RoleService;
 import com.jenschen.util.ResultUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -86,6 +84,7 @@ public class RoleServiceImpl extends AbstractService<RoleEntity> implements Role
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Response<Object> delete(Integer id) {
         //默认角色admin禁止删除
         if(id == CommonConstant.DEFAULT_ROLE_ADMIN_ID){

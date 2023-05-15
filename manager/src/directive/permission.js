@@ -5,13 +5,13 @@ export default {
         let perVal = binding.value;
         if(binding.value){
             let permissions = sessionStorage.getItem("permissions")
-            if(permissions != null){
-                permissions.toLocaleLowerCase();
+            if (permissions == null) {
+                return;
             }
-            console.log(permissions)
+            permissions.toLocaleLowerCase();
             let hasPermission = permissions.indexOf(perVal.toLocaleString()) === -1
-            if(hasPermission){
-                el.style.display="none"
+            if (hasPermission) {
+                el.style.display = "none"
             }
         }
     }

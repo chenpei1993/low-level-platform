@@ -2,13 +2,14 @@ package com.jenschen.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.jenschen.mapper.CustomerTagMapper;
 import com.jenschen.entity.CustomerTagEntity;
 import com.jenschen.entity.TagEntity;
+import com.jenschen.mapper.CustomerTagMapper;
 import com.jenschen.response.TagResp;
 import com.jenschen.service.CustomerTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,6 +39,7 @@ public class CustomerTagServiceImpl implements CustomerTagService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void insertCustomerTags(int customerId, int[] tagIds) {
 //        List<CustomerTagEntity> list = new ArrayList<>();
         for(int tagId : tagIds){

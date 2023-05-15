@@ -10,17 +10,15 @@ import com.jenschen.dao.InfoDao;
 import com.jenschen.dao.QuestionDao;
 import com.jenschen.elastic.dao.AnswerDao;
 import com.jenschen.elastic.entity.AnswerEntity;
+import com.jenschen.entity.InfoEntity;
 import com.jenschen.entity.QuestionEntity;
 import com.jenschen.entity.SubInfoEntity;
 import com.jenschen.entity.TaskEntity;
 import com.jenschen.enumeration.ErrorEnum;
 import com.jenschen.enumeration.InfoStatusEnum;
-import com.jenschen.mapper.InfoMapper;
 import com.jenschen.enumeration.InfoTypeEnum;
-import com.jenschen.mapper.SubInfoMapper;
 import com.jenschen.request.AnswerPageReq;
 import com.jenschen.request.InfoReq;
-import com.jenschen.entity.InfoEntity;
 import com.jenschen.request.Page;
 import com.jenschen.response.*;
 import com.jenschen.service.*;
@@ -45,9 +43,6 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
 
     @Autowired
     private InfoDao infoDao;
-
-    @Autowired
-    private SubInfoMapper subInfoMapper;
 
     @Autowired
     @Qualifier("TipTaskService")
@@ -121,6 +116,7 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Response<Object> edit(InfoReq infoReq) {
         //更新时，先检查数据是否被删除
         InfoEntity info = infoDao.selectById(infoReq.getId());
@@ -151,7 +147,6 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
         List<SubInfoEntity> subInfoEntityList = BeanUtil.copyToList(infoEntityList, SubInfoEntity.class);
         for(SubInfoEntity subInfoEntity : subInfoEntityList){
             subInfoEntity.created(LocalDateTime.now(), 1);
-//            subInfoMapper.insert(subInfoEntity);
         }
 
         //如果提醒器不为空
@@ -161,7 +156,6 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
                 delayList = tipTaskService.insertTipTask(infoReq, infoEntityList);
                 tipTaskService.saveList(delayList);
             }
-
         }
 
         //如果设置定时发送
@@ -190,6 +184,7 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Response<Object> delete(int id) {
         InfoEntity infoEntity = new InfoEntity();
         infoEntity.setId(id);
@@ -213,7 +208,7 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
         Pageable pageable = PageRequest.of(page.getCurrentPage() - 1, page.getPageSize());
         org.springframework.data.domain.Page<AnswerEntity> ans = answerDao.findByInfoId(page.getInfoId(), pageable);
         int count = (int) ans.getTotalElements();
-        List<AnswerResp> list = new ArrayList();
+        List<AnswerResp> list = new ArrayList<>();
         ans.forEach((e) -> {
             AnswerResp resp = AnswerResp.builder()
                     .answer(e.getAnswer())

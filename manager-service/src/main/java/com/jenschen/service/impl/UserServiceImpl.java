@@ -14,13 +14,14 @@ import com.jenschen.entity.UserEntity;
 import com.jenschen.enumeration.ErrorEnum;
 import com.jenschen.exception.BizException;
 import com.jenschen.helper.JwtHelper;
-import com.jenschen.mapper.RolePermissionMapper;
 import com.jenschen.mapper.RoleUserMapper;
-import com.jenschen.mapper.UserMapper;
 import com.jenschen.request.Page;
 import com.jenschen.request.user.UserLoginReq;
 import com.jenschen.request.user.UserReq;
-import com.jenschen.response.*;
+import com.jenschen.response.LoginResp;
+import com.jenschen.response.PageResp;
+import com.jenschen.response.RoleResp;
+import com.jenschen.response.UserResp;
 import com.jenschen.security.CurrentUser;
 import com.jenschen.service.AbstractService;
 import com.jenschen.service.UserService;
@@ -34,6 +35,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -124,6 +126,7 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Response<Object> add(UserReq userReq) {
         UserEntity user = BeanUtil.copyProperties(userReq, UserEntity.class);
         //TODO 敏感数据加密
@@ -139,6 +142,7 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Response<Object> edit(UserReq userReq) {
         //默认用户admin禁止编辑
         if(userReq.getId() == CommonConstant.DEFAULT_USER_ADMIN_ID){
@@ -175,6 +179,7 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Response<Object> delete(Integer id) {
         //默认用户admin禁止删除
         if(id == CommonConstant.DEFAULT_USER_ADMIN_ID){
