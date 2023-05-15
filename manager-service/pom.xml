@@ -94,10 +94,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
-        </dependency>
 
     </dependencies>
 

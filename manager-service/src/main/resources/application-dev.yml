@@ -15,9 +15,6 @@ spring:
     uris: 192.168.221.128:9200
     password: 123456
     username: elastic
-  redis:
-    host: redis://192.168.221.128:6379
-    password: 123456
 mybatis-plus:
   configuration:
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
