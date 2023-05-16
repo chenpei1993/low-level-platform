@@ -5,6 +5,7 @@ import com.jenschen.request.AnswerPageReq;
 import com.jenschen.request.InfoPageReq;
 import com.jenschen.request.InfoReq;
 import com.jenschen.service.InfoService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -26,6 +27,7 @@ public class InfoController {
      * @return 结果
      */
     @PutMapping
+    @PreAuthorize("hasAuthority('activity:info:add')")
     public Response<Object> add(@RequestBody InfoReq infoReq){
         return infoService.insert(infoReq);
     }
@@ -36,6 +38,7 @@ public class InfoController {
      * @return 结果
      */
     @PostMapping
+    @PreAuthorize("hasAuthority('activity:info:edit')")
     public Response<Object> edit(@RequestBody InfoReq infoReq){
         return infoService.edit(infoReq);
     }
@@ -45,6 +48,7 @@ public class InfoController {
      * @return 结果
      */
     @PostMapping("publish")
+    @PreAuthorize("hasAuthority('activity:info:publish')")
     public Response<Object> publish(@RequestBody InfoReq infoReq){
         return infoService.publish(infoReq);
     }
@@ -54,6 +58,7 @@ public class InfoController {
      * @return 结果
      */
     @PostMapping("stop")
+    @PreAuthorize("hasAuthority('activity:info:stop')")
     public Response<Object> stop(@RequestBody InfoReq infoReq){
         return infoService.stop(infoReq);
     }
@@ -64,6 +69,7 @@ public class InfoController {
      * @return 结果
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('activity:info:del')")
     public Response<Object> del(@PathVariable Integer id){
         return infoService.delete(id);
     }
@@ -75,6 +81,7 @@ public class InfoController {
      */
     @PostMapping(value = "/page")
     @ResponseBody
+    @PreAuthorize("hasAuthority('activity:info:query')")
     public Response<Object> page(@RequestBody InfoPageReq infoPageReq){
         return infoService.page(infoPageReq);
     }

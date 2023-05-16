@@ -121,13 +121,21 @@ insert into permission (name, permission, created_by, updated_by)
 SELECT '问卷编辑问题', 'activity:info:edit_question', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'activity:info:edit_question');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '问卷发布', 'activity:info:publish', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'activity:info:publish');
+SELECT '问卷发布', 'activity:info:publish', 1, 1
+WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'activity:info:publish');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '问卷预览', 'activity:info:preview', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'activity:info:preview');
+SELECT '问卷预览', 'activity:info:preview', 1, 1
+WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'activity:info:preview');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '问卷删除', 'activity:info:del', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'activity:info:del');
+SELECT '问卷删除', 'activity:info:del', 1, 1
+WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'activity:info:del');
 
 insert into permission (name, permission, created_by, updated_by)
-SELECT '问卷结果', 'activity:info:result', 1, 1 WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'activity:info:result');
+SELECT '问卷结果', 'activity:info:result', 1, 1
+WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'activity:info:result');
+
+insert into permission (name, permission, created_by, updated_by)
+SELECT '显示地址', 'activity:info:show_addr', 1, 1
+WHERE NOT EXISTS (SELECT id FROM permission WHERE permission = 'activity:info:show_addr');

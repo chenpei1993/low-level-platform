@@ -6,7 +6,7 @@
     </el-breadcrumb>
     <el-divider />
     <div>
-        <el-button type="success" size="small" @click="add" plain>添加</el-button>
+        <el-button type="success" size="small" @click="add" v-auth="'activity:info:add'" plain>添加</el-button>
     </div>
     <div>
         <el-table :data="infos" stripe style="width: 100%" v-loading="loading">
@@ -38,14 +38,30 @@
             <el-table-column prop="updatedAt" label="更新时间" width="180"/>
             <el-table-column fixed="right" label="操作" width="250">
                 <template #default="scope">
-                    <el-button link type="primary" size="small" @click="editQuestions(scope.row)" v-if="scope.row.status === 1">编辑问题</el-button>
-                    <el-button link type="primary" size="small" @click="publish(scope.row)" v-if="scope.row.status === 1">发布</el-button>
-                    <el-button link type="primary" size="small" @click="preview(scope.row)">预览</el-button>
-                    <el-button link type="primary" size="small" @click="edit(scope.row)" v-if="scope.row.status === 1">编辑</el-button>
-                    <el-button link type="primary" size="small" @click="stop(scope.row)" v-if="scope.row.status === 2">停用</el-button>
-                    <el-button link type="primary" size="small" @click="del(scope.row)" v-if="scope.row.status === 1">删除</el-button>
-                    <el-button link type="primary" size="small" @click="showResult(scope.row)">收集结果</el-button>
-                    <el-button link type="primary" size="small" @click="showQRCode(scope.row)" v-if="scope.row.status === 2">显示地址</el-button>
+                    <el-button link type="primary" size="small" @click="editQuestions(scope.row)"
+                               v-if="scope.row.status === 1" v-auth="'activity:info:edit_question'">编辑问题
+                    </el-button>
+                    <el-button link type="primary" size="small" @click="publish(scope.row)"
+                               v-if="scope.row.status === 1" v-auth="'activity:info:publish'">发布
+                    </el-button>
+                    <el-button link type="primary" size="small" @click="preview(scope.row)"
+                               v-auth="'activity:info:preview'">预览
+                    </el-button>
+                    <el-button link type="primary" size="small" @click="edit(scope.row)" v-if="scope.row.status === 1"
+                               v-auth="'activity:info:edit'">编辑
+                    </el-button>
+                    <el-button link type="primary" size="small" @click="stop(scope.row)" v-if="scope.row.status === 2"
+                               v-auth="'activity:info:stop'">停用
+                    </el-button>
+                    <el-button link type="primary" size="small" @click="del(scope.row)" v-if="scope.row.status === 1"
+                               v-auth="'activity:info:del'">删除
+                    </el-button>
+                    <el-button link type="primary" size="small" @click="showResult(scope.row)"
+                               v-auth="'activity:info:result'">收集结果
+                    </el-button>
+                    <el-button link type="primary" size="small" @click="showQRCode(scope.row)"
+                               v-if="scope.row.status === 2" v-auth="'activity:info:show_addr'">显示地址
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -122,7 +138,7 @@ import TipDetail from '@/components/info/TipDetail.vue'
 import Iphone from '@/components/iphone/Iphone.vue'
 import QRCode from '@/components/info/QRCode.vue'
 import {ElMessage, ElMessageBox} from 'element-plus'
-import { inject } from "vue"
+import {inject} from "vue"
 
 export default {
   name: 'Info',

@@ -6,7 +6,7 @@
     </el-breadcrumb>
     <el-divider />
     <div>
-        <el-button type="success" size="small" @click="add" plain>添加</el-button>
+        <el-button type="success" size="small" @click="add" plain v-auth="'setting:permission:del'">添加</el-button>
     </div>
     <div>
         <el-table :data="customs" stripe style="width: 100%" v-loading="loading">
@@ -69,8 +69,8 @@
  * 3 停用
  */
 import Add from '@/components/custom/Add.vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { inject } from "vue"
+import {ElMessage, ElMessageBox} from 'element-plus'
+import {inject} from "vue"
 
 export default {
   name: 'Custom',

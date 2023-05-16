@@ -6,7 +6,7 @@
     </el-breadcrumb>
     <el-divider />
     <div>
-        <el-button type="success" size="small" @click="add" plain>添加</el-button>
+        <el-button type="success" size="small" @click="add" v-auth="'relation:tag:add'" plain>添加</el-button>
     </div>
     <div>
         <el-table :data="tags" stripe style="width: 100%" v-loading="loading">
@@ -20,8 +20,12 @@
             <el-table-column prop="updatedAt" label="更新时间" />
             <el-table-column fixed="right" label="操作" width="120">
                 <template #default="scope">
-                    <el-button link type="primary" size="small" @click="edit(scope.row)">编辑</el-button>
-                    <el-button link type="primary" size="small" @click="del(scope.row)">删除</el-button>
+                    <el-button link type="primary" size="small" @click="edit(scope.row)" v-auth="'relation:tag:edit'">
+                        编辑
+                    </el-button>
+                    <el-button link type="primary" size="small" @click="del(scope.row)" v-auth="'relation:tag:del'">
+                        删除
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -56,8 +60,8 @@
  */
 import Add from '@/components/tag/Add.vue'
 //TODO 全局变量
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { inject } from "vue"
+import {ElMessage, ElMessageBox} from 'element-plus'
+import {inject} from "vue"
 
 export default {
   name: 'Tag',

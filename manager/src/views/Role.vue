@@ -6,7 +6,7 @@
     </el-breadcrumb>
     <el-divider />
     <div>
-        <el-button type="success" size="small" @click="add" plain>添加</el-button>
+        <el-button type="success" size="small" @click="add" v-auth="'setting:role:add'" plain>添加</el-button>
     </div>
     <div style="display: flex; justify-content: space-between;">
         <div style="width: 50%; padding: 20px;">
@@ -16,8 +16,12 @@
               <el-table-column prop="updatedAt" label="更新时间" />
               <el-table-column fixed="right" label="操作" width="120">
                   <template #default="scope">
-                      <el-button link type="primary" size="small" @click="edit(scope.row)" v-if="scope.row.id !== 1">编辑</el-button>
-                      <el-button link type="primary" size="small" @click="del(scope.row)" v-if="scope.row.id !== 1">删除</el-button>
+                      <el-button link type="primary" size="small" @click="edit(scope.row)" v-if="scope.row.id !== 1"
+                                 v-auth="'setting:role:edit'">编辑
+                      </el-button>
+                      <el-button link type="primary" size="small" @click="del(scope.row)" v-if="scope.row.id !== 1"
+                                 v-auth="'setting:role:del'">删除
+                      </el-button>
                   </template>
               </el-table-column>
           </el-table>
@@ -62,8 +66,8 @@
 
 import Add from '@/components/role/Add.vue'
 //TODO 全局变量
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { inject } from "vue"
+import {ElMessage, ElMessageBox} from 'element-plus'
+import {inject} from "vue"
 
 export default {
   name: 'Role',

@@ -4,6 +4,7 @@ import com.jenschen.base.Response;
 import com.jenschen.request.permission.PermissionPageReq;
 import com.jenschen.request.permission.PermissionReq;
 import com.jenschen.service.PermissionService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class PermissionController {
 
     @PostMapping(value = "/page")
     @ResponseBody
+    @PreAuthorize("hasAuthority('setting:permission:query')")
     public Response<Object> page(@RequestBody PermissionPageReq permissionPageReq){
         return permissionService.page(permissionPageReq);
     }
@@ -39,11 +41,13 @@ public class PermissionController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('setting:permission:add')")
     public Response<Object> add(@RequestBody @Validated PermissionReq permissionReq){
         return permissionService.add(permissionReq);
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('setting:permission:edit')")
     public Response<Object> edit(@RequestBody @Validated PermissionReq permissionReq){
         return permissionService.edit(permissionReq);
     }
@@ -54,6 +58,7 @@ public class PermissionController {
      * @return 结果
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('setting:permission:del')")
     public Response<Object> del(@PathVariable Integer id){
         return permissionService.delete(id);
     }
