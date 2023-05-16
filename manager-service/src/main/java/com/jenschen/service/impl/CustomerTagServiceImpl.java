@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.jenschen.entity.CustomerTagEntity;
 import com.jenschen.entity.TagEntity;
+import com.jenschen.helper.SpringHelper;
 import com.jenschen.mapper.CustomerTagMapper;
 import com.jenschen.response.TagResp;
 import com.jenschen.service.CustomerTagService;
@@ -25,7 +26,7 @@ public class CustomerTagServiceImpl implements CustomerTagService {
         UpdateWrapper<CustomerTagEntity> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("customer_id", customerId);
         CustomerTagEntity entity = CustomerTagEntity.builder().build();
-        entity.deleted(LocalDateTime.now(), 1);
+        entity.deleted(LocalDateTime.now(), SpringHelper.getUserId());
         customerTagMapper.update(entity, updateWrapper);
     }
 
@@ -34,7 +35,7 @@ public class CustomerTagServiceImpl implements CustomerTagService {
         UpdateWrapper<CustomerTagEntity> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("tag_id", tagId);
         CustomerTagEntity entity = CustomerTagEntity.builder().build();
-        entity.deleted(LocalDateTime.now(), 1);
+        entity.deleted(LocalDateTime.now(), SpringHelper.getUserId());
         customerTagMapper.update(entity, updateWrapper);
     }
 
@@ -47,7 +48,7 @@ public class CustomerTagServiceImpl implements CustomerTagService {
                                                         .customerId(customerId)
                                                         .tagId(tagId)
                                                         .build();
-            customerTagEntity.created(LocalDateTime.now(), 1);
+            customerTagEntity.created(LocalDateTime.now(), SpringHelper.getUserId());
             //TODO 批量添加
             customerTagMapper.insert(customerTagEntity);
         }

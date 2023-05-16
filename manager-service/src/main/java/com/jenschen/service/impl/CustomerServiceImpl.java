@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
 import com.jenschen.entity.CustomerEntity;
 import com.jenschen.enumeration.ErrorEnum;
+import com.jenschen.helper.SpringHelper;
 import com.jenschen.mapper.CustomerMapper;
 import com.jenschen.request.Page;
 import com.jenschen.request.custom.CustomerReq;
@@ -49,7 +50,7 @@ public class CustomerServiceImpl extends AbstractService<CustomerEntity> impleme
         }
         //TODO 敏感数据加密
         CustomerEntity customerEntity = BeanUtil.copyProperties(customerReq, CustomerEntity.class);
-        customerEntity.created(LocalDateTime.now(), 1);
+        customerEntity.created(LocalDateTime.now(), SpringHelper.getUserId());
         customerMapper.insert(customerEntity);
         //添加用户和标签的映射
         customerTagService.insertCustomerTags(customerEntity.getId(), customerReq.getTags());
@@ -78,7 +79,7 @@ public class CustomerServiceImpl extends AbstractService<CustomerEntity> impleme
 
 
         CustomerEntity customerEntity = BeanUtil.copyProperties(customerReq, CustomerEntity.class);
-        customerEntity.updated(LocalDateTime.now(), 1);
+        customerEntity.updated(LocalDateTime.now(), SpringHelper.getUserId());
         customerMapper.updateById(customerEntity);
 
         //删除用户和标签的映射
@@ -93,7 +94,7 @@ public class CustomerServiceImpl extends AbstractService<CustomerEntity> impleme
     public Response<Object> delete(int id) {
         CustomerEntity entity = CustomerEntity.builder().build();
         entity.setId(id);
-        entity.deleted(LocalDateTime.now(), 1);
+        entity.deleted(LocalDateTime.now(), SpringHelper.getUserId());
         customerMapper.updateById(entity);
         return ResultUtil.success();
     }

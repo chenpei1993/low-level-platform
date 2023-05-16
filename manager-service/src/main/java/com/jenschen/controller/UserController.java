@@ -26,8 +26,8 @@ public class UserController {
 
 
     @DeleteMapping("logout")
-    public Response<Object> logout(@RequestBody @Validated UserLoginReq userLoginReq){
-        return userService.logout(userLoginReq);
+    public Response<Object> logout() {
+        return userService.logout();
     }
 
     @PostMapping(value = "/page")

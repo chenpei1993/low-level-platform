@@ -8,6 +8,7 @@ import com.jenschen.dao.RoleDao;
 import com.jenschen.entity.RoleEntity;
 import com.jenschen.entity.RolePermissionEntity;
 import com.jenschen.enumeration.ErrorEnum;
+import com.jenschen.helper.SpringHelper;
 import com.jenschen.mapper.RolePermissionMapper;
 import com.jenschen.mapper.RoleUserMapper;
 import com.jenschen.request.Page;
@@ -58,7 +59,7 @@ public class RoleServiceImpl extends AbstractService<RoleEntity> implements Role
     public Response<Object> add(RoleReq roleReq) {
         //TODO 是否需要验证标签名是否唯一
         RoleEntity role = BeanUtil.copyProperties(roleReq, RoleEntity.class);
-        role.created(LocalDateTime.now(),1);
+        role.created(LocalDateTime.now(), SpringHelper.getUserId());
         roleDao.insert(role);
         return ResultUtil.success();
     }
@@ -77,7 +78,7 @@ public class RoleServiceImpl extends AbstractService<RoleEntity> implements Role
         }
 
         RoleEntity role = BeanUtil.copyProperties(roleReq, RoleEntity.class);
-        role.updated(LocalDateTime.now(), 1);
+        role.updated(LocalDateTime.now(), SpringHelper.getUserId());
         roleDao.updateById(role);
         return ResultUtil.success();
     }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
 import com.jenschen.entity.TaskEntity;
 import com.jenschen.enumeration.TaskTypeEnum;
+import com.jenschen.helper.SpringHelper;
 import com.jenschen.request.SendTimerPageReq;
 import com.jenschen.response.PageResp;
 import com.jenschen.response.TaskResp;
@@ -24,7 +25,7 @@ public class SendTaskServiceImpl extends AbstractTipService {
 
     @Override
     public void deleteByInfoId(Integer infoId){
-        taskMapper.deleteByInfoId(TYPE , infoId, 1);
+        taskMapper.deleteByInfoId(TYPE, infoId, SpringHelper.getUserId());
     }
 
     @Override

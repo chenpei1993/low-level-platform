@@ -14,6 +14,7 @@ import com.jenschen.entity.UserEntity;
 import com.jenschen.enumeration.ErrorEnum;
 import com.jenschen.exception.BizException;
 import com.jenschen.helper.JwtHelper;
+import com.jenschen.helper.SpringHelper;
 import com.jenschen.mapper.RoleUserMapper;
 import com.jenschen.request.Page;
 import com.jenschen.request.user.UserLoginReq;
@@ -81,15 +82,13 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
     @Override
     public Response<Object> login(UserLoginReq userLoginReq) {
         CurrentUser user = (CurrentUser) loadUserByUsername(userLoginReq.getUsername());
-
-        if(!passwordEncoder.matches(prefix + userLoginReq.getPassword(), user.getPassword())){
+        if (!passwordEncoder.matches(prefix + userLoginReq.getPassword(), user.getPassword())) {
             throw new BizException("用户名或者密码错误");
         }
-
         Map<String, String> data = new HashMap<>();
 
-        data.put("user_id", String.valueOf(user.getId()));
-        data.put("username", user.getUsername());
+        data.put(CommonConstant.USER_ID, String.valueOf(user.getId()));
+        data.put(CommonConstant.USERNAME, user.getUsername());
         String authorities = user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -103,9 +102,9 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
     }
 
     @Override
-    public Response<Object> logout(UserLoginReq userLoginReq) {
-        UserDetails user = loadUserByUsername(userLoginReq.getUsername());
-        return null;
+    public Response<Object> logout() {
+        SpringHelper.setNull();
+        return ResultUtil.success();
     }
 
     @Override

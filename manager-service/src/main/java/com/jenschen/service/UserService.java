@@ -16,10 +16,10 @@ public interface UserService {
 
     /**
      * 管理后台的用户注销
-     * @param userLoginReq 用户登录信息
+     *
      * @return
      */
-    Response<Object> logout(UserLoginReq userLoginReq);
+    Response<Object> logout();
 
     /**
      * 分页获取用户

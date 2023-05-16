@@ -6,6 +6,7 @@ import com.jenschen.base.Response;
 import com.jenschen.dao.TagDao;
 import com.jenschen.entity.TagEntity;
 import com.jenschen.enumeration.ErrorEnum;
+import com.jenschen.helper.SpringHelper;
 import com.jenschen.request.Page;
 import com.jenschen.request.tag.TagReq;
 import com.jenschen.response.PageResp;
@@ -74,7 +75,7 @@ public class TagServiceImpl extends AbstractService<TagEntity> implements TagSer
         }
 
         TagEntity tag = BeanUtil.copyProperties(tagReq, TagEntity.class);
-        tag.updated(LocalDateTime.now(), 1);
+        tag.updated(LocalDateTime.now(), SpringHelper.getUserId());
         tagDao.updateById(tag);
         return ResultUtil.success();
     }
@@ -84,7 +85,7 @@ public class TagServiceImpl extends AbstractService<TagEntity> implements TagSer
     public Response<Object> delete(int id) {
         TagEntity entity = TagEntity.builder().build();
         entity.setId(id);
-        entity.deleted(LocalDateTime.now(), 1);
+        entity.deleted(LocalDateTime.now(), SpringHelper.getUserId());
         tagDao.updateById(entity);
         //删除客户的标签
         customerTagService.deletedByTagId(id);

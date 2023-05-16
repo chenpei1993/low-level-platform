@@ -5,11 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jenschen.base.Response;
 import com.jenschen.constant.CommonConstant;
 import com.jenschen.dao.PermissionDao;
-import com.jenschen.entity.InfoEntity;
 import com.jenschen.entity.PermissionEntity;
 import com.jenschen.enumeration.ErrorEnum;
-import com.jenschen.mapper.PermissionMapper;
-import com.jenschen.mapper.RolePermissionMapper;
+import com.jenschen.helper.SpringHelper;
 import com.jenschen.request.Page;
 import com.jenschen.request.permission.PermissionReq;
 import com.jenschen.response.PageResp;
@@ -94,7 +92,7 @@ public class PermissionServiceImpl extends AbstractService<PermissionEntity> imp
     public Response<Object> delete(Integer id) {
         PermissionEntity entity = PermissionEntity.builder().build();
         entity.setId(id);
-        entity.deleted(LocalDateTime.now(), 1);
+        entity.deleted(LocalDateTime.now(), SpringHelper.getUserId());
         permissionDao.updateById(entity);
 
         //TODO 删除角色下的标签

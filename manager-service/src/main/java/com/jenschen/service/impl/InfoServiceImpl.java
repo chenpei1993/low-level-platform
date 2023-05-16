@@ -17,6 +17,7 @@ import com.jenschen.entity.TaskEntity;
 import com.jenschen.enumeration.ErrorEnum;
 import com.jenschen.enumeration.InfoStatusEnum;
 import com.jenschen.enumeration.InfoTypeEnum;
+import com.jenschen.helper.SpringHelper;
 import com.jenschen.request.AnswerPageReq;
 import com.jenschen.request.Page;
 import com.jenschen.request.info.InfoReq;
@@ -152,7 +153,7 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
         List<InfoEntity> infoEntityList = infoSpliter.convert(infoReq, infoEntity.getId());
         List<SubInfoEntity> subInfoEntityList = BeanUtil.copyToList(infoEntityList, SubInfoEntity.class);
         for(SubInfoEntity subInfoEntity : subInfoEntityList){
-            subInfoEntity.created(LocalDateTime.now(), 1);
+            subInfoEntity.created(LocalDateTime.now(), SpringHelper.getUserId());
         }
 
         //如果提醒器不为空
@@ -206,7 +207,7 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
             return ResultUtil.error(ErrorEnum.DELETED_RECORD);
         }
 
-        infoEntity.deleted(LocalDateTime.now(), 1);
+        infoEntity.deleted(LocalDateTime.now(), SpringHelper.getUserId());
         infoDao.updateById(infoEntity);
 
         //删除 Question 列表

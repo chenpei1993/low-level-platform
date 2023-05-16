@@ -8,6 +8,7 @@ import com.jenschen.entity.InfoEntity;
 import com.jenschen.entity.QuestionEntity;
 import com.jenschen.enumeration.ErrorEnum;
 import com.jenschen.enumeration.InfoStatusEnum;
+import com.jenschen.helper.SpringHelper;
 import com.jenschen.request.QuestionInfo;
 import com.jenschen.request.QuestionReq;
 import com.jenschen.response.QuestionResp;
@@ -45,14 +46,16 @@ public class QuestionServiceImpl extends AbstractService<QuestionEntity> impleme
         deleteByInfoId(questionReq.getInfoId());
 
         //TODO 批量添加
+        Integer userId = SpringHelper.getUserId();
 //        List<QuestionEntity> questionEntityList = new ArrayList<>();
         for(QuestionInfo questionInfo : questionReq.getQuestionInfoList()){
             QuestionEntity question = BeanUtil.copyProperties(questionInfo, QuestionEntity.class);
             question.setInfoId(questionReq.getInfoId());
-            question.created(LocalDateTime.now(), 1);
+            question.created(LocalDateTime.now(), userId);
 //            questionEntityList.add(question);
             questionDao.insert(question);
         }
+
         return ResultUtil.success();
     }
 
@@ -86,18 +89,20 @@ public class QuestionServiceImpl extends AbstractService<QuestionEntity> impleme
 
     @Override
     public Response<Object> delete(Integer id) {
+        Integer userId = SpringHelper.getUserId();
         QuestionEntity questionEntity = QuestionEntity.builder().build();
         questionEntity.setId(id);
-        questionEntity.deleted(LocalDateTime.now(), 1);
+        questionEntity.deleted(LocalDateTime.now(), userId);
         questionDao.updateById(questionEntity);
         return ResultUtil.success();
     }
 
     @Override
     public Response<Object> deleteByInfoId(Integer infoId) {
+        Integer userId = SpringHelper.getUserId();
         QuestionEntity questionEntity = QuestionEntity.builder().build();
         questionEntity.setInfoId(infoId);
-        questionEntity.deleted(LocalDateTime.now(), 1);
+        questionEntity.deleted(LocalDateTime.now(), userId);
         questionDao.deleteByInfoId(questionEntity);
         return ResultUtil.success();
     }

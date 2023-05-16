@@ -8,12 +8,12 @@ import com.jenschen.elastic.dao.AnswerDao;
 import com.jenschen.elastic.entity.AnswerEntity;
 import com.jenschen.entity.HomeEntity;
 import com.jenschen.entity.InfoEntity;
+import com.jenschen.helper.SpringHelper;
 import com.jenschen.response.home.ChartData;
 import com.jenschen.response.home.HomeResp;
 import com.jenschen.service.HomeService;
 import com.jenschen.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -39,7 +39,7 @@ public class HomeServiceImpl implements HomeService {
 
     @Override
     public Response<Object> getHomeInfo() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = SpringHelper.getUserName();
         HomeEntity home = homeDao.getBasicHomeInfo(username);
         HomeResp homeResp = BeanUtil.copyProperties(home, HomeResp.class);
         List<ChartData> data = createChartData();
