@@ -3,8 +3,8 @@ package com.jenschen.service;
 import com.jenschen.base.Response;
 import com.jenschen.entity.InfoEntity;
 import com.jenschen.request.AnswerPageReq;
-import com.jenschen.request.InfoReq;
 import com.jenschen.request.Page;
+import com.jenschen.request.info.InfoReq;
 
 public interface InfoService {
 

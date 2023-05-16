@@ -18,8 +18,8 @@ import com.jenschen.enumeration.ErrorEnum;
 import com.jenschen.enumeration.InfoStatusEnum;
 import com.jenschen.enumeration.InfoTypeEnum;
 import com.jenschen.request.AnswerPageReq;
-import com.jenschen.request.InfoReq;
 import com.jenschen.request.Page;
+import com.jenschen.request.info.InfoReq;
 import com.jenschen.response.*;
 import com.jenschen.service.*;
 import com.jenschen.service.impl.taskConverter.InfoSpliter;
@@ -172,19 +172,28 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Response<Object> publish(InfoReq infoReq) {
-        this.setStatus(InfoStatusEnum.PUBLISH, infoReq.getId());
+        InfoEntity info = infoDao.selectById(infoReq.getId());
+        if (info == null) {
+            return ResultUtil.error(ErrorEnum.DELETED_RECORD);
+        }
+        this.setStatus(InfoStatusEnum.PUBLISH, info);
         return ResultUtil.success();
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Response<Object> stop(InfoReq infoReq) {
-        this.setStatus(InfoStatusEnum.EDIT, infoReq.getId());
+        InfoEntity info = infoDao.selectById(infoReq.getId());
+        if (info == null) {
+            return ResultUtil.error(ErrorEnum.DELETED_RECORD);
+        }
+        this.setStatus(InfoStatusEnum.EDIT, info);
         return ResultUtil.success();
     }
 
-    private void setStatus(InfoStatusEnum status, int id){
-        InfoEntity info = infoDao.selectById(id);
+    private void setStatus(InfoStatusEnum status, InfoEntity info) {
         info.setStatus(status);
         infoDao.updateById(info);
     }
@@ -192,8 +201,11 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Response<Object> delete(int id) {
-        InfoEntity infoEntity = new InfoEntity();
-        infoEntity.setId(id);
+        InfoEntity infoEntity = infoDao.selectById(id);
+        if (infoEntity == null) {
+            return ResultUtil.error(ErrorEnum.DELETED_RECORD);
+        }
+
         infoEntity.deleted(LocalDateTime.now(), 1);
         infoDao.updateById(infoEntity);
 

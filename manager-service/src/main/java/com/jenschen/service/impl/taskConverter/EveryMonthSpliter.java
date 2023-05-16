@@ -2,7 +2,7 @@ package com.jenschen.service.impl.taskConverter;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
 import com.jenschen.entity.InfoEntity;
-import com.jenschen.request.InfoReq;
+import com.jenschen.request.info.InfoReq;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

@@ -2,7 +2,7 @@ package com.jenschen.service;
 
 import com.jenschen.base.Response;
 import com.jenschen.request.Page;
-import com.jenschen.request.TagReq;
+import com.jenschen.request.tag.TagReq;
 
 public interface TagService {
     /**

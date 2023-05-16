@@ -1,4 +1,4 @@
-package com.jenschen.request;
+package com.jenschen.request.tag;
 
 import com.jenschen.annotation.ValidColor;
 import lombok.Data;

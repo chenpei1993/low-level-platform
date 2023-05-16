@@ -1,8 +1,8 @@
 package com.jenschen.service;
 
 import com.jenschen.base.Response;
-import com.jenschen.request.CustomerReq;
 import com.jenschen.request.Page;
+import com.jenschen.request.custom.CustomerReq;
 
 public interface CustomerService {
     /**

@@ -1,8 +1,8 @@
 package com.jenschen.controller;
 
 import com.jenschen.base.Response;
-import com.jenschen.request.CustomerReq;
-import com.jenschen.request.CustomerPageReq;
+import com.jenschen.request.custom.CustomerPageReq;
+import com.jenschen.request.custom.CustomerReq;
 import com.jenschen.service.CustomerService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;

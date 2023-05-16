@@ -1,4 +1,4 @@
-package com.jenschen.request;
+package com.jenschen.request.custom;
 
 import com.jenschen.annotation.ValidEmail;
 import com.jenschen.annotation.ValidPhoneNumber;

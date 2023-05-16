@@ -3,7 +3,7 @@ package task;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import com.jenschen.entity.InfoEntity;
 import com.jenschen.enumeration.RepeatCollectTypeEnum;
-import com.jenschen.request.InfoReq;
+import com.jenschen.request.info.InfoReq;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

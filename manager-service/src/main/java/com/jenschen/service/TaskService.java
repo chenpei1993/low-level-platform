@@ -3,10 +3,10 @@ package com.jenschen.service;
 import com.jenschen.base.Response;
 import com.jenschen.entity.InfoEntity;
 import com.jenschen.entity.TaskEntity;
-import com.jenschen.request.InfoReq;
 import com.jenschen.request.SendTimerPageReq;
-import com.jenschen.request.TaskReq;
 import com.jenschen.request.TipTimerPageReq;
+import com.jenschen.request.info.InfoReq;
+import com.jenschen.request.tag.TaskReq;
 
 import java.util.List;
 

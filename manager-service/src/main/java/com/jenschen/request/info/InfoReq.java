@@ -1,12 +1,15 @@
-package com.jenschen.request;
+package com.jenschen.request.info;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jenschen.enumeration.InfoTypeEnum;
 import com.jenschen.enumeration.RepeatCollectTypeEnum;
 import com.jenschen.enumeration.SendCustomerTypeEnum;
 import com.jenschen.enumeration.SendTypeEnum;
+import com.jenschen.request.tag.TaskReq;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,6 +22,7 @@ public class InfoReq{
     /**
      * 活动名
      */
+    @NotEmpty(message = "活动名称不能为空")
     private String name;
 
     /**
@@ -48,11 +52,13 @@ public class InfoReq{
      * 活动开始时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @NotNull(message = "活动的开始时间不能为空")
     private LocalDateTime startDateTime;
     /**
      * 活动结束时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @NotNull(message = "活动的结束时间不能为空")
     private LocalDateTime endDateTime;
 
     /**

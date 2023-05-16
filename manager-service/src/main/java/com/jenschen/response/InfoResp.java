@@ -3,9 +3,7 @@ package com.jenschen.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jenschen.enumeration.InfoTypeEnum;
 import com.jenschen.enumeration.RepeatCollectTypeEnum;
-import com.jenschen.enumeration.SendCustomerTypeEnum;
 import com.jenschen.enumeration.SendTypeEnum;
-import com.jenschen.request.TaskReq;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

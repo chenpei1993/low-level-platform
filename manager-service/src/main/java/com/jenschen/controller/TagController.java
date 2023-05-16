@@ -1,8 +1,8 @@
 package com.jenschen.controller;
 
 import com.jenschen.base.Response;
-import com.jenschen.request.TagReq;
-import com.jenschen.request.TagPageReq;
+import com.jenschen.request.tag.TagPageReq;
+import com.jenschen.request.tag.TagReq;
 import com.jenschen.service.TagService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;

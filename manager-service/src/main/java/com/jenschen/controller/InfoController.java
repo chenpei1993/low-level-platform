@@ -2,10 +2,11 @@ package com.jenschen.controller;
 
 import com.jenschen.base.Response;
 import com.jenschen.request.AnswerPageReq;
-import com.jenschen.request.InfoPageReq;
-import com.jenschen.request.InfoReq;
+import com.jenschen.request.info.InfoPageReq;
+import com.jenschen.request.info.InfoReq;
 import com.jenschen.service.InfoService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -23,23 +24,25 @@ public class InfoController {
 
     /**
      * 添加活动
+     *
      * @param infoReq 活动在
      * @return 结果
      */
     @PutMapping
     @PreAuthorize("hasAuthority('activity:info:add')")
-    public Response<Object> add(@RequestBody InfoReq infoReq){
+    public Response<Object> add(@RequestBody @Validated InfoReq infoReq) {
         return infoService.insert(infoReq);
     }
 
     /**
      * 编辑活动
+     *
      * @param infoReq 活动
      * @return 结果
      */
     @PostMapping
     @PreAuthorize("hasAuthority('activity:info:edit')")
-    public Response<Object> edit(@RequestBody InfoReq infoReq){
+    public Response<Object> edit(@RequestBody @Validated InfoReq infoReq) {
         return infoService.edit(infoReq);
     }
 
