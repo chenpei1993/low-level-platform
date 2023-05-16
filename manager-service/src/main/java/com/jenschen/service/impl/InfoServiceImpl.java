@@ -120,12 +120,18 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
     public Response<Object> edit(InfoReq infoReq) {
         //更新时，先检查数据是否被删除
         InfoEntity info = infoDao.selectById(infoReq.getId());
-        if(info== null || info.getIsDeleted()){
+        if (info == null || info.getIsDeleted()) {
             return ResultUtil.error(ErrorEnum.DELETED_RECORD);
+        }
+
+        if (info.getVersion() != infoReq.getVersion()) {
+            return ResultUtil.error(ErrorEnum.UPDATED_RECORD);
         }
 
         InfoEntity infoEntity = new InfoEntity();
         BeanUtils.copyProperties(infoReq, infoEntity);
+        //更新版本号
+        infoEntity.setVersion(infoEntity.getVersion() + 1);
         infoEntity.updated(LocalDateTime.now(), 1);
         infoDao.updateById(infoEntity);
 

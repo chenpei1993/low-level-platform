@@ -104,4 +104,9 @@ public class InfoReq{
      * 其他，备用
      */
     private String other;
+
+    /**
+     * 版本号
+     */
+    private int version;
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.jenschen.enumeration.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 import java.time.LocalDateTime;
 
 /**
@@ -95,4 +96,9 @@ public class InfoEntity extends BaseEntity{
      * 其他
      */
     private String other;
+
+    /**
+     * 版本号
+     */
+    private int version;
 }
