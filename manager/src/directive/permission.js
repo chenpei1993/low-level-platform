@@ -8,7 +8,7 @@ export default {
             if (permissions == null) {
                 return;
             }
-            permissions.toLocaleLowerCase();
+            permissions = permissions.toLocaleLowerCase();
             let hasPermission = permissions.indexOf(perVal.toLocaleString()) === -1
             if (hasPermission) {
                 el.style.display = "none"

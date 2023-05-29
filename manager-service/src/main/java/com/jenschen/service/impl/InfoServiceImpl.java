@@ -225,7 +225,8 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
         List<QuestionEntity> questionEntityList = questionDao.getByInfoId(page.getInfoId());
 
         Pageable pageable = PageRequest.of(page.getCurrentPage() - 1, page.getPageSize());
-        org.springframework.data.domain.Page<AnswerEntity> ans = answerDao.findByInfoIdOrderByCreatedAtDesc(page.getInfoId(), pageable);
+        org.springframework.data.domain.Page<AnswerEntity> ans = answerDao
+                .findByInfoIdOrderByCreatedAtDesc(page.getInfoId(), pageable);
         int count = (int) ans.getTotalElements();
         List<AnswerResp> list = new ArrayList<>();
         ans.forEach((e) -> {

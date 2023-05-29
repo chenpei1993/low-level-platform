@@ -15,7 +15,7 @@
           </div>
         </div>
         <div style="width: 45%;">
-          <div><span>问卷数: </span> <span>{{infoTotal}} / {{publishInfoTotal}}</span></div>
+          <div><span>发布问卷: </span> <span> {{publishInfoTotal}} / {{infoTotal}}</span></div>
         </div>
       </div>
     </el-card>
@@ -97,7 +97,6 @@ export default {
   },
   mounted() {
     this.refresh()
-      console.log(document.getElementById("chart_0"))
   },
   created(){
     this.http = inject("$http")

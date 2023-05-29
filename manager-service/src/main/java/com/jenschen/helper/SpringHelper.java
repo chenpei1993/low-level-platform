@@ -20,7 +20,7 @@ public class SpringHelper {
             throw new BizException("用户名为空");
         }
         Jwt jwt = (Jwt) auth.getPrincipal();
-        return jwt.getClaim(CommonConstant.USER_ID);
+        return Integer.valueOf(jwt.getClaim(CommonConstant.USER_ID));
     }
 
     public static String getUserName() {
@@ -29,7 +29,7 @@ public class SpringHelper {
             throw new BizException("用户名为空");
         }
         Jwt jwt = (Jwt) auth.getPrincipal();
-        return jwt.getClaim(CommonConstant.USERNAME);
+        return String.valueOf(jwt.getClaim(CommonConstant.USERNAME));
     }
 
     public static void setNull() {

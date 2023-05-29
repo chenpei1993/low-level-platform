@@ -6,6 +6,7 @@ public class CommonConstant {
 
     public static final String USER_ID = "user_id";
     public static final String USERNAME = "username";
+    public static final String UPDATED_AT= "updated_at";
     public static final int DEFAULT = 0;
 
     /**
