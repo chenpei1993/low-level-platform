@@ -91,12 +91,13 @@ public class InfoController {
 
     /**
      * 结果分页查询
-     * @param anwserPage 结果分页查询
+     * @param answerPage 结果分页查询
      * @return  结果
      */
     @PostMapping(value = "answer/page")
     @ResponseBody
-    public Response<Object> answerPage(@RequestBody AnswerPageReq anwserPage){
-        return infoService.getAnswers(anwserPage);
+    @PreAuthorize("hasAuthority('activity:info:result')")
+    public Response<Object> answerPage(@RequestBody @Validated AnswerPageReq answerPage){
+        return infoService.getAnswers(answerPage);
     }
 }

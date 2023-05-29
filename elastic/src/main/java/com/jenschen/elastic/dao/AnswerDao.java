@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface AnswerDao extends ElasticsearchRepository<AnswerEntity, String> {
 
-    Page<AnswerEntity> findByInfoId(Integer infoId, Pageable pageable);
+    Page<AnswerEntity> findByInfoIdOrderByCreatedAtDesc(Integer infoId, Pageable pageable);
 
 
-    List<AnswerEntity> findByInfoIdAndCreatedAtBetween(Integer infoId, LocalDateTime from, LocalDateTime to);
+    List<AnswerEntity> findByInfoIdAndCreatedAtBetweenOrderByCreatedAtDesc(Integer infoId, LocalDateTime from, LocalDateTime to);
 }

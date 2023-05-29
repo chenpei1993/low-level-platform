@@ -5,9 +5,13 @@
       <el-breadcrumb-item>结果</el-breadcrumb-item>
   </el-breadcrumb>
     <el-divider />
-    <div>
+    <div style="display: flex; margin-bottom: 10px;">
+        <el-date-picker v-model="startDate" type="date" placeholder="开始时间" size="small" style="margin-right: 5px;"></el-date-picker>
+        <el-date-picker v-model="endDate" type="date" placeholder="结束时间" size="small" style="margin-right: 5px;"></el-date-picker>
+        <el-button type="success" size="small" @click="refresh" plain>查询</el-button>
+        <el-button type="info" size="small" @click="exportExcel" plain>导出</el-button>
         <el-button type="primary" size="small" @click="returnToInfo" plain>返回</el-button>
-        <el-button type="success" size="small" @click="exportExcel" plain>导出</el-button>
+
     </div>
     <div>
         <el-table :data="answers" stripe style="width: 100%" v-loading="loading">
@@ -36,7 +40,7 @@
     </div>
 </template>
 <script>
-import {ElMessage, ElMessageBox} from 'element-plus'
+import {ElMessage} from 'element-plus'
 import { inject } from "vue"
 
 export default {
@@ -47,6 +51,8 @@ export default {
             currentPage: 1,
             pageSize: 15,
             total: 0,
+            startDate: null,
+            endDate: null,
             answers:[],
             cols: []
         }
@@ -67,7 +73,12 @@ export default {
         },
         refresh(){
             this.loading = true
-            let data = {infoId: this.infoId, currentPage: this.currentPage, pageSize: this.pageSize}
+            let data = {infoId: this.infoId,
+                currentPage: this.currentPage,
+                pageSize: this.pageSize,
+                startDate: this.startDate,
+                endDate: this.endDate,
+            }
             this.http.post("/info/answer/page", data)
                 .then((res) => {
                     ElMessage.success("更新成功")

@@ -66,7 +66,7 @@ public class HomeServiceImpl implements HomeService {
         }
 
         for(var info : infoEntityList){
-            List<AnswerEntity> list = answerDao.findByInfoIdAndCreatedAtBetween(info.getId(), from, to);
+            List<AnswerEntity> list = answerDao.findByInfoIdAndCreatedAtBetweenOrderByCreatedAtDesc(info.getId(), from, to);
             TreeMap<String, Integer> map = new TreeMap<>();
             for(var entity : list){
                 if(entity.getCreatedAt() == null){
