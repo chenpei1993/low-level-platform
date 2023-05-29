@@ -7,6 +7,6 @@ ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
 
 ADD /target/*.jar /manager-service.jar
 
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /manager-service.jar --spring.profiles.active=$SPRING_PROFILES_ACTIVE"]
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /manager-service.jar +HeapDumpOnOutOfMemoryError --spring.profiles.active=$SPRING_PROFILES_ACTIVE"]
 
 EXPOSE $PORT
