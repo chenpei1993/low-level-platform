@@ -31,7 +31,10 @@ services:
       SPRING_PROFILES_ACTIVE: test
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-service:3306/manager?useUnicode=true&characterEncoding=utf8
       SPRING_ELASTIC_URL: elasticsearch-service:9200
-
+    #depends_on 并不会等待服务完全启动（参考文档 https://docs.docker.com/compose/startup-order/）但是restart: always
+    depends_on:
+      - mysql-service
+      - elasticsearch-service
   question-service:
     build: question-service
     container_name: question-service
@@ -41,6 +44,10 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: test
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-service:3306/manager?useUnicode=true&characterEncoding=utf8
+      SPRING_ELASTIC_URL: elasticsearch-service:9200
+    depends_on:
+      - mysql-service
+      - elasticsearch-service
   manager:
     build:
       context: ./manager

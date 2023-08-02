@@ -10,7 +10,7 @@ spring:
     username: root
     password: 123456
   elasticsearch:
-    uris: 192.168.221.128:9200
+    uris: ${SPRING_ELASTIC_URL}
     password: 123456
     username: elastic
 mybatis-plus:
