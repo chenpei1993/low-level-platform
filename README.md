@@ -7,7 +7,7 @@
   ### 技术栈
   - Spring Boot 2.7
   - Elasticsearch(Spring-Boot-Data-Elasticsearch)
-  - MySQL(Mybatis)
+  - MySQL(Mybatis) 
   - Vue 3.x 
   - Element UI Plus
 
@@ -47,15 +47,28 @@
 - 数据权限页面和接口 数据定义
 - 将Mapper全部变成Dao
 - 添加日志功能
-
+- 单元测试
+- 工作流的前端页面和后端页面
+- 希望将PostgreSQL替换掉MySQL，Elasticsearch，降低代码复杂度和资源
 
 其他页面基本功能实现，待完善和测试。
 
-## 项目部署准备
+## 项目部署
+
+### 准备
 
 RSA加密
 ```
 keytool -genkey -alias jwtsigning -keyalg RSA -keystore keystore.jks  -keysize 2048
 ```
 加密密码是：123456
+
+### 启动
+在script文件夹中有对应的bash脚本可以参考
+
+```bash
+mvn verify # 构建Java项目
+docker-compose -f docker-compose-test.yml build --no-cache # 构建镜像
+docker-compose -f docker-compose-test.yml up -d # 启动镜像
+```
 
