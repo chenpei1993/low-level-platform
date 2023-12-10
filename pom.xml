@@ -13,7 +13,7 @@
         <module>common</module>
         <module>manager-service</module>
         <module>db</module>
-        <module>elastic</module>
+<!--        <module>elastic</module>-->
     </modules>
 
 
@@ -58,12 +58,6 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
                 <version>${spring.version}</version>
             </dependency>
 

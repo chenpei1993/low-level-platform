@@ -11,10 +11,6 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
-  elasticsearch:
-    uris: 127.0.0.1:9200
-    password: 123456
-    username: elastic
 mybatis-plus:
   configuration:
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

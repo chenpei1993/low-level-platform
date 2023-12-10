@@ -6,10 +6,6 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
-  elasticsearch:
-    uris: 192.168.221.128:9200
-    password: 123456
-    username: elastic
 mybatis-plus:
     type-handlers-package: com.jenschen.typehandler
     configuration:
