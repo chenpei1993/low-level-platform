@@ -34,7 +34,7 @@ public class PermissionServiceImpl extends AbstractService<PermissionEntity> imp
         QueryWrapper<PermissionEntity> queryWrapper = this.getPageQueryWrapper(page);
         List<PermissionEntity> permissionEntityList = permissionDao.selectList(queryWrapper);
         List<PermissionResp> resp = BeanUtil.copyToList(permissionEntityList, PermissionResp.class);
-        int count = permissionDao.selectCount(this.getDefaultQuery());
+        long count = permissionDao.selectCount(this.getDefaultQuery());
         return ResultUtil.success(PageResp.build(count, resp));
     }
 

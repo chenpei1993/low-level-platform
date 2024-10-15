@@ -37,7 +37,7 @@ public class TagServiceImpl extends AbstractService<TagEntity> implements TagSer
         QueryWrapper<TagEntity> queryWrapper = this.getPageQueryWrapper(page);
         List<TagEntity> tagEntityList = tagDao.selectList(queryWrapper);
         List<TagResp> resp = BeanUtil.copyToList(tagEntityList, TagResp.class);
-        int count = tagDao.selectCount(this.getDefaultQuery());
+        long count = tagDao.selectCount(this.getDefaultQuery());
         return ResultUtil.success(PageResp.build(count, resp));
     }
 

@@ -44,7 +44,7 @@ public class RoleServiceImpl extends AbstractService<RoleEntity> implements Role
         QueryWrapper<RoleEntity> queryWrapper = this.getPageQueryWrapper(page);
         List<RoleEntity> roleEntityList = roleDao.selectList(queryWrapper);
         List<RoleResp> resp = BeanUtil.copyToList(roleEntityList, RoleResp.class);
-        int count = roleDao.selectCount(this.getDefaultQuery());
+        long count = roleDao.selectCount(this.getDefaultQuery());
         return ResultUtil.success(PageResp.build(count, resp));
     }
 

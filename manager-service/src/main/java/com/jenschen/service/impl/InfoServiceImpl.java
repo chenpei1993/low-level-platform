@@ -8,8 +8,8 @@ import com.jenschen.base.Response;
 import com.jenschen.constant.SettingsConstant;
 import com.jenschen.dao.InfoDao;
 import com.jenschen.dao.QuestionDao;
-import com.jenschen.elastic.dao.AnswerDao;
-import com.jenschen.elastic.entity.AnswerEntity;
+//import com.jenschen.elastic.dao.AnswerDao;
+//import com.jenschen.elastic.entity.AnswerEntity;
 import com.jenschen.entity.InfoEntity;
 import com.jenschen.entity.QuestionEntity;
 import com.jenschen.entity.SubInfoEntity;
@@ -30,8 +30,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+//import org.springframework.data.domain.PageRequest;
+//import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,8 +63,8 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
     @Autowired
     private SettingService settingService;
 
-    @Autowired
-    private AnswerDao answerDao;
+//    @Autowired
+//    private AnswerDao answerDao;
 
     @Autowired
     private QuestionDao questionDao;
@@ -91,7 +91,7 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
             resp.setSendTasks(sendRep);
         }
 
-        int count = infoDao.selectCount(this.getDefaultQuery());
+        long count = infoDao.selectCount(this.getDefaultQuery());
         return ResultUtil.success(PageResp.build(count, list));
     }
 
@@ -224,19 +224,20 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
     public Response<Object> getAnswers(AnswerPageReq page) {
         List<QuestionEntity> questionEntityList = questionDao.getByInfoId(page.getInfoId());
 
-        Pageable pageable = PageRequest.of(page.getCurrentPage() - 1, page.getPageSize());
-        org.springframework.data.domain.Page<AnswerEntity> ans = answerDao
-                .findByInfoIdOrderByCreatedAtDesc(page.getInfoId(), pageable);
-        int count = (int) ans.getTotalElements();
-        List<AnswerResp> list = new ArrayList<>();
-        ans.forEach((e) -> {
-            AnswerResp resp = AnswerResp.builder()
-                    .answer(e.getAnswer())
-                    .build();
-            resp.setCreatedAt(e.getCreatedAt());
-            resp.setUpdatedAt(e.getUpdatedAt());
-            list.add(resp);
-        });
-        return ResultUtil.success(AnswerPageResp.build(questionEntityList, count, list));
+//        Pageable pageable = PageRequest.of(page.getCurrentPage() - 1, page.getPageSize());
+//        org.springframework.data.domain.Page<AnswerEntity> ans = answerDao
+//                .findByInfoIdOrderByCreatedAtDesc(page.getInfoId(), pageable);
+//        int count = (int) ans.getTotalElements();
+//        List<AnswerResp> list = new ArrayList<>();
+//        ans.forEach((e) -> {
+//            AnswerResp resp = AnswerResp.builder()
+//                    .answer(e.getAnswer())
+//                    .build();
+//            resp.setCreatedAt(e.getCreatedAt());
+//            resp.setUpdatedAt(e.getUpdatedAt());
+//            list.add(resp);
+//        });
+//        return ResultUtil.success(AnswerPageResp.build(questionEntityList, count, list));
+        return null;
     }
 }

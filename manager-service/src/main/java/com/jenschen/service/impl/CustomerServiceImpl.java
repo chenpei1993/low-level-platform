@@ -108,7 +108,7 @@ public class CustomerServiceImpl extends AbstractService<CustomerEntity> impleme
             List<TagResp> tagsResp = customerTagService.getTagsByCustomerId(customerResp.getId());
             customerResp.setTags(tagsResp);
         }
-        int count = customerMapper.selectCount(this.getDefaultQuery());
+        long count = customerMapper.selectCount(this.getDefaultQuery());
         return ResultUtil.success(PageResp.build(count, respList));
     }
 

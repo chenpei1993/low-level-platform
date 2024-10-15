@@ -120,7 +120,7 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
             userResp.setRoleIds(roleRespList);
         }
 
-        int count = userDao.selectCount(this.getDefaultQuery());
+        long count = userDao.selectCount(this.getDefaultQuery());
         return ResultUtil.success(PageResp.build(count, resp));
     }
 

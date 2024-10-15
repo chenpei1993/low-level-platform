@@ -6,8 +6,8 @@ import cn.hutool.json.JSONUtil;
 import com.jenschen.base.Response;
 import com.jenschen.dao.InfoDao;
 import com.jenschen.dao.QuestionDao;
-import com.jenschen.elastic.dao.AnswerDao;
-import com.jenschen.elastic.entity.AnswerEntity;
+//import com.jenschen.elastic.dao.AnswerDao;
+//import com.jenschen.elastic.entity.AnswerEntity;
 import com.jenschen.entity.InfoEntity;
 import com.jenschen.entity.QuestionEntity;
 import com.jenschen.enumeration.ErrorEnum;
@@ -35,8 +35,8 @@ public class InfoServiceImpl implements InfoService {
     @Autowired
     private InfoDao infoDao;
 
-    @Autowired
-    private AnswerDao answerDao;
+//    @Autowired
+//    private AnswerDao answerDao;
 
 
     public Response<Object> getInfo(String code){
@@ -86,13 +86,13 @@ public class InfoServiceImpl implements InfoService {
 
         String answer = JSONUtil.toJsonPrettyStr(list);
         LocalDateTime now = LocalDateTime.now();
-        AnswerEntity data =  AnswerEntity.builder()
-                .infoId(infoId)
-                .answer(answer)
-                .createdAt(now)
-                .updatedAt(now)
-                .build();
-        answerDao.save(data);
+//        AnswerEntity data =  AnswerEntity.builder()
+//                .infoId(infoId)
+//                .answer(answer)
+//                .createdAt(now)
+//                .updatedAt(now)
+//                .build();
+//        answerDao.save(data);
 
         return ResultUtil.success();
     }

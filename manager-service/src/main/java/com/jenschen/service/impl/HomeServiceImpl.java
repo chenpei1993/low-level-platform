@@ -4,8 +4,6 @@ import cn.hutool.core.bean.BeanUtil;
 import com.jenschen.base.Response;
 import com.jenschen.dao.HomeDao;
 import com.jenschen.dao.InfoDao;
-import com.jenschen.elastic.dao.AnswerDao;
-import com.jenschen.elastic.entity.AnswerEntity;
 import com.jenschen.entity.HomeEntity;
 import com.jenschen.entity.InfoEntity;
 import com.jenschen.helper.SpringHelper;
@@ -28,8 +26,8 @@ import java.util.TreeMap;
 @Service
 public class HomeServiceImpl implements HomeService {
 
-    @Autowired
-    private AnswerDao answerDao;
+//    @Autowired
+//    private AnswerDao answerDao;
 
     @Autowired
     private InfoDao infoDao;
@@ -65,28 +63,28 @@ public class HomeServiceImpl implements HomeService {
             dates.add(to.plusDays(i).format(formatter));
         }
 
-        for(var info : infoEntityList){
-            List<AnswerEntity> list = answerDao.findByInfoIdAndCreatedAtBetweenOrderByCreatedAtDesc(info.getId(), from, to);
-            TreeMap<String, Integer> map = new TreeMap<>();
-            for(var entity : list){
-                if(entity.getCreatedAt() == null){
-                    continue;
-                }
-                String date = entity.getCreatedAt().format(formatter);
-                Integer count = map.getOrDefault(date, 0);
-                map.put(date, count + 1);
-            }
-
-            List<Integer> values = new ArrayList<>(days);
-            for(int i = 0; i < days; i++){
-                Integer count = map.getOrDefault(dates.get(i), 0);
-                values.add(count);
-            }
-
-            ChartData chartData = ChartData.builder().name(info.getName())
-                    .dates(dates).values(values).build();
-            data.add(chartData);
-        }
+//        for(var info : infoEntityList){
+//            List<AnswerEntity> list = answerDao.findByInfoIdAndCreatedAtBetweenOrderByCreatedAtDesc(info.getId(), from, to);
+//            TreeMap<String, Integer> map = new TreeMap<>();
+//            for(var entity : list){
+//                if(entity.getCreatedAt() == null){
+//                    continue;
+//                }
+//                String date = entity.getCreatedAt().format(formatter);
+//                Integer count = map.getOrDefault(date, 0);
+//                map.put(date, count + 1);
+//            }
+//
+//            List<Integer> values = new ArrayList<>(days);
+//            for(int i = 0; i < days; i++){
+//                Integer count = map.getOrDefault(dates.get(i), 0);
+//                values.add(count);
+//            }
+//
+//            ChartData chartData = ChartData.builder().name(info.getName())
+//                    .dates(dates).values(values).build();
+//            data.add(chartData);
+//        }
 
         return data;
     }

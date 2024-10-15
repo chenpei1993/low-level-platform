@@ -27,19 +27,19 @@ public class WebSecurityConfig{
         this.permissionService = permissionService;
     }
 
-    @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable();
-
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().authorizeRequests(configurer -> configurer
-                        .antMatchers("/user/login").permitAll()
-                        .anyRequest().authenticated())
-                .oauth2ResourceServer()
-                .jwt()
-                .jwtAuthenticationConverter(authenticationConverter());
-        return http.build();
-    }
+//    @Bean
+//    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http.cors().and().csrf().disable();
+//
+//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and().authorizeRequests(configurer -> configurer
+//                        .antMatchers("/user/login").permitAll()
+//                        .anyRequest().authenticated())
+//                .oauth2ResourceServer()
+//                .jwt()
+//                .jwtAuthenticationConverter(authenticationConverter());
+//        return http.build();
+//    }
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {

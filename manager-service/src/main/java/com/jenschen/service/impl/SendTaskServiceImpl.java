@@ -35,7 +35,7 @@ public class SendTaskServiceImpl extends AbstractTipService {
         queryWrapper.eq("info_id", sendTimerPageReq.getInfoId());
         List<TaskEntity> tagEntityList = taskMapper.selectList(queryWrapper);
         List<TaskResp> resp = BeanUtil.copyToList(tagEntityList, TaskResp.class);
-        int count = taskMapper.selectCount(queryWrapper);
+        long count = taskMapper.selectCount(queryWrapper);
         return ResultUtil.success(PageResp.build(count, resp));
     }
 }

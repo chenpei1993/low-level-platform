@@ -44,7 +44,7 @@ public abstract class AbstractDao<T> implements BaseDao<T>{
     }
 
     @Override
-    public Integer selectCount(Wrapper<T> queryWrapper) {
+    public Long selectCount(Wrapper<T> queryWrapper) {
         return getMapper().selectCount(queryWrapper);
     }
 

@@ -24,11 +24,11 @@ public abstract class AbstractService<T> {
         }
 
         if(page.getAscOderBy() != null){
-            queryWrapper.orderByAsc(page.getAscOderBy().toArray(new String[0]));
+            queryWrapper.orderByAsc(page.getAscOderBy());
         }
 
         if(page.getDescOderBy() != null){
-            queryWrapper.orderByDesc(page.getDescOderBy().toArray(new String[0]));
+            queryWrapper.orderByDesc(page.getDescOderBy());
         }
 
         queryWrapper.last("limit " + (page.getCurrentPage() - 1) * page.getPageSize() + "," + page.getPageSize());
