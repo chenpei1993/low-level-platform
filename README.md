@@ -2,16 +2,23 @@
 
 ## 项目介绍
 
-  这是一个从0到1的一个练手项目。 虽然只是练手，但是我会尽可能的尝试最有的实现吧（比如说容器化部署），并且之后不断更新最新的软件版本，不断的优化功能细节和优化代码实现。
+因为在工作当中的很多项目，基本上接手别人的。在实现功能开发的时候，因为历史代码，工期等等原因，往往并不是一个“完美解决方案”，缺乏思考。
 
-  ### 技术栈
-  - Spring Boot 2.7
-  - Elasticsearch(Spring-Boot-Data-Elasticsearch)
-  - MySQL(Mybatis) 
-  - Vue 3.x 
-  - Element UI Plus
+所以这是一个从0到1的一个练手项目。可以弄清每一个环节的细节。也可以尝试一些新技术，并且通过迭代和重构，来提升自身水平和代码。
 
-### 项目功能
+### 技术栈
+- Spring Boot 3.0+
+- MySQL(Mybatis Plus)
+- Vue 3.x
+- Element UI Plus
+### 知识点
+- 从Spring Boot2.7 升级到 Spring Boot3.0
+- 容器化部署
+- oauth和jwt的授权
+- rbac的权限管理
+- 基于Completable优化
+
+## 项目功能
 
 - 管理系统
   - 登录页面
@@ -48,8 +55,7 @@
 - 将Mapper全部变成Dao
 - 添加日志功能
 - 单元测试
-- 工作流的前端页面和后端页面
-- 希望将PostgreSQL替换掉MySQL，Elasticsearch，降低代码复杂度和资源
+- 希望将MySQL替换掉Elasticsearch，降低代码复杂度和资源
 
 其他页面基本功能实现，待完善和测试。
 

@@ -5,6 +5,8 @@ import com.jenschen.request.Page;
 import com.jenschen.request.user.UserLoginReq;
 import com.jenschen.request.user.UserReq;
 
+import java.util.concurrent.ExecutionException;
+
 public interface UserService {
 
     /**

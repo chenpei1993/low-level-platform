@@ -40,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
@@ -110,18 +111,38 @@ public class UserServiceImpl extends AbstractService<UserEntity> implements User
     @Override
     public Response<Object> page(Page page) {
         QueryWrapper<UserEntity> queryWrapper = this.getPageQueryWrapper(page);
-        List<UserEntity> userEntityList = userDao.selectList(queryWrapper);
-        List<UserResp> resp = BeanUtil.copyToList(userEntityList, UserResp.class);
+        CompletableFuture<List<UserEntity>> userListCF = CompletableFuture.supplyAsync(()->userDao.selectList(queryWrapper));
+        CompletableFuture<Long> userCountCF = CompletableFuture.supplyAsync(()->userDao.selectCount(this.getDefaultQuery()));
 
-        //获得所有角色
-        for(UserResp userResp : resp){
-            List<RoleEntity> roleEntityList = roleUserMapper.getRoleByUserId(userResp.getId());
-            List<RoleResp> roleRespList = BeanUtil.copyToList(roleEntityList, RoleResp.class);
-            userResp.setRoleIds(roleRespList);
+        CompletableFuture<Void> cf = CompletableFuture.allOf(
+                userListCF, userCountCF
+        );
+        cf.join();
+
+        List<UserResp> resp;
+        Long count;
+        try{
+            resp = BeanUtil.copyToList(userListCF.get(), UserResp.class);
+            count = userCountCF.get();
+            //获得所有角色
+            List<CompletableFuture<Void>> list = new ArrayList<>();
+            for(UserResp userResp : resp){
+                CompletableFuture<Void> roleListCF = CompletableFuture.runAsync(()->{
+                    List<RoleEntity> roleEntityList = roleUserMapper.getRoleByUserId(userResp.getId());
+                    List<RoleResp> roleRespList = BeanUtil.copyToList(roleEntityList, RoleResp.class);
+                    userResp.setRoleIds(roleRespList);
+                });
+                list.add(roleListCF);
+            }
+
+            CompletableFuture<Void> wait = CompletableFuture.allOf(
+                    list.toArray(new CompletableFuture[0])
+            );
+            wait.join();
+            return ResultUtil.success(PageResp.build(count, resp));
+        }catch (Exception e){
+            throw new BizException(ErrorEnum.ERROR);
         }
-
-        long count = userDao.selectCount(this.getDefaultQuery());
-        return ResultUtil.success(PageResp.build(count, resp));
     }
 
     @Override
