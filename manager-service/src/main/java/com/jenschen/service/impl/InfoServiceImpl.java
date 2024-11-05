@@ -75,7 +75,7 @@ public class InfoServiceImpl extends AbstractService<InfoEntity> implements Info
         List<InfoEntity> infoEntityList = infoDao.selectList(queryWrapper);
 
         String ip = settingService.getValue(SettingsConstant.QUESTION_FRONT_URL);
-
+        //TODO
         List<InfoResp> list = new ArrayList<>(infoEntityList.size());
         for(var info : infoEntityList){
             InfoResp resp = BeanUtil.copyProperties(info, InfoResp.class);
