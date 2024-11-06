@@ -11,6 +11,14 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
+eureka:
+  instance:
+    hostname: "service-manager-system"
+    prefer-ip-address: true
+    appname: "service-manager-system"
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8100/eureka/
 mybatis-plus:
   configuration:
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -19,6 +27,7 @@ mybatis-plus:
 logging:
   level:
     com.jenschen.mapper: debug
+
 jwt:
   key-store-path: keys/keystore.jks
   key-store-password: 123456

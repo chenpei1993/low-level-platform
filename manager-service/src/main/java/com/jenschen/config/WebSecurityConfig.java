@@ -44,6 +44,7 @@ public class WebSecurityConfig{
 
         http.authorizeRequests(request  -> request
                         .requestMatchers("/user/login").permitAll()
+                        .requestMatchers("/hello").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 ->
                         oauth2.jwt(jwtConfigurer ->
