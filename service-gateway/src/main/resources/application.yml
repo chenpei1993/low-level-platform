@@ -6,15 +6,17 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: manager
-          uri: http://127.0.0.1:8090
+        - id: manager-service
+#          uri: http://127.0.0.1:8090
+          uri: lb://MANAGER-SYSTEM
           predicates:
             - Path=/manage/**
 eureka:
   instance:
-    hostname: "service-gateway"
     prefer-ip-address: true
   client:
     service-url:
       defaultZone: http://127.0.0.1:8100/eureka/
-
+    registry-fetch-interval-seconds: 5
+    fetch-registry: true
+    register-with-eureka: true

@@ -3,6 +3,8 @@ server:
     context-path: "/manage"
   port: 8090
 spring:
+  application:
+    name: manager-system
   security:
     prefix: lowcodeplatform
     defaultPassword: 123456
@@ -13,12 +15,12 @@ spring:
     password: 123456
 eureka:
   instance:
-    hostname: "service-manager-system"
     prefer-ip-address: true
-    appname: "service-manager-system"
   client:
     service-url:
       defaultZone: http://127.0.0.1:8100/eureka/
+    fetch-registry: true
+    register-with-eureka: true
 mybatis-plus:
   configuration:
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
